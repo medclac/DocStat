@@ -860,18 +860,18 @@ window.S = S;
 </script>
 
 <!-- ============================================================== -->
-<!-- 2. SPECIALTY MODULE SCRIPTS -->
+<!-- 2. SPECIALTY MODULE SCRIPTS (UPDATED TO "Subjects/" FOLDER) -->
 <!-- ============================================================== -->
-<script src="obgy.js"></script>
-<script src="ortho.js"></script>
-<script src="Emgicu.js"></script>
-<script src="neuro.js"></script>
-<script src="cardio.js"></script>
-<script src="endo.js"></script>
-<script src="respi.js"></script>
-<script src="renal.js"></script>
-<script src="rheum.js"></script>
-<script src="surg.js"></script>
+<script src="Subjects/obgy.js"></script>
+<script src="Subjects/ortho.js"></script>
+<script src="Subjects/Emgicu.js"></script>
+<script src="Subjects/neuro.js"></script>
+<script src="Subjects/cardio.js"></script>
+<script src="Subjects/endo.js"></script>
+<script src="Subjects/respi.js"></script>
+<script src="Subjects/renal.js"></script>
+<script src="Subjects/rheum.js"></script>
+<script src="Subjects/surg.js"></script>
 
 <!-- ============================================================== -->
 <!-- 3. APPLICATION ENGINE, OFFLINE SYNC QUEUE & CONTROLLER -->
@@ -1436,7 +1436,7 @@ window.S = S;
 
  if (rawHash.startsWith("source=")) {
  const calcId = decodeURIComponent(rawHash.replace("source=", ""));
- const sourcePath = `www/${calcId}.html`;
+ const sourcePath = `InfoHTMLs/${calcId}.html`; /* UPDATED TO InfoHTMLs FOLDER */
  const iframe = $("fullSourceIframe");
  
  iframe.src = "about:blank";
@@ -1973,5 +1973,3 @@ window.S = S;
 </script>
 </body>
 </html>
-
-Fix this
