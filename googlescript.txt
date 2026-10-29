@@ -1,0 +1,373 @@
+var SECRET_OTP_SALT = "docstat_secure_2026";
+
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var props = PropertiesService.getScriptProperties();
+    
+    if (data.type === "registration") {
+      var email = String(data.email || "unknown@docstat.com").trim().toLowerCase();
+      var name = String(data.name || "Anonymous").trim();
+      var degree = String(data.degree || "N/A").trim();
+      var hospital = String(data.hospital || "").trim();
+      var avatar = String(data.avatar || "").trim();
+      var timestamp = data.timestamp || new Date().toLocaleString();
+      
+      getOrCreateUserExcel(props, email, name, degree, hospital, timestamp, false, avatar);
+      return ContentService.createTextOutput(JSON.stringify({status: "success"})).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    if (data.type === "calculation") {
+      var email = String(data.email || "").trim().toLowerCase();
+      var name = String(data.name || "Anonymous").trim();
+      var degree = String(data.degree || "N/A").trim();
+      var specialty = String(data.specialty || "").trim();
+      var tool = String(data.tool || "").trim();
+      var result = String(data.result || "").trim();
+      var equation = String(data.equation || "").trim();
+      var timestamp = data.timestamp || new Date().toLocaleString();
+      var avatar = String(data.avatar || "").trim();
+      
+      var masterSS = SpreadsheetApp.openById(props.getProperty('MASTER_SHEET_ID'));
+      var logsSheet = masterSS.getSheetByName('Platform_Calculation_Logs');
+      if (!logsSheet) {
+        logsSheet = masterSS.insertSheet('Platform_Calculation_Logs');
+        logsSheet.appendRow(["Timestamp", "Doctor Name", "Degree", "Specialty", "Calculator Used", "Result", "Equation", "Email"]);
+      }
+
+      // --- DEDUPLICATION CHECK (Spam / Double-clicking filter) ---
+      // Checks if the same user ran the exact same tool with the exact same result within 15 seconds
+      var logData = logsSheet.getDataRange().getValues();
+      var isDuplicate = false;
+      var nowTime = new Date(timestamp).getTime();
+
+      for (var i = logData.length - 1; i >= Math.max(1, logData.length - 15); i--) {
+        var rowTime = new Date(logData[i][0]).getTime();
+        var rowEmail = String(logData[i][7] || "").trim().toLowerCase();
+        var rowTool = String(logData[i][4] || "").trim();
+        var rowResult = String(logData[i][5] || "").trim();
+
+        if (rowEmail === email && rowTool === tool && rowResult === result) {
+          if (!isNaN(nowTime) && !isNaN(rowTime) && (nowTime - rowTime < 15000)) {
+            isDuplicate = true;
+            break;
+          }
+        }
+      }
+
+      // If it's a rapid duplicate click, ignore it and don't inflate counts
+      if (isDuplicate) {
+        return ContentService.createTextOutput(JSON.stringify({status: "ignored_duplicate"})).setMimeType(ContentService.MimeType.JSON);
+      }
+      // -------------------------------------------------------------
+
+      var userInfo = getOrCreateUserExcel(props, email, name, degree, "", timestamp, true, avatar);
+      
+      // Append to individual user sheet
+      var userSS = SpreadsheetApp.openById(userInfo.userSheetId);
+      var historySheet = userSS.getSheetByName("Calculation_History") || userSS.getSheets()[0];
+      historySheet.appendRow([timestamp, tool, name, degree, result, equation]);
+      
+      // Append to master logs sheet
+      logsSheet.appendRow([timestamp, name, degree, specialty, tool, result, equation, email]);
+      
+      return ContentService.createTextOutput(JSON.stringify({status: "success"})).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    if (data.type === "feedback" || data.type === "admin_reply") {
+      var email = String(data.email || "").trim().toLowerCase();
+      var name = String(data.name || "Anonymous").trim();
+      var degree = String(data.degree || "N/A").trim();
+      var message = String(data.message || "").trim();
+      var timestamp = data.timestamp || new Date().toLocaleString();
+      var sender = (data.type === "admin_reply") ? "admin" : "clinician";
+      
+      appendChatMessage(props, email, name, degree, sender, message, timestamp);
+      return ContentService.createTextOutput(JSON.stringify({status: "success"})).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({status: "error", message: err.toString()})).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  var action = e.parameter.action;
+  var props = PropertiesService.getScriptProperties();
+  
+  if (action === "send_otp") {
+    var email = e.parameter.email;
+    var name = e.parameter.name;
+    return ContentService.createTextOutput(JSON.stringify(sendOtpEmail(email, name))).setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  if (action === "verify_otp") {
+    var email = e.parameter.email;
+    var otp = e.parameter.otp;
+    return ContentService.createTextOutput(JSON.stringify(verifyOtpCode(email, otp))).setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  if (action === "admin_all") {
+    return ContentService.createTextOutput(JSON.stringify(getAdminAnalyticsData(props))).setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  if (action === "user_messages") {
+    var email = e.parameter.email;
+    return ContentService.createTextOutput(JSON.stringify(getUserMessages(props, email))).setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  if (action === "user_sheet") {
+    var sheetId = e.parameter.sheetId;
+    return ContentService.createTextOutput(JSON.stringify(getUserSheetHistory(sheetId))).setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify({status: "error", message: "Invalid action"})).setMimeType(ContentService.MimeType.JSON);
+}
+
+function getOrCreateUserExcel(props, email, name, degree, hospital, timestamp, isCalculation, avatar) {
+  var masterSS = SpreadsheetApp.openById(props.getProperty('MASTER_SHEET_ID'));
+  var masterSheet = masterSS.getSheetByName('Clinicians_Login_Directory');
+  if (!masterSheet) {
+    masterSheet = masterSS.insertSheet('Clinicians_Login_Directory');
+    masterSheet.appendRow(["Email ID", "Doctor Name", "Degree", "First Login", "Last Active", "Total Calcs", "Sheet ID", "Sheet URL", "Avatar", "Hospital"]);
+  }
+  
+  var data = masterSheet.getDataRange().getValues();
+  var cleanEmail = String(email || "unknown@docstat.com").trim().toLowerCase();
+  var cleanName = String(name || 'Anonymous Doctor').trim();
+  var cleanDegree = String(degree || 'N/A').trim();
+  var cleanHospital = String(hospital || '').trim();
+  var cleanAvatar = avatar ? String(avatar) : '';
+
+  for (var i = 1; i < data.length; i++) {
+    if (String(data[i][0]).toLowerCase() === cleanEmail) {
+      var rowNum = i + 1;
+      masterSheet.getRange(rowNum, 5).setValue(timestamp); // Last Active
+      if (cleanName) masterSheet.getRange(rowNum, 2).setValue(cleanName);
+      if (cleanDegree) masterSheet.getRange(rowNum, 3).setValue(cleanDegree);
+      if (cleanHospital) masterSheet.getRange(rowNum, 10).setValue(cleanHospital);
+      if (cleanAvatar) masterSheet.getRange(rowNum, 9).setValue(cleanAvatar);
+      
+      if (isCalculation) {
+        var currentCount = Number(data[i][5] || 0) + 1;
+        masterSheet.getRange(rowNum, 6).setValue(currentCount);
+      }
+
+      var userSheetId = data[i][6];
+      var userSheetUrl = data[i][7];
+
+      if (!userSheetId) {
+        var created = createIndividualUserSpreadsheet(props.getProperty('USERS_FOLDER_ID'), cleanName, cleanDegree);
+        userSheetId = created.id;
+        userSheetUrl = created.url;
+        masterSheet.getRange(rowNum, 7).setValue(userSheetId);
+        masterSheet.getRange(rowNum, 8).setValue(userSheetUrl);
+      }
+
+      return { key: cleanEmail, name: cleanName, degree: cleanDegree, userSheetId: userSheetId, userSheetUrl: userSheetUrl };
+    }
+  }
+
+  var created = createIndividualUserSpreadsheet(props.getProperty('USERS_FOLDER_ID'), cleanName, cleanDegree);
+  masterSheet.appendRow([cleanEmail, cleanName, cleanDegree, timestamp, timestamp, isCalculation ? 1 : 0, created.id, created.url, cleanAvatar, cleanHospital]);
+
+  return { key: cleanEmail, name: cleanName, degree: cleanDegree, userSheetId: created.id, userSheetUrl: created.url };
+}
+
+function createIndividualUserSpreadsheet(folderId, name, degree) {
+  var folder = DriveApp.getFolderById(folderId);
+  var ss = SpreadsheetApp.create(name + " (" + degree + ") - Calculations & Chat");
+  var file = DriveApp.getFileById(ss.getId());
+  file.moveTo(folder);
+  
+  var sheet = ss.getSheets()[0];
+  sheet.setName("Calculation_History");
+  sheet.appendRow(["Timestamp", "Tool Used", "Doctor Name", "Degree", "Result", "Equation / Parameters"]);
+  
+  return { id: ss.getId(), url: ss.getUrl() };
+}
+
+function appendChatMessage(props, email, name, degree, sender, message, timestamp) {
+  var folderId = props.getProperty('USERS_FOLDER_ID');
+  var folder = DriveApp.getFolderById(folderId);
+  var cleanEmail = String(email || "unknown@docstat.com").trim().toLowerCase();
+  var fileName = cleanEmail + "_chat.txt";
+  
+  var files = folder.getFilesByName(fileName);
+  var file;
+  var existingContent = "";
+  
+  if (files.hasNext()) {
+    file = files.next();
+    existingContent = file.getBlob().getDataAsString();
+  } else {
+    file = folder.createFile(fileName, "");
+  }
+  
+  var newMsg = JSON.stringify({ timestamp: timestamp, sender: sender, name: name, message: message }) + "\n";
+  file.setContent(existingContent + newMsg);
+}
+
+function getUserMessages(props, email) {
+  var folderId = props.getProperty('USERS_FOLDER_ID');
+  var folder = DriveApp.getFolderById(folderId);
+  var cleanEmail = String(email || "").trim().toLowerCase();
+  var fileName = cleanEmail + "_chat.txt";
+  
+  var files = folder.getFilesByName(fileName);
+  if (!files.hasNext()) return { status: "success", messages: [] };
+  
+  var file = files.next();
+  var lines = file.getBlob().getDataAsString().split("\n");
+  var messages = [];
+  
+  for (var i = 0; i < lines.length; i++) {
+    if (lines[i].trim()) {
+      try {
+        messages.push(JSON.parse(lines[i]));
+      } catch (e) {}
+    }
+  }
+  
+  return { status: "success", messages: messages };
+}
+
+function getAdminAnalyticsData(props) {
+  var masterSS = SpreadsheetApp.openById(props.getProperty('MASTER_SHEET_ID'));
+  var masterSheet = masterSS.getSheetByName('Clinicians_Login_Directory');
+  var users = [];
+  
+  if (masterSheet && masterSheet.getLastRow() > 1) {
+    var data = masterSheet.getDataRange().getValues();
+    for (var i = 1; i < data.length; i++) {
+      users.push({
+        key: String(data[i][0]).toLowerCase(),
+        email: data[i][0],
+        name: data[i][1],
+        degree: data[i][2],
+        firstLogin: data[i][3],
+        lastActive: data[i][4],
+        totalCalcs: data[i][5],
+        sheetId: data[i][6],
+        sheetUrl: data[i][7],
+        avatar: data[i][8],
+        hospital: data[i][9]
+      });
+    }
+  }
+  
+  var logsSheet = masterSS.getSheetByName('Platform_Calculation_Logs');
+  if (!logsSheet) {
+    logsSheet = masterSS.insertSheet('Platform_Calculation_Logs');
+    logsSheet.appendRow(["Timestamp", "Doctor Name", "Degree", "Specialty", "Calculator Used", "Result", "Equation", "Email"]);
+  }
+  
+  var logs = [];
+  var calcFreq = {};
+  var specFreq = {};
+  
+  if (logsSheet.getLastRow() > 1) {
+    var logData = logsSheet.getDataRange().getValues();
+    var startIdx = Math.max(1, logData.length - 50);
+    for (var j = startIdx; j < logData.length; j++) {
+      logs.unshift({
+        timestamp: logData[j][0],
+        name: logData[j][1],
+        degree: logData[j][2],
+        specialty: logData[j][3],
+        tool: logData[j][4],
+        result: logData[j][5],
+        eq: logData[j][6],
+        email: logData[j][7]
+      });
+    }
+    
+    for (var k = 1; k < logData.length; k++) {
+      var t = logData[k][4];
+      var s = logData[k][3] || "GENERAL";
+      if (t) calcFreq[t] = (calcFreq[t] || 0) + 1;
+      if (s) specFreq[s] = (specFreq[s] || 0) + 1;
+    }
+  }
+  
+  return {
+    status: "success",
+    users: users,
+    logs: logs,
+    calcFreq: calcFreq,
+    specFreq: specFreq,
+    masterSheetUrl: masterSS.getUrl(),
+    usersFolderUrl: "https://drive.google.com/drive/folders/" + props.getProperty('USERS_FOLDER_ID')
+  };
+}
+
+function getUserSheetHistory(sheetId) {
+  try {
+    var ss = SpreadsheetApp.openById(sheetId);
+    var sheet = ss.getSheetByName("Calculation_History") || ss.getSheets()[0];
+    var data = sheet.getDataRange().getValues();
+    var history = [];
+    
+    for (var i = 1; i < data.length; i++) {
+      history.push({
+        time: data[i][0],
+        tool: data[i][1],
+        name: data[i][2],
+        degree: data[i][3],
+        result: data[i][4],
+        eq: data[i][5]
+      });
+    }
+    return { status: "success", history: history };
+  } catch (err) {
+    return { status: "error", message: err.toString() };
+  }
+}
+
+function sendOtpEmail(email, name) {
+  var cleanEmail = String(email || "").trim().toLowerCase();
+  if (!cleanEmail || !cleanEmail.includes("@")) {
+    return { status: "error", message: "Invalid email address." };
+  }
+  
+  var otp = Math.floor(100000 + Math.random() * 900000).toString();
+  var expiry = new Date().getTime() + (10 * 60 * 1000);
+  
+  PropertiesService.getScriptProperties().setProperty("OTP_" + cleanEmail, otp + "_" + expiry);
+  
+  try {
+    MailApp.sendEmail({
+      to: cleanEmail,
+      subject: "Your DocStat Verification Code",
+      htmlFormat: true,
+      body: "Hello " + (name || "Doctor") + ",<br><br>Your 6-digit verification code for DocStat is: <b>" + otp + "</b><br><br>This code expires in 10 minutes."
+    });
+    return { status: "success" };
+  } catch (err) {
+    return { status: "error", message: "Failed to send email: " + err.toString() };
+  }
+}
+
+function verifyOtpCode(email, otp) {
+  var cleanEmail = String(email || "").trim().toLowerCase();
+  var stored = PropertiesService.getScriptProperties().getProperty("OTP_" + cleanEmail);
+  
+  if (!stored) {
+    return { status: "error", message: "No OTP requested for this email." };
+  }
+  
+  var parts = stored.split("_");
+  var correctOtp = parts[0];
+  var expiry = Number(parts[1]);
+  
+  if (new Date().getTime() > expiry) {
+    return { status: "error", message: "OTP has expired. Please request a new one." };
+  }
+  
+  if (otp !== correctOtp) {
+    return { status: "error", message: "Incorrect verification code." };
+  }
+  
+  PropertiesService.getScriptProperties().deleteProperty("OTP_" + cleanEmail);
+  return { status: "success" };
+}
