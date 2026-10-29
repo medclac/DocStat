@@ -918,7 +918,7 @@ window.S = S;
  const name = localStorage.getItem("doccalc_dr_name") || "Anonymous";
  const degree = localStorage.getItem("doccalc_dr_degree") || "N/A";
  const specialty = (currentTool && currentTool.cat) ? currentTool.cat.toUpperCase() : "";
- const avatar = localStorage.getItem("doccalc_dr_avatar"] || "";
+ const avatar = localStorage.getItem("doccalc_dr_avatar") || "";
 
  trackRecentTool(currentTool);
 
@@ -1285,7 +1285,7 @@ window.S = S;
  $("settingsModal").onclick = e => { if (e.target === $("settingsModal")) $("settingsModal").classList.add("hidden"); };
  document.querySelectorAll(".theme-btn").forEach(btn => btn.onclick = () => applyTheme(btn.dataset.themeVal));
 
- // --- SPLASH DISMISSAL ---
+ // --- SPLASH DISMISSAL FAIL-SAFE ---
  function triggerSplashSequence() {
  const logoWrap = $("splashLogoWrap");
  const splash = $("splash");
@@ -1305,7 +1305,7 @@ window.S = S;
  if (window.AndroidBridge && typeof window.AndroidBridge.onSplashComplete === "function") {
  window.AndroidBridge.onSplashComplete();
  }
- }, 2600);
+ }, 2200);
  }
 
  window.addEventListener("load", triggerSplashSequence);
