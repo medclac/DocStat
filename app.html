@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="light" class="h-full">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,6 +7,30 @@
 <title>DocStat</title>
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
+
+<!-- Tailwind CSS CDN for Chat Assistant Styling -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    medical: {
+                        50: '#f0fdf4',
+                        100: '#dcfce7',
+                        500: '#22c55e',
+                        600: '#16a34a',
+                        700: '#15803d',
+                        800: '#166534',
+                        900: '#14532d',
+                    }
+                }
+            }
+        }
+    }
+</script>
+<script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
 /* CSS VARIABLES FOR THEMES */
@@ -116,7 +140,7 @@ body {
 }
 
 /* ============================================================== */
-/* ANIMATED SPLASH SCREEN (SNAKE DRAW & D REVEAL ON WHITE alot ) */
+/* ANIMATED SPLASH SCREEN */
 /* ============================================================== */
 #splash {
  position: fixed;
@@ -152,7 +176,6 @@ body {
  overflow: visible;
 }
 
-/* Snake tubing animation */
 .steth-border {
  fill: none;
  stroke: #1e3a8a;
@@ -179,7 +202,6 @@ body {
  to { stroke-dashoffset: 0; }
 }
 
-/* D Letterform fade & scale */
 .letter-d {
  transform-origin: 100px 100px;
  opacity: 0;
@@ -317,7 +339,6 @@ main { max-width: 760px; margin: auto; padding: 16px; }
  outline: none;
 }
 .search:focus { border-color: #2463eb; box-shadow: 0 0 0 3px rgba(36,99,235,0.15); }
-.search-hints { font-size: 11.5px; color: var(--text-muted); margin-top: 6px; padding-left: 4px; }
 h2 { font-size: 21px; margin: 8px 0; }
 .muted { color: var(--text-muted); font-size: 13px; line-height: 1.5; }
 
@@ -366,7 +387,7 @@ h2 { font-size: 21px; margin: 8px 0; }
 .badge-calc { background: var(--badge-calc-bg); color: var(--badge-calc-text); border: 1px solid var(--badge-calc-border); }
 .badge-class { background: var(--badge-class-bg); color: var(--badge-class-text); border: 1px solid var(--badge-class-border); }
 
-/* DISTINCT SPECIALTY BADGE COLOR THEMES (LIGHT MODE) */
+/* DISTINCT SPECIALTY BADGES */
 .badge-spec { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
 .badge-spec-obgy { background: #fce7f3; color: #db2777; border: 1px solid #fbcfe8; }
 .badge-spec-ortho { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
@@ -380,22 +401,6 @@ h2 { font-size: 21px; margin: 8px 0; }
 .badge-spec-onco { background: #fae8ff; color: #c026d3; border: 1px solid #f5d0fe; }
 .badge-spec-peds { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
 .badge-spec-surg { background: #ffe4e6; color: #e11d48; border: 1px solid #fecdd3; }
-
-/* DISTINCT SPECIALTY BADGE COLOR THEMES (DARK MODE) */
-[data-theme="dark"] .badge-spec-obgy { background: #500724; color: #f472b6; border: 1px solid #831843; }
-[data-theme="dark"] .badge-spec-ortho { background: #451a03; color: #fbbf24; border: 1px solid #78350f; }
-[data-theme="dark"] .badge-spec-emgicu { background: #450a0a; color: #f87171; border: 1px solid #7f1d1d; }
-[data-theme="dark"] .badge-spec-neuro { background: #2e1065; color: #c084fc; border: 1px solid #4c1d95; }
-[data-theme="dark"] .badge-spec-cardio { background: #052e16; color: #4ade80; border: 1px solid #14532d; }
-[data-theme="dark"] .badge-spec-endo { background: #042f2e; color: #2dd4bf; border: 1px solid #115e59; }
-[data-theme="dark"] .badge-spec-renal { background: #451a03; color: #fcd34d; border: 1px solid #78350f; }
-[data-theme="dark"] .badge-spec-resp { background: #082f49; color: #38bdf8; border: 1px solid #0369a1; }
-[data-theme="dark"] .badge-spec-rheum { background: #3b0764; color: #c084fc; border: 1px solid #6b21a8; }
-[data-theme="dark"] .badge-spec-onco { background: #4a044e; color: #f0abfc; border: 1px solid #86198f; }
-[data-theme="dark"] .badge-spec-peds { background: #064e3b; color: #34d399; border: 1px solid #065f46; }
-[data-theme="dark"] .badge-spec-surg { background: #4c0519; color: #fb7185; border: 1px solid #881337; }
-
-.tool small { display: block; color: var(--text-muted); margin-top: 4px; font-size: 12px; line-height: 1.4; }
 
 .panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; }
 .desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 5px 0 14px; }
@@ -436,52 +441,6 @@ button { cursor: pointer; font: inherit; }
 .equation { font-size: 12.5px; line-height: 1.6; color: var(--result-text); white-space: pre-line; }
 .copy { float: right; padding: 6px 11px; border: 1px solid var(--result-border); border-radius: 7px; background: #ffffff; font-weight: 600; color: #075c42; }
 
-/* SEVERITY DYNAMIC THEMES */
-.result.severity-critical {
- background: var(--contra-bg) !important;
- border-color: var(--contra-border) !important;
-}
-.result.severity-critical .value,
-.result.severity-critical .caption,
-.result.severity-critical .res-subhead {
- color: var(--contra-text) !important;
-}
-.result.severity-critical .copy {
- background: #ffffff !important;
- color: var(--contra-text) !important;
- border-color: var(--contra-border) !important;
-}
-
-.result.severity-moderate {
- background: var(--notice-bg) !important;
- border-color: var(--notice-border) !important;
-}
-.result.severity-moderate .value,
-.result.severity-moderate .caption,
-.result.severity-moderate .res-subhead {
- color: var(--notice-text) !important;
-}
-.result.severity-moderate .copy {
- background: #ffffff !important;
- color: var(--notice-text) !important;
- border-color: var(--notice-border) !important;
-}
-
-.result.severity-mild {
- background: var(--result-bg) !important;
- border-color: var(--result-border) !important;
-}
-.result.severity-mild .value,
-.result.severity-mild .caption,
-.result.severity-mild .res-subhead {
- color: var(--result-val) !important;
-}
-.result.severity-mild .copy {
- background: #ffffff !important;
- color: var(--result-val) !important;
- border-color: var(--result-border) !important;
-}
-
 .reference-card { margin-top: 22px; border-top: 1px solid var(--border-color); padding-top: 16px; }
 .ref-heading { font-size: 14px; font-weight: 750; color: var(--text-main); margin: 0 0 6px; display: flex; align-items: center; gap: 6px; }
 .ref-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
@@ -489,33 +448,12 @@ button { cursor: pointer; font: inherit; }
 table.ref-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; }
 table.ref-table th { background: var(--table-head); padding: 10px 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color); }
 table.ref-table td { padding: 10px 12px; border-bottom: 1px solid var(--table-border); color: var(--table-row-text); vertical-align: top; }
-table.ref-table tr:last-child td { border-bottom: none; }
 table.ref-table tr.active-grade { background: var(--active-grade-bg); font-weight: 600; }
 table.ref-table tr.active-grade td { border-top: 2px solid #38a169; border-bottom: 2px solid #38a169; color: var(--active-grade-text); }
 
 .academic-refs { margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 18px; }
 .ref-card-item { background: var(--ref-card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
 .ref-card-citation { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
-
-.ref-card-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.ref-btn-link {
- display: inline-flex;
- align-items: center;
- gap: 4px;
- padding: 6px 12px;
- font-size: 11.5px;
- font-weight: 600;
- text-decoration: none;
- border-radius: 6px;
- background: var(--badge-calc-bg);
- color: var(--badge-calc-text);
- border: 1px solid var(--badge-calc-border);
- transition: all 0.15s ease;
- word-break: break-all;
-}
-.ref-btn-link:hover { filter: brightness(0.95); }
-.ref-btn-link.secondary { background: var(--tag-bg); color: var(--tag-text); border: 1px solid var(--border-color); }
-.ref-btn-link.secondary:hover { filter: brightness(0.95); }
 
 .modal-overlay {
  position: fixed;
@@ -566,7 +504,7 @@ footer { text-align: center; font-size: 11px; color: var(--text-muted); padding:
 @media (max-width: 480px) { .fields { grid-template-columns: 1fr; } .card { padding: 11px; } }
 </style>
 </head>
-<body>
+<body class="h-full flex flex-col">
 
 <!-- ANIMATED DOCSTAT SPLASH OVERLAY -->
 <div id="splash">
@@ -636,14 +574,17 @@ C 100 110, 100 128, 100 144
  <div id="headerHospitalDisplay" style="font-size: 11px; opacity: 0.85; color: var(--header-sub);"></div>
  </div>
  </div>
- <button id="openSettingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙ Settings</button>
+ <div class="flex items-center space-x-2">
+     <button id="openChatBtn" class="icon-btn" type="button" aria-label="Pharmacology Chat">💬 Assistant</button>
+     <button id="openSettingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙ Settings</button>
+ </div>
  </div>
  <h1>DocStat</h1>
  <p>Calculators & criteria-based classifications</p>
 </header>
 
-<main>
- <div class="notice"><b>Clinical safety:</b> Verify formulas, tables, and criteria independently before clinical use.</div>
+<main style="flex: 1;">
+ <div class="notice"><b>Clinical safety:</b> Educational prototype only. Verify formulas, tables, and criteria independently before clinical use.</div>
 
  <!-- HOME VIEW -->
  <div id="home">
@@ -737,17 +678,122 @@ C 100 110, 100 128, 100 144
  </section>
  </div>
 
- <footer>DocStat· Educational purpose app · Verify before realtime clinical use</footer>
+ <footer>DocStat · Educational prototype · Verify before clinical use</footer>
 </main>
 
-<!-- SEAMLESS FULL-SCREEN SOURCE VIEW (BORDERLESS & CONTINUOUS) -->
-<div id="sourcePage" class="hidden" style="position: fixed; inset: 0; background: var(--bg-card); z-index: 2000; display: flex; flex-direction: column;">
- <div style="display: flex; align-items: center; justify-content: flex-end; padding: 12px 16px; background: var(--bg-card); border-bottom: 1px solid var(--border-color);">
- <button type="button" id="closeSourcePageBtn" class="icon-btn" style="background: var(--bg-body); color: var(--text-main); border: 1px solid var(--border-color); padding: 6px 16px; font-weight: 700;">✕ Close</button>
+<!-- STANDALONE SEPARATE PAGE VIEW FOR NOTES / INFO -->
+<div id="sourcePage" class="hidden" style="position: fixed; inset: 0; background: var(--bg-body); z-index: 2000; display: flex; flex-direction: column; overflow-y: auto;">
+ <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--bg-header); color: var(--header-text); position: sticky; top: 0; z-index: 10;">
+ <h3 id="sourcePageTitle" style="margin: 0; font-size: 18px;">Clinical Notes & Reference</h3>
+ <button type="button" id="closeSourcePageBtn" class="icon-btn" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 6px 14px; font-weight: 700;">✕ Close</button>
  </div>
- <div style="flex: 1; width: 100%; background: var(--bg-card);">
- <iframe id="fullSourceIframe" style="width: 100%; height: 100%; border: none; background: transparent;" onload="try{const d=this.contentWindow.document;const s=d.createElement('style');s.textContent='body{background:transparent!important;padding:0!important;margin:0!important} main, .panel, .card {box-shadow:none!important;border:none!important;border-radius:0!important;max-width:100%!important;background:transparent!important;margin:0!important}';d.head.appendChild(s);}catch(e){}"></iframe>
+ <div id="sourceContentContainer" style="flex: 1; width: 100%; max-width: 760px; margin: 0 auto; padding: 20px; background: var(--bg-card); min-height: calc(100vh - 65px);">
+ <p class="muted" style="text-align: center; margin-top: 40px;">Loading reference details...</p>
  </div>
+</div>
+
+<!-- STANDALONE SEPARATE PAGE VIEW FOR PHARMACOLOGY CHAT ASSISTANT -->
+<div id="chatPage" class="hidden fixed inset-0 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col z-[2005] overflow-hidden">
+    <!-- Chat Header -->
+    <header class="flex-none bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between z-10 shadow-sm">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-medical-600 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-medical-500/20">
+                <i data-lucide="pill" class="w-6 h-6"></i>
+            </div>
+            <div>
+                <div class="flex items-center space-x-2">
+                    <h1 class="font-bold text-lg tracking-tight">DocStat Assistant</h1>
+                    <span class="text-xs bg-medical-100 dark:bg-medical-900/50 text-medical-700 dark:text-medical-300 font-medium px-2 py-0.5 rounded-full border border-medical-200 dark:border-medical-800">NLEM Ref</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 flex items-center space-x-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>Pharmacology Assistant • Online</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <!-- Clear Chat Button -->
+            <button id="clearBtn" title="Clear Conversation" class="p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+            </button>
+            <!-- Close Chat Page Button -->
+            <button id="closeChatPageBtn" class="icon-btn bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 px-3 py-1.5 font-bold rounded-lg text-xs">
+                ✕ Close
+            </button>
+        </div>
+    </header>
+
+    <!-- Medical Disclaimer Banner -->
+    <div class="bg-amber-50 dark:bg-amber-950/40 border-b border-amber-200/60 dark:border-amber-900/40 px-4 py-2 text-xs text-amber-800 dark:text-amber-200 flex items-center justify-center text-center space-x-2 flex-none">
+        <i data-lucide="alert-triangle" class="w-4 h-4 flex-shrink-0 text-amber-600 dark:text-amber-400"></i>
+        <span><strong>Educational Reference Only:</strong> Verified pharmacological data based on standard protocols.</span>
+    </div>
+
+    <!-- Chat Container Scroll Area -->
+    <main id="chatContainer" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 max-w-4xl w-full mx-auto">
+        <!-- Greeting Message -->
+        <div class="flex items-start space-x-3">
+            <div class="w-8 h-8 rounded-full bg-medical-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm mt-1">
+                <i data-lucide="bot" class="w-4 h-4"></i>
+            </div>
+            <div class="space-y-2 max-w-[85%] md:max-w-[75%]">
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl rounded-tl-sm p-4 shadow-sm text-sm space-y-3">
+                    <p class="font-medium text-slate-900 dark:text-white">Hello Doctor! I am your DocStat Pharmacology Assistant.</p>
+                    <p class="text-slate-600 dark:text-slate-300">You can query drug mechanisms of action (MOA), therapeutic categories, dosages, and strengths.</p>
+                    <div class="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-100 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
+                        💡 <strong>Try asking:</strong> "What is Metformin's MOA?", "Show Cardiovascular Drugs", or click a quick prompt below.
+                    </div>
+                </div>
+                <span class="text-[10px] text-slate-400 dark:text-slate-500 px-1">Just now</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Suggestion Pills Bar -->
+    <div class="flex-none px-4 py-2 max-w-4xl w-full mx-auto">
+        <div class="flex items-center space-x-2 overflow-x-auto pb-2">
+            <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider flex-shrink-0 flex items-center space-x-1">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-medical-500"></i>
+                <span>Quick Ask:</span>
+            </span>
+            <button onclick="sendQuickPrompt('What is Metformin\'s MOA?')" class="flex-shrink-0 text-xs bg-white dark:bg-slate-900 hover:bg-medical-50 dark:hover:bg-medical-950/50 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-medical-300 dark:hover:border-medical-700 px-3 py-1.5 rounded-full transition-all shadow-sm">
+                Metformin MOA & Strength
+            </button>
+            <button onclick="sendQuickPrompt('Show Cardiovascular Drugs')" class="flex-shrink-0 text-xs bg-white dark:bg-slate-900 hover:bg-medical-50 dark:hover:bg-medical-950/50 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-medical-300 dark:hover:border-medical-700 px-3 py-1.5 rounded-full transition-all shadow-sm">
+                Cardiovascular Drugs
+            </button>
+            <button onclick="sendQuickPrompt('Check Amoxicillin strength')" class="flex-shrink-0 text-xs bg-white dark:bg-slate-900 hover:bg-medical-50 dark:hover:bg-medical-950/50 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-medical-300 dark:hover:border-medical-700 px-3 py-1.5 rounded-full transition-all shadow-sm">
+                Amoxicillin & Clavulanic
+            </button>
+            <button onclick="sendQuickPrompt('List Analgesics & NSAIDs')" class="flex-shrink-0 text-xs bg-white dark:bg-slate-900 hover:bg-medical-50 dark:hover:bg-medical-950/50 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-medical-300 dark:hover:border-medical-700 px-3 py-1.5 rounded-full transition-all shadow-sm">
+                Analgesics & Paracetamol
+            </button>
+        </div>
+    </div>
+
+    <!-- Input Bar Footer -->
+    <footer class="flex-none bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 p-4 z-10 shadow-lg">
+        <form id="chatForm" class="max-w-4xl w-full mx-auto flex items-center space-x-2">
+            <div class="relative flex-1">
+                <input 
+                    type="text" 
+                    id="userInput" 
+                    placeholder="Ask about any drug name, mechanism, or category..." 
+                    class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-medical-500 focus:border-transparent text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
+                    autocomplete="off"
+                    required
+                >
+            </div>
+            <button 
+                type="submit" 
+                id="sendBtn"
+                class="bg-medical-600 hover:bg-medical-700 text-white p-3.5 rounded-xl transition-all shadow-md shadow-medical-600/25 flex items-center justify-center flex-shrink-0"
+            >
+                <i data-lucide="send" class="w-5 h-5"></i>
+            </button>
+        </form>
+    </footer>
 </div>
 
 <!-- SETTINGS MODAL -->
@@ -775,7 +821,7 @@ C 100 110, 100 128, 100 144
  </div>
 </div>
 
-<!-- EMAIL OTP VERIFICATION & PROFILE SETUP LOGIN MODAL -->
+<!-- LOGIN / PROFILE MODAL -->
 <div id="loginModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
  <div class="modal" style="max-width: 400px; text-align: left;">
  <div style="font-size: 32px; margin-bottom: 8px;">🧑🏻‍⚕️</div>
@@ -784,7 +830,6 @@ C 100 110, 100 128, 100 144
  Please verify your credentials via email OTP to continue.
  </p>
 
- <!-- Step 1: Details & Email -->
  <div id="loginStep1" style="display: flex; flex-direction: column; gap: 12px;">
  <div>
  <label style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Profile Picture (Optional)</label>
@@ -818,7 +863,6 @@ C 100 110, 100 128, 100 144
  <button id="saveProfileOnlyBtn" class="primary hidden" type="button" style="margin-top: 6px; padding: 12px;">Save Profile Changes</button>
  </div>
 
- <!-- Step 2: Enter OTP -->
  <div id="loginStep2" style="display:none; flex-direction: column; gap: 12px;">
  <p style="font-size: 13px; color: var(--text-muted); margin: 0 0 4px;">
  We've sent a 6-digit verification code to <span id="sentEmailDisplay" style="font-weight: 600; color: var(--text-main);"></span>.
@@ -838,9 +882,7 @@ C 100 110, 100 128, 100 144
  </div>
 </div>
 
-<!-- ============================================================== -->
-<!-- 1. CORE DATA REGISTRY & GLOBAL HELPERS -->
-<!-- ============================================================== -->
+<!-- CORE DATA REGISTRY -->
 <script>
 window.categories = window.categories || [];
 window.tools = window.tools || [];
@@ -859,9 +901,7 @@ window.N = N;
 window.S = S;
 </script>
 
-<!-- ============================================================== -->
-<!-- 2. SPECIALTY MODULE SCRIPTS (UPDATED TO "Subjects/" FOLDER) -->
-<!-- ============================================================== -->
+<!-- SPECIALTY MODULE SCRIPTS -->
 <script src="Subjects/obgy.js"></script>
 <script src="Subjects/ortho.js"></script>
 <script src="Subjects/Emgicu.js"></script>
@@ -873,17 +913,12 @@ window.S = S;
 <script src="Subjects/rheum.js"></script>
 <script src="Subjects/surg.js"></script>
 
-<!-- ============================================================== -->
-<!-- 3. APPLICATION ENGINE, OFFLINE SYNC QUEUE & CONTROLLER -->
-<!-- ============================================================== -->
+<!-- APPLICATION ENGINE -->
 <script>
 (function () {
  "use strict";
  const $ = id => document.getElementById(id);
 
- // ============================================================== -->
- // GOOGLE APPS SCRIPT WEBHOOK CONFIGURATION (WITH OFFLINE QUEUE)
- // ============================================================== -->
  const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyWB-ebKOGd7-dFc4S57LirCE63bBm42JQn0PO1eFlEw2dngXO6W9MDFhjl13mxyUrU/exec";
  const OFFLINE_QUEUE_KEY = "doccalc_offline_sync_queue";
  let isSyncingQueue = false;
@@ -899,15 +934,11 @@ window.S = S;
  }
 
  function sendDataToWebhook(payload) {
- if (!GOOGLE_SHEET_WEBHOOK_URL || GOOGLE_SHEET_WEBHOOK_URL.includes("PASTE_YOUR_GOOGLE_APPS_SCRIPT")) {
- return;
- }
-
+ if (!GOOGLE_SHEET_WEBHOOK_URL || GOOGLE_SHEET_WEBHOOK_URL.includes("PASTE_YOUR_GOOGLE_APPS_SCRIPT")) return;
  if (!navigator.onLine) {
  enqueueOfflinePayload(payload);
  return;
  }
-
  fetch(GOOGLE_SHEET_WEBHOOK_URL, {
  method: "POST",
  mode: "no-cors",
@@ -948,7 +979,6 @@ window.S = S;
  remainingQueue.push(queue[i]);
  }
  }
-
  localStorage.setItem(OFFLINE_QUEUE_KEY, JSON.stringify(remainingQueue));
  isSyncingQueue = false;
  }
@@ -964,17 +994,14 @@ window.S = S;
  const throttleKey = `doccalc_last_logged_${(currentTool ? currentTool.id : toolName).replace(/\s+/g, '_')}`;
  const lastLoggedTime = parseInt(localStorage.getItem(throttleKey) || "0", 10);
 
- if (now - lastLoggedTime < 15000) {
- return;
- } else {
- localStorage.setItem(throttleKey, now.toString());
- }
+ if (now - lastLoggedTime < 15000) return;
+ else localStorage.setItem(throttleKey, now.toString());
 
  const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
  const name = localStorage.getItem("doccalc_dr_name") || "Anonymous";
  const degree = localStorage.getItem("doccalc_dr_degree") || "N/A";
  const specialty = (currentTool && currentTool.cat) ? currentTool.cat.toUpperCase() : "";
- const avatar = localStorage.getItem("doccalc_dr_avatar") || "";
+ const avatar = localStorage.getItem("doccalc_dr_avatar"] || "";
 
  trackRecentTool(currentTool);
 
@@ -1003,11 +1030,8 @@ window.S = S;
  function togglePinTool(toolId) {
  let pinned = getPinnedTools();
  const idx = pinned.indexOf(toolId);
- if (idx > -1) {
- pinned.splice(idx, 1);
- } else {
- pinned.push(toolId);
- }
+ if (idx > -1) pinned.splice(idx, 1);
+ else pinned.push(toolId);
  localStorage.setItem("doccalc_pinned", JSON.stringify(pinned));
  updatePinButtonState(toolId);
  renderHome();
@@ -1039,20 +1063,13 @@ window.S = S;
 
  function applyDoctorProfile(name, degree, hospital, avatarBase64) {
  const subHeader = $("clinicianHeaderSub");
- if (subHeader) {
- subHeader.textContent = `${name} (${degree}) · Clinical tools`;
- }
+ if (subHeader) subHeader.textContent = `${name} (${degree}) · Clinical tools`;
  const hospDisplay = $("headerHospitalDisplay");
- if (hospDisplay) {
- hospDisplay.textContent = hospital ? hospital : "";
- }
+ if (hospDisplay) hospDisplay.textContent = hospital ? hospital : "";
  const avatarEl = $("headerAvatar");
  if (avatarEl) {
- if (avatarBase64) {
- avatarEl.innerHTML = `<img src="${avatarBase64}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
- } else {
- avatarEl.innerHTML = "🧑🏻‍⚕️";
- }
+ if (avatarBase64) avatarEl.innerHTML = `<img src="${avatarBase64}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+ else avatarEl.innerHTML = "🧑🏻‍⚕️";
  }
  }
 
@@ -1296,9 +1313,7 @@ window.S = S;
  localStorage.setItem("doccalc_dr_name", name);
  localStorage.setItem("doccalc_dr_degree", degree);
  localStorage.setItem("doccalc_dr_hospital", hospital);
- if (tempAvatarBase64) {
- localStorage.setItem("doccalc_dr_avatar", tempAvatarBase64);
- }
+ if (tempAvatarBase64) localStorage.setItem("doccalc_dr_avatar", tempAvatarBase64);
 
  $("loginModal").classList.add("hidden");
  applyDoctorProfile(name, degree, hospital, localStorage.getItem("doccalc_dr_avatar"));
@@ -1348,7 +1363,7 @@ window.S = S;
  $("settingsModal").onclick = e => { if (e.target === $("settingsModal")) $("settingsModal").classList.add("hidden"); };
  document.querySelectorAll(".theme-btn").forEach(btn => btn.onclick = () => applyTheme(btn.dataset.themeVal));
 
- // --- SPLASH DISMISSAL & ANDROID BRIDGE TRIGGER ---
+ // --- SPLASH DISMISSAL ---
  function triggerSplashSequence() {
  const logoWrap = $("splashLogoWrap");
  const splash = $("splash");
@@ -1378,21 +1393,20 @@ window.S = S;
  $("categoryPage").classList.toggle("hidden", view !== "category");
  $("calculatorPage").classList.toggle("hidden", view !== "calculator");
  $("sourcePage").classList.toggle("hidden", view !== "source");
+ $("chatPage").classList.toggle("hidden", view !== "chat");
  window.scrollTo({ top: 0, behavior: "smooth" });
  }
 
- // --- ROBUST HASH ROUTER FOR ANDROID BACK BUTTON ---
+ // --- ROUTER FOR SINGLE-CLICK BACK BUTTON ---
  let isHandlingHash = false;
- window.addEventListener("hashchange", function () {
+ window.addEventListener("hashchange", async function () {
  if (isHandlingHash) return;
  isHandlingHash = true;
 
  const rawHash = location.hash.replace(/^#/, "");
 
  const modal = $("settingsModal");
- if (modal && !modal.classList.contains("hidden")) {
- modal.classList.add("hidden");
- }
+ if (modal && !modal.classList.contains("hidden")) modal.classList.add("hidden");
 
  const searchInput = $("search");
  if (searchInput && searchInput.value) {
@@ -1402,16 +1416,18 @@ window.S = S;
  }
 
  if (!rawHash) {
- const iframe = $("fullSourceIframe");
- if (iframe) iframe.src = "about:blank";
  showView("home");
  isHandlingHash = false;
  return;
  }
 
+ if (rawHash === "chat") {
+ showView("chat");
+ isHandlingHash = false;
+ return;
+ }
+
  if (rawHash.startsWith("category=")) {
- const iframe = $("fullSourceIframe");
- if (iframe) iframe.src = "about:blank";
  const catId = decodeURIComponent(rawHash.replace("category=", ""));
  currentCatId = catId;
  renderCategoryTools();
@@ -1421,8 +1437,6 @@ window.S = S;
  }
 
  if (rawHash.startsWith("tool=")) {
- const iframe = $("fullSourceIframe");
- if (iframe) iframe.src = "about:blank";
  const toolId = decodeURIComponent(rawHash.replace("tool=", ""));
  const foundTool = (window.tools || []).find(t => t.id === toolId);
  if (foundTool && (!currentTool || currentTool.id !== toolId)) {
@@ -1436,26 +1450,35 @@ window.S = S;
 
  if (rawHash.startsWith("source=")) {
  const calcId = decodeURIComponent(rawHash.replace("source=", ""));
- const sourcePath = `InfoHTMLs/${calcId}.html`; /* UPDATED TO InfoHTMLs FOLDER */
- const iframe = $("fullSourceIframe");
- 
- iframe.src = "about:blank";
- setTimeout(() => {
- iframe.src = sourcePath;
- }, 10);
+ const sourcePath = `InfoHTMLs/${calcId}.html`;
+ const container = $("sourceContentContainer");
+ container.innerHTML = `<p class="muted" style="text-align: center; margin-top: 40px;">Loading reference details...</p>`;
 
  showView("source");
+
+ try {
+ const response = await fetch(sourcePath);
+ if (response.ok) {
+ const htmlText = await response.text();
+ const parser = new DOMParser();
+ const doc = parser.parseFromString(htmlText, "text/html");
+ const content = doc.body ? doc.body.innerHTML : htmlText;
+ container.innerHTML = content;
+ } else {
+ container.innerHTML = `<p class="muted" style="text-align: center; margin-top: 40px; color: var(--contra-text);">Could not load reference file.</p>`;
+ }
+ } catch (err) {
+ container.innerHTML = `<p class="muted" style="text-align: center; margin-top: 40px; color: var(--contra-text);">Error loading reference file offline.</p>`;
+ }
+
  isHandlingHash = false;
  return;
  }
  isHandlingHash = false;
  });
 
- if (location.hash) {
- location.hash = "";
- }
+ if (location.hash) location.hash = "";
 
- // --- SPECIALTY COLOR HELPER ---
  function getSpecialtyBadgeClass(catName) {
  const c = (catName || "").toLowerCase().trim();
  if (c.includes("obgy") || c.includes("obstetrics") || c.includes("gynecology")) return "badge-spec-obgy";
@@ -1509,9 +1532,7 @@ window.S = S;
  const card = document.createElement("div");
  card.className = "card";
  card.innerHTML = `<span class="ico">${cat.icon || "📁"}</span><strong>${cat.name}</strong><small>${cat.desc || ""}</small>`;
- card.onclick = () => {
- location.hash = "category=" + encodeURIComponent(cat.id);
- };
+ card.onclick = () => { location.hash = "category=" + encodeURIComponent(cat.id); };
  catContainer.appendChild(card);
  });
  }
@@ -1556,9 +1577,7 @@ window.S = S;
  </div>
  <small>${t.desc || ""}</small>
  `;
- div.onclick = () => {
- location.hash = "tool=" + encodeURIComponent(t.id);
- };
+ div.onclick = () => { location.hash = "tool=" + encodeURIComponent(t.id); };
  return div;
  }
 
@@ -1670,8 +1689,6 @@ window.S = S;
  lbl.textContent = f.label;
  wrap.appendChild(lbl);
 
- const defaultVal = "";
-
  if (f.type === "select") {
  const sel = document.createElement("select");
  sel.id = "field_" + f.id;
@@ -1701,7 +1718,7 @@ window.S = S;
  inp.type = "number";
  inp.id = "field_" + f.id;
  inp.name = f.id;
- inp.value = defaultVal;
+ inp.value = "";
  if (f.min !== undefined) inp.min = f.min;
  if (f.max !== undefined) inp.max = f.max;
  if (f.step !== undefined) inp.step = f.step;
@@ -1776,23 +1793,14 @@ window.S = S;
  const scoreNum = numMatch ? parseFloat(numMatch[0]) : null;
 
  let severity = "mild";
-
- if (res.severity) {
- severity = res.severity;
- } else if (/\b(mild|low risk|normal|good prognosis|unlikely|negative|grade 1|grade i|stage 1|stage i|class 1|class i)\b/i.test(combinedText)) {
- severity = "mild";
- } else if (/\b(critical|severe|significant|high risk|poor|emergency|immediate|grade 3|grade 4|grade iii|grade iv|stage 3|stage 4|stage iii|stage iv|class 3|class 4|class iii|class iv)\b/i.test(combinedText)) {
- severity = "critical";
- } else if (/\b(moderate|intermediate|medium risk|grade 2|grade ii|stage 2|stage ii|class 2|class ii)\b/i.test(combinedText)) {
- severity = "moderate";
- } else if (scoreNum !== null) {
- if (scoreNum >= 75) {
- severity = "critical";
- } else if (scoreNum >= 40) {
- severity = "moderate";
- } else {
- severity = "mild";
- }
+ if (res.severity) severity = res.severity;
+ else if (/\b(mild|low risk|normal|good prognosis|unlikely|negative|grade 1|grade i|stage 1|stage i|class 1|class i)\b/i.test(combinedText)) severity = "mild";
+ else if (/\b(critical|severe|significant|high risk|poor|emergency|immediate|grade 3|grade 4|grade iii|grade iv|stage 3|stage 4|stage iii|stage iv|class 3|class 4|class iii|class iv)\b/i.test(combinedText)) severity = "critical";
+ else if (/\b(moderate|intermediate|medium risk|grade 2|grade ii|stage 2|stage ii|class 2|class ii)\b/i.test(combinedText)) severity = "moderate";
+ else if (scoreNum !== null) {
+ if (scoreNum >= 75) severity = "critical";
+ else if (scoreNum >= 40) severity = "moderate";
+ else severity = "mild";
  }
 
  resBox.classList.add(`severity-${severity}`);
@@ -1835,21 +1843,26 @@ window.S = S;
  logToolCalculation(currentTool.name, valText, eqText);
  };
 
- // --- NOTES/INFO BUTTON & BORDERLESS FULL-SCREEN VIEWER LOGIC ---
  $("notesBtn").onclick = () => {
  if (!currentTool || !currentTool.id) return;
  location.hash = "source=" + encodeURIComponent(currentTool.id);
  };
 
  $("closeSourcePageBtn").onclick = () => {
- const iframe = $("fullSourceIframe");
- if (iframe) iframe.src = "about:blank";
-
  if (currentTool) {
- location.hash = "tool=" + encodeURIComponent(currentTool.id);
+ location.replace("#tool=" + encodeURIComponent(currentTool.id));
  } else {
- location.hash = "";
+ location.replace("#");
  }
+ };
+
+ // CHAT NAVIGATION TRIGGERS
+ $("openChatBtn").onclick = () => {
+ location.hash = "chat";
+ };
+
+ $("closeChatPageBtn").onclick = () => {
+ location.replace("#");
  };
 
  renderHome();
@@ -1864,112 +1877,226 @@ window.S = S;
 })();
 </script>
 
-<!-- ============================================================== -->
-<!-- 4. CLINICIAN 2-WAY FEEDBACK & ADMIN CHAT WIDGET (OFFLINE READY) -->
-<!-- ============================================================== -->
-<div id="feedbackChatModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
- <div class="modal" style="max-width:440px;display:flex;flex-direction:column;height:520px;padding:16px;">
- <div class="modal-header" style="margin-bottom:10px;">
- <h3>💬 Feedback & Support Chat</h3>
- <button id="closeFeedbackChatBtn" class="modal-close" type="button">✕</button>
- </div>
- <div id="clinicianChatBox" style="flex:1;overflow-y:auto;padding:12px;border:1px solid var(--border-color);border-radius:12px;background:var(--bg-body);display:flex;flex-direction:column;gap:10px;margin-bottom:12px;box-shadow:inset 0 2px 4px rgba(0,0,0,0.03);">
- <div class="muted" style="text-align:center;margin-top:60px;font-size:13px;">Send feedback or questions directly to the DocStat Admin team.</div>
- </div>
- <form id="clinicianChatForm" style="display:flex;gap:8px;align-items:center;background:var(--bg-card);padding:4px;border:1px solid var(--border-color);border-radius:12px;">
- <input type="text" id="clinicianChatInput" placeholder="Type your message here..." style="flex:1;border:none;background:transparent;padding:10px;font-size:14px;outline:none;">
- <button type="submit" class="primary" style="flex:0 0 auto;padding:10px 18px;border-radius:9px;font-size:13px;">Send</button>
- </form>
- </div>
-</div>
-
+<!-- PHARMACOLOGY CHAT ASSISTANT LOGIC -->
 <script>
-(function() {
- const settingsBtn = document.getElementById("openSettingsBtn");
- if (settingsBtn && settingsBtn.parentNode) {
- const wrap = document.createElement("div");
- wrap.style.display = "flex";
- wrap.style.gap = "8px";
- settingsBtn.parentNode.insertBefore(wrap, settingsBtn);
+    // Initialize Lucide icons
+    lucide.createIcons();
 
- const actualChatBtn = document.createElement("button");
- actualChatBtn.type = "button";
- actualChatBtn.className = "icon-btn";
- actualChatBtn.innerHTML = "💬 Feedback";
- actualChatBtn.onclick = openClinicianChat;
+    const chatContainer = document.getElementById('chatContainer');
+    const chatForm = document.getElementById('chatForm');
+    const userInput = document.getElementById('userInput');
+    const clearBtn = document.getElementById('clearBtn');
 
- wrap.appendChild(actualChatBtn);
- wrap.appendChild(settingsBtn);
- }
+    const knowledgeBase = [
+        {
+            keywords: ['metformin', 'diabetes', 'antidiabetic', 'gluconeogenesis'],
+            title: 'Metformin Hydrochloride',
+            category: 'Endocrine & Metabolic Agents (NLEM Section 9)',
+            forms: 'Tablet: 500 mg, 850 mg, 1000 mg',
+            moa: 'Decreases hepatic glucose production (inhibits gluconeogenesis), decreases intestinal absorption of glucose, and improves insulin sensitivity by increasing peripheral glucose uptake and utilization.',
+            uses: 'Type 2 Diabetes Mellitus management, first-line oral hypoglycemic agent.'
+        },
+        {
+            keywords: ['cardiovascular', 'amlodipine', 'telmisartan', 'blood pressure', 'hypertension'],
+            title: 'Cardiovascular Medicines (NLEM Key Agents)',
+            category: 'Cardiovascular System (NLEM Section 7)',
+            forms: 'Amlodipine (2.5 mg, 5 mg, 10 mg), Telmisartan (20 mg, 40 mg, 80 mg), Atorvastatin (10 mg, 20 mg, 40 mg)',
+            moa: '<strong>Amlodipine:</strong> Dihydropyridine calcium channel blocker that inhibits transmembrane influx of calcium ions into vascular smooth muscle and cardiac muscle.\n<strong>Telmisartan:</strong> Angiotensin II receptor blocker (ARB) that selectively blocks AT1 receptors.',
+            uses: 'Hypertension, angina pectoris, ischemic heart disease, and dyslipidemia.'
+        },
+        {
+            keywords: ['amoxicillin', 'antibiotic', 'clavulanic', 'anti-infective'],
+            title: 'Amoxicillin & Clavulanic Acid',
+            category: 'Anti-Infective Medicines (NLEM Section 6)',
+            forms: 'Capsule: 250 mg, 500 mg; Suspension: 125 mg/5 mL; Tablet (Combo): 500 mg + 125 mg',
+            moa: '<strong>Amoxicillin:</strong> Beta-lactam antibiotic that inhibits bacterial cell wall synthesis by binding to penicillin-binding proteins (PBPs).\n<strong>Clavulanic Acid:</strong> Beta-lactamase inhibitor that protects amoxicillin from degradation by beta-lactamase enzymes.',
+            uses: 'Wide spectrum bacterial infections including respiratory tract, urinary tract, and skin infections.'
+        },
+        {
+            keywords: ['analgesic', 'paracetamol', 'nsaid', 'ibuprofen', 'fever', 'pain'],
+            title: 'Analgesics, Antipyretics & NSAIDs',
+            category: 'Analgesics & NSAIDs (NLEM Section 2)',
+            forms: 'Paracetamol (500 mg, 650 mg tablet; 120 mg/5mL syrup; IV 10 mg/mL), Ibuprofen (200 mg, 400 mg)',
+            moa: '<strong>Paracetamol:</strong> Central inhibition of prostaglandin synthesis and action on the hypothalamic heat-regulating center.\n<strong>Ibuprofen:</strong> Non-selective inhibitor of cyclooxygenase (COX-1 and COX-2), reducing synthesis of inflammatory prostaglandins.',
+            uses: 'Mild to moderate pain relief (analgesic) and reduction of fever (antipyretic).'
+        },
+        {
+            keywords: ['salbutamol', 'respiratory', 'asthma', 'bronchodilator', 'budesonide'],
+            title: 'Salbutamol & Budesonide',
+            category: 'Respiratory Medicines (NLEM Section 10)',
+            forms: 'Salbutamol MDI (100 mcg/puff), Respirator solution (5 mg/mL); Budesonide Respules (0.5 mg/2 mL)',
+            moa: '<strong>Salbutamol:</strong> Selective short-acting beta-2 adrenergic agonist that relaxes bronchial smooth muscle.\n<strong>Budesonide:</strong> Corticosteroid with potent glucocorticoid and weak mineralocorticoid activity, reducing airway inflammation.',
+            uses: 'Bronchospasm in asthma, chronic obstructive pulmonary disease (COPD), and acute wheezing.'
+        }
+    ];
 
- const modal = document.getElementById("feedbackChatModal");
- document.getElementById("closeFeedbackChatBtn").onclick = () => modal.classList.add("hidden");
- modal.onclick = e => { if (e.target === modal) modal.classList.add("hidden"); };
+    function getCurrentTime() {
+        const now = new Date();
+        return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
 
- async function openClinicianChat() {
- modal.classList.remove("hidden");
- await loadClinicianMessages();
- }
+    function appendUserMessage(text) {
+        const messageHTML = `
+            <div class="flex items-start justify-end space-x-3">
+                <div class="space-y-1 max-w-[85%] md:max-w-[75%] text-right">
+                    <div class="bg-medical-600 text-white rounded-2xl rounded-tr-sm p-4 shadow-sm text-sm text-left leading-relaxed">
+                        ${escapeHTML(text)}
+                    </div>
+                    <span class="text-[10px] text-slate-400 dark:text-slate-500 px-1">${getCurrentTime()}</span>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center flex-shrink-0 shadow-sm mt-1">
+                    <i data-lucide="user" class="w-4 h-4"></i>
+                </div>
+            </div>
+        `;
+        chatContainer.insertAdjacentHTML('beforeend', messageHTML);
+        lucide.createIcons();
+        scrollToBottom();
+    }
 
- async function loadClinicianMessages() {
- if (!navigator.onLine || !window.GOOGLE_SHEET_WEBHOOK_URL) return;
- const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
- const box = document.getElementById("clinicianChatBox");
+    function showTypingIndicator() {
+        const typingHTML = `
+            <div id="typingIndicator" class="flex items-start space-x-3">
+                <div class="w-8 h-8 rounded-full bg-medical-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm mt-1">
+                    <i data-lucide="bot" class="w-4 h-4"></i>
+                </div>
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl rounded-tl-sm p-4 shadow-sm text-sm flex items-center space-x-2">
+                    <div class="w-2 h-2 rounded-full bg-medical-500 animate-bounce" style="animation-delay: 0ms"></div>
+                    <div class="w-2 h-2 rounded-full bg-medical-500 animate-bounce" style="animation-delay: 150ms"></div>
+                    <div class="w-2 h-2 rounded-full bg-medical-500 animate-bounce" style="animation-delay: 300ms"></div>
+                    <span class="text-xs text-slate-400 ml-2">Analyzing NLEM database...</span>
+                </div>
+            </div>
+        `;
+        chatContainer.insertAdjacentHTML('beforeend', typingHTML);
+        lucide.createIcons();
+        scrollToBottom();
+    }
 
- try {
- const res = await fetch(`${window.GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(email)}&t=${Date.now()}`);
- const data = await res.json();
- if (data.status === "success" && data.messages && data.messages.length) {
- box.innerHTML = "";
- data.messages.messages.forEach(m => {
- const div = document.createElement("div");
- const isMe = m.sender === "clinician";
- div.style.cssText = `max-width:85%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.4;align-self:${isMe ? "flex-end" : "flex-start"};background:${isMe ? "#2463eb" : "var(--bg-card)"};color:${isMe ? "#fff" : "var(--text-main)"};border:1px solid var(--border-color);box-shadow:0 1px 2px rgba(0,0,0,0.05);`;
- div.innerHTML = `<div>${m.message}</div><div style="font-size:10px;opacity:0.75;margin-top:4px;text-align:right;">${isMe ? "You" : "DocStat Admin"} · ${m.timestamp}</div>`;
- box.appendChild(div);
- });
- box.scrollTop = box.scrollHeight;
- }
- } catch (e) {
- console.warn("Could not load chat history:", e);
- }
- }
+    function removeTypingIndicator() {
+        const indicator = document.getElementById('typingIndicator');
+        if (indicator) indicator.remove();
+    }
 
- document.getElementById("clinicianChatForm").onsubmit = function(e) {
- e.preventDefault();
- const inp = document.getElementById("clinicianChatInput");
- const msg = inp.value.trim();
- if (!msg) return;
+    function appendBotResponse(drugData) {
+        let cardContent = '';
+        if (drugData) {
+            cardContent = `
+                <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl p-4 space-y-3 shadow-inner">
+                    <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2">
+                        <h3 class="font-bold text-base text-medical-700 dark:text-medical-400 flex items-center space-x-2">
+                            <i data-lucide="pill" class="w-4 h-4"></i>
+                            <span>${drugData.title}</span>
+                        </h3>
+                        <span class="text-[11px] bg-medical-100 dark:bg-medical-950 text-medical-800 dark:text-medical-300 px-2 py-0.5 rounded font-medium border border-medical-200 dark:border-medical-800">${drugData.category}</span>
+                    </div>
+                    <div class="space-y-2 text-xs md:text-sm">
+                        <div>
+                            <span class="font-semibold text-slate-700 dark:text-slate-300 flex items-center space-x-1 mb-0.5">
+                                <i data-lucide="layers" class="w-3.5 h-3.5 text-medical-500"></i>
+                                <span>Dosage Forms & Strengths:</span>
+                            </span>
+                            <p class="text-slate-600 dark:text-slate-300 font-mono bg-white dark:bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-800">${drugData.forms}</p>
+                        </div>
+                        <div>
+                            <span class="font-semibold text-slate-700 dark:text-slate-300 flex items-center space-x-1 mb-0.5">
+                                <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-500"></i>
+                                <span>Mechanism of Action (MOA):</span>
+                            </span>
+                            <p class="text-slate-600 dark:text-slate-300 leading-relaxed">${drugData.moa}</p>
+                        </div>
+                        <div>
+                            <span class="font-semibold text-slate-700 dark:text-slate-300 flex items-center space-x-1 mb-0.5">
+                                <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i>
+                                <span>Primary Indications:</span>
+                            </span>
+                            <p class="text-slate-600 dark:text-slate-300">${drugData.uses}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            cardContent = `<p class="text-slate-600 dark:text-slate-300">I searched the NLEM database for that query. Please specify a drug name (e.g., <em>Metformin, Amlodipine, Paracetamol</em>).</p>`;
+        }
 
- const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
- const name = (localStorage.getItem("doccalc_dr_name") || "Anonymous").trim();
- const degree = (localStorage.getItem("doccalc_dr_name") || "N/A").trim();
- const avatar = (localStorage.getItem("doccalc_dr_avatar") || "").trim();
- const timestamp = new Date().toLocaleString();
+        const responseHTML = `
+            <div class="flex items-start space-x-3">
+                <div class="w-8 h-8 rounded-full bg-medical-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm mt-1">
+                    <i data-lucide="bot" class="w-4 h-4"></i>
+                </div>
+                <div class="space-y-2 max-w-[90%] md:max-w-[80%]">
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl rounded-tl-sm p-4 shadow-sm text-sm space-y-3">
+                        ${cardContent}
+                    </div>
+                    <span class="text-[10px] text-slate-400 dark:text-slate-500 px-1">${getCurrentTime()}</span>
+                </div>
+            </div>
+        `;
+        chatContainer.insertAdjacentHTML('beforeend', responseHTML);
+        lucide.createIcons();
+        scrollToBottom();
+    }
 
- const box = document.getElementById("clinicianChatBox");
- if (box.querySelector(".muted")) box.innerHTML = "";
+    function processQuery(query) {
+        const lowerQuery = query.toLowerCase();
+        let matched = knowledgeBase.find(item => 
+            item.keywords.some(keyword => lowerQuery.includes(keyword))
+        );
+        return matched || null;
+    }
 
- const div = document.createElement("div");
- div.style.cssText = "max-width:85%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.4;align-self:flex-end;background:#2463eb;color:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.05);";
- div.innerHTML = `<div>${msg}${!navigator.onLine ? " (Queued offline)" : ""}</div><div style="font-size:10px;opacity:0.75;margin-top:4px;text-align:right;">You · ${timestamp}</div>`;
- box.appendChild(div);
- box.scrollTop = box.scrollHeight;
- inp.value = "";
+    chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = userInput.value.trim();
+        if (!text) return;
 
- if (window.sendDataToWebhook) {
- window.sendDataToWebhook({
- type: "feedback",
- timestamp: timestamp,
- email: email,
- name: name,
- degree: degree,
- message: msg,
- avatar: avatar
- });
- }
- };
-})();
+        appendUserMessage(text);
+        userInput.value = '';
+
+        showTypingIndicator();
+
+        setTimeout(() => {
+            removeTypingIndicator();
+            const result = processQuery(text);
+            appendBotResponse(result);
+        }, 1000);
+    });
+
+    window.sendQuickPrompt = function(promptText) {
+        userInput.value = promptText;
+        chatForm.dispatchEvent(new Event('submit'));
+    };
+
+    clearBtn.addEventListener('click', () => {
+        chatContainer.innerHTML = `
+            <div class="flex items-start space-x-3">
+                <div class="w-8 h-8 rounded-full bg-medical-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm mt-1">
+                    <i data-lucide="bot" class="w-4 h-4"></i>
+                </div>
+                <div class="space-y-2 max-w-[85%] md:max-w-[75%]">
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl rounded-tl-sm p-4 shadow-sm text-sm space-y-3">
+                        <p class="font-medium text-slate-900 dark:text-white">Conversation cleared.</p>
+                        <p class="text-slate-600 dark:text-slate-300">How else can I assist you with NLEM pharmacology data today?</p>
+                    </div>
+                    <span class="text-[10px] text-slate-400 dark:text-slate-500 px-1">Just now</span>
+                </div>
+            </div>
+        `;
+        lucide.createIcons();
+    });
+
+    function scrollToBottom() {
+        chatContainer.scrollTo({
+            top: chatContainer.scrollHeight,
+            behavior: 'smooth'
+        });
+    }
+
+    function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+            tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+        );
+    }
 </script>
 </body>
 </html>
