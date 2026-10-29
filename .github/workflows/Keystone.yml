@@ -15,12 +15,12 @@ jobs:
           keytool -genkeypair -v \
             -storetype PKCS12 \
             -keystore release.jks \
-            -alias doccalc \
+            -alias docstat \
             -keyalg RSA \
             -keysize 2048 \
             -validity 10000 \
-            -storepass "doccalc123" \
-            -keypass "doccalc123" \
+            -storepass "docstat123" \
+            -keypass "docstat123" \
             -dname "CN=DocStat, OU=Medical, O=DocStat, L=City, ST=State, C=IN"
       - name: Print Base64 to Copy
         run: |
