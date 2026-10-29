@@ -448,6 +448,7 @@ button { cursor: pointer; font: inherit; }
 table.ref-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; }
 table.ref-table th { background: var(--table-head); padding: 10px 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color); }
 table.ref-table td { padding: 10px 12px; border-bottom: 1px solid var(--table-border); color: var(--table-row-text); vertical-align: top; }
+table.ref-table tr:last-child td { border-bottom: none; }
 table.ref-table tr.active-grade { background: var(--active-grade-bg); font-weight: 600; }
 table.ref-table tr.active-grade td { border-top: 2px solid #38a169; border-bottom: 2px solid #38a169; color: var(--active-grade-text); }
 
@@ -1001,7 +1002,7 @@ window.S = S;
  const name = localStorage.getItem("doccalc_dr_name") || "Anonymous";
  const degree = localStorage.getItem("doccalc_dr_degree") || "N/A";
  const specialty = (currentTool && currentTool.cat) ? currentTool.cat.toUpperCase() : "";
- const avatar = localStorage.getItem("doccalc_dr_avatar"] || "";
+ const avatar = localStorage.getItem("doccalc_dr_avatar") || "";
 
  trackRecentTool(currentTool);
 
@@ -1879,7 +1880,6 @@ window.S = S;
 
 <!-- PHARMACOLOGY CHAT ASSISTANT LOGIC -->
 <script>
-    // Initialize Lucide icons
     lucide.createIcons();
 
     const chatContainer = document.getElementById('chatContainer');
