@@ -56,6 +56,13 @@
  --tag-text: #475569;
  --splash-bg: #ffffff;
  --modal-overlay: rgba(0, 0, 0, 0.45);
+ /* WhatsApp Chat Theme Variables */
+ --wa-bg-light: #efeae2;
+ --wa-bg-dark: #0b141a;
+ --wa-bubble-out-light: #d9fdd3;
+ --wa-bubble-out-dark: #005c4b;
+ --wa-bubble-in-light: #ffffff;
+ --wa-bubble-in-dark: #202c33;
 }
 
 [data-theme="dark"] {
@@ -479,6 +486,25 @@ table.ref-table tr.active-grade td { border-top: 2px solid #38a169; border-botto
 .hidden { display: none !important; }
 footer { text-align: center; font-size: 11px; color: var(--text-muted); padding: 24px 0; }
 @media (max-width: 480px) { .fields { grid-template-columns: 1fr; } .card { padding: 11px; } }
+
+/* WhatsApp Desktop Wrapper Effect */
+@media (min-width: 768px) {
+  #chatPage {
+    padding: 20px;
+    background-color: #dadada !important;
+  }
+  #whatsappDesktopWrapper {
+    max-width: 1200px;
+    height: calc(100vh - 40px);
+    margin: 0 auto;
+    background: var(--bg-body);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+}
 </style>
 </head>
 <body>
@@ -666,51 +692,52 @@ C 100 110, 100 128, 100 144
  </div>
 </div>
 
-<!-- STANDALONE SEPARATE PAGE VIEW FOR CHAT / FEEDBACK -->
+<!-- STANDALONE SEPARATE PAGE VIEW FOR WHATSAPP CHAT / FEEDBACK -->
 <div id="chatPage" class="hidden" style="position: fixed; inset: 0; background: var(--bg-body); z-index: 2000; display: flex; flex-direction: column;">
-    <!-- Chat Header -->
-    <header class="flex-none text-white px-4 py-3 flex items-center justify-between z-10 shadow-sm" style="background: var(--bg-header); color: var(--header-text); border-bottom: 1px solid var(--border-color);">
-        <div class="flex items-center space-x-3" style="display: flex; align-items: center; gap: 12px;">
-            <div id="chatHeaderAvatar" class="w-10 h-10 rounded-full bg-white text-indigo-900 flex items-center justify-center font-bold overflow-hidden border-2 border-white/40" style="width: 36px; height: 36px; border-radius: 50%; background: #fff; color: #0f2744; display: flex; align-items: center; justify-content: center; font-size: 16px;">
-                🧑🏻‍⚕️
+    <div id="whatsappDesktopWrapper" style="display: flex; flex-direction: column; flex: 1; width: 100%; height: 100%;">
+        <!-- WhatsApp Chat Header -->
+        <header class="flex-none text-white px-4 py-3 flex items-center justify-between z-10 shadow-sm" style="background: var(--bg-header); color: var(--header-text); border-bottom: 1px solid var(--border-color);">
+            <div class="flex items-center space-x-3" style="display: flex; align-items: center; gap: 12px;">
+                <div id="chatHeaderAvatar" class="w-10 h-10 rounded-full bg-white text-indigo-900 flex items-center justify-center font-bold overflow-hidden border-2 border-white/40" style="width: 36px; height: 36px; border-radius: 50%; background: #fff; color: #0f2744; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                    🧑🏻‍⚕️
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-tight" style="margin: 0; font-size: 16px;">@DocStat Chatbox/Feedback</h1>
+                    <p class="text-xs text-indigo-200" style="margin: 0; font-size: 11px; opacity: 0.85; color: var(--header-sub);">DocStat team here · online</p>
+                </div>
             </div>
-            <div>
-                <h1 class="font-bold text-lg tracking-tight" style="margin: 0; font-size: 16px;">@DocStat Chatbox/Feedback</h1>
-                <p class="text-xs text-indigo-200" style="margin: 0; font-size: 11px; opacity: 0.85; color: var(--header-sub);">DocStat team here</p>
+        </header>
+
+        <!-- WhatsApp Messages Container (Doodle Background Pattern Look) -->
+        <main id="chatMessagesContainer" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-3" style="flex: 1; overflow-y: auto; padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; background-color: var(--wa-bg-light); background-image: radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px); background-size: 20px 20px;">
+            <div style="max-width: 85%; padding: 8px 12px; border-radius: 7.5px; font-size: 13.5px; line-height: 1.4; align-self: flex-start; background: var(--wa-bubble-in-light); color: var(--text-main); box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); position: relative;">
+                <div>Hello! Send feedback, bug reports, or clinical questions directly to the DocStat team here.</div>
+                <div style="font-size: 10px; opacity: 0.6; margin-top: 2px; text-align: right;">DocStat team · Just now</div>
             </div>
-        </div>
-        <!-- Close button removed per request -->
-    </header>
+        </main>
 
-    <!-- Chat Messages Container -->
-    <main id="chatMessagesContainer" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 max-w-4xl w-full mx-auto" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; background: var(--bg-body);">
-        <div style="max-width: 85%; padding: 12px 16px; border-radius: 12px; font-size: 13px; line-height: 1.4; align-self: flex-start; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-            <div>Hello! Send feedback, bug reports, or clinical questions directly to the DocStat team here.</div>
-            <div style="font-size: 10px; opacity: 0.75; margin-top: 4px; text-align: right;">DocStat team · Welcome</div>
-        </div>
-    </main>
-
-    <!-- Chat Input Footer -->
-    <footer class="flex-none p-4 z-10 shadow-lg" style="background: var(--bg-card); border-top: 1px solid var(--border-color);">
-        <form id="standaloneChatForm" class="max-w-4xl w-full mx-auto flex items-center space-x-2" style="display: flex; gap: 8px; align-items: center;">
-            <input 
-                type="text" 
-                id="standaloneChatInput" 
-                placeholder="chat with DocStat team" 
-                class="w-full rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                style="flex: 1; padding: 12px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-main); border-radius: 10px; outline: none;"
-                autocomplete="off"
-                required
-            >
-            <button 
-                type="submit" 
-                class="primary"
-                style="flex: 0 0 auto; background: #2463eb; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 750; cursor: pointer;"
-            >
-                Send
-            </button>
-        </form>
-    </footer>
+        <!-- WhatsApp Input Footer -->
+        <footer class="flex-none p-3 z-10" style="background: #f0f2f5; border-top: 1px solid #e2e8f0; display: flex; align-items: center;">
+            <form id="standaloneChatForm" class="w-full mx-auto flex items-center space-x-2" style="display: flex; gap: 8px; align-items: center; width: 100%;">
+                <input 
+                    type="text" 
+                    id="standaloneChatInput" 
+                    placeholder="chat with DocStat team" 
+                    class="w-full rounded-lg px-4 py-2.5 text-sm focus:outline-none"
+                    style="flex: 1; padding: 10px 14px; border: none; background: #ffffff; color: #111b21; border-radius: 8px; outline: none; font-size: 14px; box-shadow: 0 1px 0.5px rgba(0,0,0,0.05);"
+                    autocomplete="off"
+                    required
+                >
+                <button 
+                    type="submit" 
+                    style="flex: 0 0 auto; background: #00a884; color: white; border: none; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"
+                    title="Send"
+                >
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+                </button>
+            </form>
+        </footer>
+    </div>
 </div>
 
 <!-- SETTINGS MODAL -->
@@ -995,12 +1022,28 @@ window.S = S;
  }
  }
 
- function checkUserSession() {
+ // --- CHECK USER STATUS & SCRIPT-INITIATED ACCOUNT WIPE ---
+ async function checkUserSession() {
+ const savedEmail = localStorage.getItem("doccalc_dr_email");
+ 
+ // If online, check if admin flagged this account as deleted/reset in sheet directory
+ if (navigator.onLine && savedEmail && GOOGLE_SHEET_WEBHOOK_URL && !GOOGLE_SHEET_WEBHOOK_URL.includes("PASTE_YOUR")) {
+   try {
+     const res = await fetch(`${GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(savedEmail)}&t=${Date.now()}`);
+     const data = await res.json();
+     if (data.status === "account_wiped" || data.status === "not_found") {
+       localStorage.clear();
+     }
+   } catch (e) {
+     // Ignore connection issues during status check
+   }
+ }
+
  const savedName = localStorage.getItem("doccalc_dr_name");
  const savedDegree = localStorage.getItem("doccalc_dr_degree");
- const savedEmail = localStorage.getItem("doccalc_dr_email");
+ const savedEmailKey = localStorage.getItem("doccalc_dr_email");
 
- if (!savedName || !savedDegree || !savedEmail) {
+ if (!savedName || !savedDegree || !savedEmailKey) {
  setupLoginModalForNewUser();
  $("loginModal").classList.remove("hidden");
  } else {
@@ -1132,7 +1175,7 @@ window.S = S;
  if (data.status === "success") {
  const name = $("loginDrName").value.trim();
  const degree = $("loginDrDegree").value.trim();
- const hospital = localStorage.getItem("doccalc_temp_hospital") || "";
+ const hospital = localStorage.getItem("doccalc_temp_hospital"] || "";
  const avatar = localStorage.getItem("doccalc_temp_avatar") || "";
 
  localStorage.setItem("doccalc_dr_name", name);
@@ -1253,6 +1296,14 @@ window.S = S;
 
  $("deleteAccountBtn").onclick = function() {
  if (confirm("Are you sure you want to delete your account data and reset login?")) {
+ const email = localStorage.getItem("doccalc_dr_email");
+ if (email && window.sendDataToWebhook) {
+ window.sendDataToWebhook({
+ type: "account_deletion",
+ timestamp: new Date().toLocaleString(),
+ email: email
+ });
+ }
  localStorage.clear();
  location.reload();
  }
@@ -1821,13 +1872,22 @@ window.S = S;
  try {
  const res = await fetch(`${window.GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(email)}&t=${Date.now()}`);
  const data = await res.json();
+ 
+ // Check if script signalled account wipe/deletion from admin side
+ if (data.status === "account_wiped" || data.status === "not_found") {
+   localStorage.clear();
+   alert("Your account has been reset by administration. Please log in again.");
+   location.reload();
+   return;
+ }
+
  if (data.status === "success" && data.messages && data.messages.length) {
  box.innerHTML = "";
  data.messages.messages.forEach(m => {
  const div = document.createElement("div");
  const isMe = m.sender === "clinician";
- div.style.cssText = `max-width:85%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.4;align-self:${isMe ? "flex-end" : "flex-start"};background:${isMe ? "#2463eb" : "var(--bg-card)"};color:${isMe ? "#fff" : "var(--text-main)"};border:1px solid var(--border-color);box-shadow:0 1px 2px rgba(0,0,0,0.05);`;
- div.innerHTML = `<div>${m.message}</div><div style="font-size:10px;opacity:0.75;margin-top:4px;text-align:right;">${isMe ? "You" : "DocStat team"} · ${m.timestamp}</div>`;
+ div.style.cssText = `max-width:80%; padding:8px 12px; border-radius:7.5px; font-size:13.5px; line-height:1.4; align-self:${isMe ? "flex-end" : "flex-start"}; background:${isMe ? "var(--wa-bubble-out-light)" : "var(--wa-bubble-in-light)"}; color: #111b21; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); position:relative; word-break: break-word;`;
+ div.innerHTML = `<div>${m.message}</div><div style="font-size:10px; opacity:0.6; margin-top:2px; text-align:right;">${isMe ? "You" : "DocStat team"} · ${m.timestamp}</div>`;
  box.appendChild(div);
  });
  box.scrollTop = box.scrollHeight;
@@ -1855,8 +1915,8 @@ window.S = S;
  if (box.querySelector(".muted")) box.innerHTML = "";
 
  const div = document.createElement("div");
- div.style.cssText = "max-width:85%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.4;align-self:flex-end;background:#2463eb;color:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.05);";
- div.innerHTML = `<div>${msg}${!navigator.onLine ? " (Queued offline)" : ""}</div><div style="font-size:10px;opacity:0.75;margin-top:4px;text-align:right;">You · ${timestamp}</div>`;
+ div.style.cssText = "max-width:80%; padding:8px 12px; border-radius:7.5px; font-size:13.5px; line-height:1.4; align-self:flex-end; background:var(--wa-bubble-out-light); color:#111b21; box-shadow:0 1px 0.5px rgba(0,0,0,0.13); position:relative; word-break: break-word;";
+ div.innerHTML = `<div>${msg}${!navigator.onLine ? " (Queued offline)" : ""}</div><div style="font-size:10px; opacity:0.6; margin-top:2px; text-align:right;">You · ${timestamp}</div>`;
  box.appendChild(div);
  box.scrollTop = box.scrollHeight;
  inp.value = "";
