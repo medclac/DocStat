@@ -1,7 +1,7 @@
 {
-  "appId": "com.doccalc.doctor",
-  "appName": "DocCalc",
-  "webDir": "www",
+  "appId": "com.docstat.app",
+  "appName": "DocStat",
+  "webDir": ".",
   "bundledWebRuntime": false,
   "plugins": {
     "SplashScreen": {
