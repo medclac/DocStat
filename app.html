@@ -424,6 +424,7 @@ button { cursor: pointer; font: inherit; }
 table.ref-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; }
 table.ref-table th { background: var(--table-head); padding: 10px 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color); }
 table.ref-table td { padding: 10px 12px; border-bottom: 1px solid var(--table-border); color: var(--table-row-text); vertical-align: top; }
+table.ref-table tr:last-child td { border-bottom: none; }
 table.ref-table tr.active-grade { background: var(--active-grade-bg); font-weight: 600; }
 table.ref-table tr.active-grade td { border-top: 2px solid #38a169; border-bottom: 2px solid #38a169; color: var(--active-grade-text); }
 
@@ -668,7 +669,7 @@ C 100 110, 100 128, 100 144
 <!-- STANDALONE SEPARATE PAGE VIEW FOR CHAT / FEEDBACK -->
 <div id="chatPage" class="hidden" style="position: fixed; inset: 0; background: var(--bg-body); z-index: 2000; display: flex; flex-direction: column;">
     <!-- Chat Header -->
-    <header class="flex-none bg-indigo-950 text-white px-4 py-3 flex items-center justify-between z-10 shadow-sm" style="background: var(--bg-header); color: var(--header-text); border-bottom: 1px solid var(--border-color);">
+    <header class="flex-none text-white px-4 py-3 flex items-center justify-between z-10 shadow-sm" style="background: var(--bg-header); color: var(--header-text); border-bottom: 1px solid var(--border-color);">
         <div class="flex items-center space-x-3" style="display: flex; align-items: center; gap: 12px;">
             <div id="chatHeaderAvatar" class="w-10 h-10 rounded-full bg-white text-indigo-900 flex items-center justify-center font-bold overflow-hidden border-2 border-white/40" style="width: 36px; height: 36px; border-radius: 50%; background: #fff; color: #0f2744; display: flex; align-items: center; justify-content: center; font-size: 16px;">
                 🧑🏻‍⚕️
@@ -678,9 +679,7 @@ C 100 110, 100 128, 100 144
                 <p class="text-xs text-indigo-200" style="margin: 0; font-size: 11px; opacity: 0.85; color: var(--header-sub);">DocStat team here</p>
             </div>
         </div>
-        <div class="flex items-center space-x-2" style="display: flex; gap: 8px; align-items: center;">
-            <button type="button" id="closeChatPageBtn" class="icon-btn" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 6px 14px; font-weight: 700;">✕ Close</button>
-        </div>
+        <!-- Close button removed per request -->
     </header>
 
     <!-- Chat Messages Container -->
@@ -919,7 +918,7 @@ window.S = S;
  const name = localStorage.getItem("doccalc_dr_name") || "Anonymous";
  const degree = localStorage.getItem("doccalc_dr_degree") || "N/A";
  const specialty = (currentTool && currentTool.cat) ? currentTool.cat.toUpperCase() : "";
- const avatar = localStorage.getItem("doccalc_dr_avatar") || "";
+ const avatar = localStorage.getItem("doccalc_dr_avatar"] || "";
 
  trackRecentTool(currentTool);
 
@@ -1778,10 +1777,6 @@ window.S = S;
  } else {
  location.replace("#");
  }
- };
-
- $("closeChatPageBtn").onclick = () => {
- location.replace("#");
  };
 
  renderHome();
