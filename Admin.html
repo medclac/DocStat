@@ -201,8 +201,9 @@ header {
   justify-content: space-between;
   align-items: center;
   transition: all 0.2s;
+  cursor: pointer;
 }
-.log-card:hover { border-color: var(--accent-cyan); }
+.log-card:hover { border-color: var(--accent-cyan); transform: translateY(-1px); }
 .log-left strong { display: block; font-size: 14px; color: var(--text-primary); }
 .log-left small { color: var(--text-muted); font-size: 12px; }
 .log-right { font-size: 12.5px; font-weight: 600; color: var(--accent-cyan); background: rgba(0,210,255,0.1); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(0,210,255,0.2); }
@@ -229,19 +230,12 @@ header {
 }
 .modal {
   background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px;
-  width: 100%; max-width: 560px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  width: 100%; max-width: 580px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
 }
 .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
 .modal-header h3 { margin: 0; font-size: 18px; color: var(--text-primary); }
 .modal-close { border: 0; background: transparent; font-size: 22px; cursor: pointer; color: var(--text-muted); }
 .hidden { display: none !important; }
-
-.drive-file-item {
-  display: flex; align-items: center; justify-content: space-between;
-  background: var(--bg); border: 1px solid var(--card-border); padding: 12px 16px;
-  border-radius: 12px; margin-bottom: 10px; transition: all 0.2s;
-}
-.drive-file-item:hover { border-color: var(--accent-cyan); transform: translateY(-1px); }
 
 /* --- WHATSAPP STYLE CHAT PAGE STYLES --- */
 .chat-page-layout {
@@ -279,8 +273,8 @@ header {
   border-radius: 12px;
   cursor: pointer;
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 12px;
   transition: background 0.15s;
   margin-bottom: 4px;
   border: 1px solid transparent;
@@ -292,18 +286,13 @@ header {
   background: rgba(0,210,255,0.1);
   border-color: rgba(0,210,255,0.3);
 }
-.chat-user-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
+.chat-avatar-mini {
+  width: 40px; height: 40px; border-radius: 50%; background: var(--bg); border: 1px solid var(--card-border);
+  display: flex; align-items: center; justify-content: center; font-size: 18px; overflow: hidden; flex-shrink: 0;
 }
-.chat-user-meta {
-  font-size: 11.5px;
-  color: var(--text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+.chat-user-info { flex: 1; overflow: hidden; }
+.chat-user-name { font-size: 14px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-user-meta { font-size: 11.5px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .chat-main-pane {
   background: var(--wa-bg);
@@ -374,6 +363,46 @@ header {
   text-align: center;
   padding: 20px;
 }
+
+/* --- USERS DIRECTORY GRID STYLES --- */
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.user-profile-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.user-profile-card:hover {
+  border-color: var(--accent-cyan);
+  transform: translateY(-2px);
+}
+.user-card-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--accent-cyan);
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.user-card-info h4 { margin: 0 0 4px; font-size: 15px; color: var(--text-primary); }
+.user-card-info p { margin: 0 0 2px; font-size: 12.5px; color: var(--accent-cyan); font-weight: 600; }
+.user-card-info small { display: block; font-size: 11.5px; color: var(--text-muted); }
 </style>
 </head>
 <body>
@@ -390,6 +419,7 @@ header {
     </div>
     <div class="category-nav-list" id="sidebarNavList">
       <button class="category-nav-btn active" onclick="switchTab('dashboard')"><span>📊 Dashboard & Metrics</span></button>
+      <button class="category-nav-btn" onclick="switchTab('users')"><span>👥 Users Directory</span></button>
       <button class="category-nav-btn" onclick="switchTab('chat')"><span>💬 Clinician Chat</span></button>
       <div style="margin: 12px 0 6px; font-size: 11px; text-transform: uppercase; color: var(--text-dim); letter-spacing: 0.5px; font-weight: 700;">Specialty Categories</div>
       <div id="sidebarCategoryList" style="display:flex; flex-direction:column; gap:4px;"></div>
@@ -397,7 +427,7 @@ header {
   </div>
   <div style="border-top: 1px solid var(--card-border); padding-top: 14px; display: flex; flex-direction: column; gap: 8px;">
     <button class="btn" onclick="openCategoryModal('All Categories')" style="width: 100%; justify-content: center;">📊 All Categories</button>
-    <button class="btn btn-primary" onclick="openDriveModal()" style="width: 100%; justify-content: center;">📁 Google Drive Files</button>
+    <button class="btn btn-primary" onclick="openDriveModal()" style="width: 100%; justify-content: center;">📁 Google Drive Workspace</button>
   </div>
 </sidebar>
 
@@ -432,7 +462,6 @@ header {
 
     <!-- TAB 1: DASHBOARD VIEW -->
     <div id="tabDashboard" class="tab-content">
-      <!-- TIME RANGE SELECTOR -->
       <div class="time-filters">
         <button class="time-pill active" data-range="24H">24H</button>
         <button class="time-pill" data-range="7D">7D</button>
@@ -441,7 +470,6 @@ header {
         <button id="refreshBtn" class="btn" style="margin-left: auto; padding: 6px 12px;">🔄 Sync Now</button>
       </div>
 
-      <!-- FOUR METRIC BOXES -->
       <div class="metrics-grid">
         <div class="metric-card">
           <small>Total Users</small>
@@ -465,7 +493,6 @@ header {
         </div>
       </div>
 
-      <!-- CHARTS SECTION -->
       <div class="dashboard-grid">
         <div class="panel" style="margin-bottom: 0;">
           <h3>App Traffic & Usage Over Time</h3>
@@ -477,7 +504,6 @@ header {
         </div>
       </div>
 
-      <!-- RECENT 50 CALCULATION LOGS -->
       <div class="panel" style="margin-top: 24px;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 14px;">
           <h3 style="margin: 0;">Recent Calculation Logs (Last 50)</h3>
@@ -487,21 +513,28 @@ header {
       </div>
     </div>
 
-    <!-- TAB 2: WHATSAPP STYLE DEDICATED CHAT PAGE -->
+    <!-- TAB 2: USERS DIRECTORY VIEW -->
+    <div id="tabUsers" class="tab-content hidden" style="flex: 1; display: flex; flex-direction: column;">
+      <div class="panel" style="flex: 1; display: flex; flex-direction: column; margin-bottom: 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+          <h3 style="margin: 0;">Clinicians & Users Directory</h3>
+          <input type="text" id="directorySearchInput" class="search-input" placeholder="Search by name, email, degree or hospital..." style="margin-bottom: 0; max-width: 360px;">
+        </div>
+        <div id="usersDirectoryContainer" class="users-grid"></div>
+      </div>
+    </div>
+
+    <!-- TAB 3: WHATSAPP STYLE DEDICATED CHAT PAGE -->
     <div id="tabChat" class="tab-content hidden" style="flex: 1; display: flex; flex-direction: column;">
       <div class="chat-page-layout">
-        <!-- Left Sidebar: Search & User List -->
         <div class="chat-sidebar">
           <div class="chat-sidebar-header">
             <h3 style="margin: 0 0 10px; font-size: 15px; color: var(--text-primary);">Clinicians Directory</h3>
             <input type="text" id="chatUserSearchInput" class="search-input" placeholder="Search by name, email or degree..." style="margin-bottom: 0; width: 100%; font-size: 13px; padding: 9px 12px;">
           </div>
-          <div class="chat-user-list" id="chatUserListContainer">
-            <!-- Populated dynamically -->
-          </div>
+          <div class="chat-user-list" id="chatUserListContainer"></div>
         </div>
 
-        <!-- Right Side: WhatsApp Chat Box -->
         <div class="chat-main-pane" id="chatMainPane">
           <div id="chatEmptyState" class="chat-empty-state">
             <div style="font-size: 48px; margin-bottom: 12px;">💬</div>
@@ -511,16 +544,14 @@ header {
 
           <div id="chatActiveContainer" style="display: none; flex-direction: column; height: 100%;">
             <div class="chat-header-bar">
-              <div style="width: 38px; height: 38px; border-radius: 50%; background: var(--accent-blue); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff;" id="activeChatAvatar">🧑🏻‍⚕️</div>
+              <div class="chat-avatar-mini" id="activeChatAvatar">🧑🏻‍⚕️</div>
               <div>
                 <h4 id="activeChatHeaderName" style="margin: 0; font-size: 14.5px; color: var(--text-primary);"></h4>
                 <small id="activeChatHeaderMeta" style="color: var(--text-muted); font-size: 11.5px;"></small>
               </div>
             </div>
             
-            <div class="chat-messages-container" id="chatMessagesBox">
-              <!-- Messages stream here -->
-            </div>
+            <div class="chat-messages-container" id="chatMessagesBox"></div>
 
             <form id="dedicatedChatForm" class="chat-input-bar">
               <input type="text" id="dedicatedChatInput" placeholder="Type a message..." style="flex: 1; padding: 10px 14px; border: 1px solid var(--wa-border); border-radius: 8px; background: var(--bg); color: var(--text-primary); font-size: 14px; outline: none;" required>
@@ -549,31 +580,46 @@ header {
   </div>
 </div>
 
-<!-- GOOGLE DRIVE FILES MODAL -->
-<div id="driveModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
-  <div class="modal" style="max-width: 650px; max-height: 85vh; display: flex; flex-direction: column;">
+<!-- CALCULATION EQUATION INSPECTOR MODAL -->
+<div id="logDetailModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+  <div class="modal" style="max-width: 525px;">
     <div class="modal-header">
-      <h3 style="color: var(--accent-cyan);">📁 Google Drive Workspace</h3>
+      <h3 style="color: var(--accent-cyan);">Calculation Details</h3>
+      <button class="modal-close" onclick="closeLogDetailModal()">✕</button>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; font-size:13.5px;">
+      <div><strong>Tool Used:</strong> <span id="modalLogTool" style="color:var(--accent-cyan);"></span></div>
+      <div><strong>Clinician:</strong> <span id="modalLogClinician"></span></div>
+      <div><strong>Specialty:</strong> <span id="modalLogSpecialty"></span></div>
+      <div><strong>Timestamp:</strong> <span id="modalLogTime" style="color:var(--text-muted);"></span></div>
+      <div><strong>Result:</strong> <span id="modalLogResult" style="font-weight:700; color:var(--success);"></span></div>
+      <div style="background:var(--bg); border:1px solid var(--card-border); padding:12px; border-radius:10px; margin-top:6px;">
+        <strong style="display:block; margin-bottom:4px; font-size:12px; text-transform:uppercase; color:var(--text-dim);">Equation / Parameters:</strong>
+        <code id="modalLogEquation" style="word-break:break-all; font-family:monospace; color:var(--text-primary);"></code>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GOOGLE DRIVE WORKSPACE & SHEETS MODAL -->
+<div id="driveModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+  <div class="modal" style="max-width: 600px;">
+    <div class="modal-header">
+      <h3 style="color: var(--accent-cyan);">📁 Google Drive & Sheets Integration</h3>
       <button class="modal-close" onclick="closeDriveModal()">✕</button>
     </div>
     <p style="font-size: 13px; color: var(--text-muted); margin-top: 0; margin-bottom: 16px;">
-      Access your linked Google Drive calculation sheets, reference documents, and configuration files.
+      Direct links to your backend Master Spreadsheet and individual user calculation sheets generated by Apps Script.
     </p>
-    <div id="driveFilesList" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; max-height: 380px;">
-      <div class="drive-file-item">
-        <div>
-          <strong>Clinical Calculation Reference</strong>
-          <small style="display:block; color:var(--text-muted);">Google Doc · Shared Document</small>
-        </div>
-        <a href="https://drive.google.com/file/d/1czG1wPi7BcdH9Dj2LCQ_EeyiR8prbemW/view?usp=sharing_esl" target="_blank" class="btn" style="padding:6px 12px;">Open ↗</a>
-      </div>
-      <div class="drive-file-item">
-        <div>
-          <strong>Workflow Configuration</strong>
-          <small style="display:block; color:var(--text-muted);">Google Doc · GitHub Actions Config</small>
-        </div>
-        <a href="https://drive.google.com/open?id=1F-SAU2yp_0P0TRZRaRZJv7guLD3N8wiGRcko47lOs5M" target="_blank" class="btn" style="padding:6px 12px;">Open ↗</a>
-      </div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <a id="masterSheetLink" href="#" target="_blank" class="btn" style="justify-content: space-between; padding: 12px 16px;">
+        <span>📊 Open Master Clinician & Platform Sheet</span>
+        <span style="color:var(--accent-cyan);">Open ↗</span>
+      </a>
+      <a id="usersFolderLink" href="#" target="_blank" class="btn" style="justify-content: space-between; padding: 12px 16px;">
+        <span>📁 Open Users Spreadsheet Folder in Drive</span>
+        <span style="color:var(--accent-cyan);">Open ↗</span>
+      </a>
     </div>
   </div>
 </div>
@@ -593,7 +639,7 @@ if (localStorage.getItem("docstat_theme") === "light") {
   themeToggleBtn.textContent = "☀️";
 }
 
-let STATE = { users: [], logs: [], calcFreq: {}, specFreq: {}, messagesMap: {}, activeChatEmail: null };
+let STATE = { users: [], logs: [], calcFreq: {}, specFreq: {}, messagesMap: {}, activeChatEmail: null, masterSheetUrl: "", usersFolderUrl: "" };
 let chartInstances = {};
 let currentRange = "7D";
 
@@ -609,7 +655,10 @@ async function fetchAdminData() {
     STATE.logs = data.logs || [];
     STATE.calcFreq = data.calcFreq || {};
     STATE.specFreq = data.specFreq || {};
+    STATE.masterSheetUrl = data.masterSheetUrl || "#";
+    STATE.usersFolderUrl = data.usersFolderUrl || "#";
 
+    // Fetch chat messages for each user via Apps Script
     STATE.messagesMap = {};
     for (let u of STATE.users) {
       try {
@@ -625,6 +674,7 @@ async function fetchAdminData() {
     renderRecentLogs(STATE.logs);
     renderNotifications();
     renderChatUserList(STATE.users);
+    renderUsersDirectory(STATE.users);
 
     statusEl.textContent = "Synced: " + new Date().toLocaleTimeString();
   } catch (err) {
@@ -635,12 +685,19 @@ async function fetchAdminData() {
 
 function switchTab(tab) {
   document.querySelectorAll("#sidebarNavList .category-nav-btn").forEach(b => b.classList.remove("active"));
+  
+  document.getElementById("tabDashboard").classList.add("hidden");
+  document.getElementById("tabUsers").classList.add("hidden");
+  document.getElementById("tabChat").classList.add("hidden");
+
   if (tab === 'dashboard') {
     document.getElementById("tabDashboard").classList.remove("hidden");
-    document.getElementById("tabChat").classList.add("hidden");
     event.currentTarget.classList.add("active");
+  } else if (tab === 'users') {
+    document.getElementById("tabUsers").classList.remove("hidden");
+    event.currentTarget.classList.add("active");
+    renderUsersDirectory(STATE.users);
   } else if (tab === 'chat') {
-    document.getElementById("tabDashboard").classList.add("hidden");
     document.getElementById("tabChat").classList.remove("hidden");
     event.currentTarget.classList.add("active");
     renderChatUserList(STATE.users);
@@ -662,7 +719,7 @@ function renderKPIs() {
 function renderSidebarCategories() {
   const container = document.getElementById("sidebarCategoryList");
   container.innerHTML = "";
-  const categories = Object.keys(STATE.specFreq).length > 0 ? Object.keys(STATE.specFreq) : ["General", "Cardiology", "Neurology", "Pediatrics"];
+  const categories = Object.keys(STATE.specFreq).length > 0 ? Object.keys(STATE.specFreq) : ["GENERAL", "CARDIOLOGY", "NEUROLOGY", "PEDIATRICS"];
   
   categories.forEach(cat => {
     const count = STATE.specFreq[cat] || STATE.logs.filter(l => (l.specialty || "General").toLowerCase() === cat.toLowerCase()).length;
@@ -673,6 +730,53 @@ function renderSidebarCategories() {
     container.appendChild(btn);
   });
 }
+
+// --- USERS DIRECTORY RENDERING & SEARCH ---
+function renderUsersDirectory(usersToRender) {
+  const container = document.getElementById("usersDirectoryContainer");
+  container.innerHTML = "";
+
+  if (!usersToRender.length) {
+    container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; color:var(--text-muted); padding:40px;">No registered users found.</div>`;
+    return;
+  }
+
+  usersToRender.forEach(u => {
+    let card = document.createElement("div");
+    card.className = "user-profile-card";
+    card.onclick = () => {
+      document.querySelectorAll("#sidebarNavList .category-nav-btn")[2].click();
+      selectChatUser(u.email);
+    };
+
+    let avatarHTML = u.avatar && u.avatar.startsWith("http")
+      ? `<img src="${u.avatar}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='🧑🏻‍⚕️'">`
+      : '🧑🏻‍⚕️';
+
+    card.innerHTML = `
+      <div class="user-card-avatar">${avatarHTML}</div>
+      <div class="user-card-info" style="overflow:hidden;">
+        <h4>${u.name || "Unknown Doctor"}</h4>
+        <p>${u.degree || "MD"}</p>
+        <small style="color:var(--text-muted); text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" title="${u.email}">${u.email}</small>
+        <small style="color:var(--text-dim); margin-top:2px;">🏥 ${u.hospital || "Hospital not specified"}</small>
+        <small style="color:var(--accent-cyan); margin-top:4px;">📊 ${u.totalCalcs || 0} Calculations Run</small>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+document.getElementById("directorySearchInput").oninput = function(e) {
+  const q = e.target.value.toLowerCase();
+  const filtered = STATE.users.filter(u => 
+    String(u.name).toLowerCase().includes(q) || 
+    String(u.email).toLowerCase().includes(q) ||
+    String(u.degree).toLowerCase().includes(q) ||
+    String(u.hospital).toLowerCase().includes(q)
+  );
+  renderUsersDirectory(filtered);
+};
 
 // --- NOTIFICATIONS DROPDOWN ---
 const notifBellBtn = document.getElementById("notifBellBtn");
@@ -689,7 +793,7 @@ function renderNotifications() {
     count++;
     const div = document.createElement("div");
     div.className = "notif-item";
-    div.innerHTML = `<strong>👤 New Login: ${u.name}</strong><small>${u.degree} · ${u.firstLogin || "Recent"}</small>`;
+    div.innerHTML = `<strong>👤 New Registration: ${u.name}</strong><small>${u.degree} · ${u.firstLogin || "Recent"}</small>`;
     div.onclick = () => { switchTabToChatUser(u.email); };
     list.appendChild(div);
   });
@@ -699,7 +803,7 @@ function renderNotifications() {
 }
 
 function switchTabToChatUser(email) {
-  document.querySelectorAll("#sidebarNavList .category-nav-btn")[1].click();
+  document.querySelectorAll("#sidebarNavList .category-nav-btn")[2].click();
   selectChatUser(email);
 }
 
@@ -717,9 +821,17 @@ function renderChatUserList(usersToRender) {
     let card = document.createElement("div");
     card.className = `chat-user-card ${STATE.activeChatEmail === u.email ? 'active' : ''}`;
     card.onclick = () => selectChatUser(u.email);
+
+    let avatarHTML = u.avatar && u.avatar.startsWith("http")
+      ? `<img src="${u.avatar}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='🧑🏻‍⚕️'">`
+      : '🧑🏻‍⚕️';
+
     card.innerHTML = `
-      <div class="chat-user-name">${u.name}</div>
-      <div class="chat-user-meta">${u.degree || 'MD'} | ${u.email}</div>
+      <div class="chat-avatar-mini">${avatarHTML}</div>
+      <div class="chat-user-info">
+        <div class="chat-user-name">${u.name}</div>
+        <div class="chat-user-meta">${u.degree || 'MD'} | ${u.email}</div>
+      </div>
     `;
     container.appendChild(card);
   });
@@ -737,9 +849,6 @@ document.getElementById("chatUserSearchInput").oninput = function(e) {
 
 function selectChatUser(email) {
   STATE.activeChatEmail = email;
-  document.querySelectorAll(".chat-user-card").forEach(c => c.classList.remove("active"));
-  
-  // Highlight active card
   renderChatUserList(STATE.users);
 
   let usr = STATE.users.find(u => u.email === email);
@@ -749,7 +858,14 @@ function selectChatUser(email) {
   document.getElementById("chatActiveContainer").style.display = "flex";
 
   document.getElementById("activeChatHeaderName").textContent = usr.name;
-  document.getElementById("activeChatHeaderMeta").textContent = `${usr.degree || 'MD'} · ${usr.email}`;
+  document.getElementById("activeChatHeaderMeta").textContent = `${usr.degree || 'MD'} · ${usr.email} (${usr.hospital || 'Hospital not specified'})`;
+
+  let avatarBox = document.getElementById("activeChatAvatar");
+  if (usr.avatar && usr.avatar.startsWith("http")) {
+    avatarBox.innerHTML = `<img src="${usr.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.parentElement.innerHTML='🧑🏻‍⚕️'">`;
+  } else {
+    avatarBox.innerHTML = '🧑🏻‍⚕️';
+  }
 
   renderActiveChatMessages();
 }
@@ -769,6 +885,7 @@ function renderActiveChatMessages() {
     let bubble = document.createElement("div");
     bubble.className = `wa-bubble ${isAdmin ? 'outgoing' : 'incoming'}`;
     bubble.innerHTML = `
+      <div style="font-size:11px; font-weight:700; margin-bottom:2px; color:${isAdmin ? '#a7f3d0' : '#00d2ff'};">${m.name || (isAdmin ? 'Admin' : 'Clinician')}</div>
       <div>${m.message}</div>
       <span class="wa-bubble-time">${m.timestamp || ''}</span>
     `;
@@ -788,13 +905,13 @@ document.getElementById("dedicatedChatForm").onsubmit = async function(e) {
     type: "admin_reply",
     timestamp: new Date().toLocaleString(),
     email: STATE.activeChatEmail,
-    name: usr ? usr.name : "Doctor",
-    degree: usr ? usr.degree : "MD",
+    name: "Admin",
+    degree: "MD",
     message: text
   };
 
   if (!STATE.messagesMap[STATE.activeChatEmail]) STATE.messagesMap[STATE.activeChatEmail] = [];
-  STATE.messagesMap[STATE.activeChatEmail].push({ timestamp: payload.timestamp, sender: "admin", message: text });
+  STATE.messagesMap[STATE.activeChatEmail].push({ timestamp: payload.timestamp, sender: "admin", name: "Admin", message: text });
   
   inp.value = "";
   renderActiveChatMessages();
@@ -808,7 +925,7 @@ document.getElementById("dedicatedChatForm").onsubmit = async function(e) {
   } catch (err) { console.warn(err); }
 };
 
-// --- TIME FILTERS & CHARTS ---
+// --- CHARTS & TIME FILTERS ---
 document.querySelectorAll(".time-pill").forEach(btn => {
   btn.onclick = () => {
     document.querySelectorAll(".time-pill").forEach(b => b.classList.remove("active"));
@@ -876,7 +993,7 @@ function renderCharts(range) {
   drawChart("trafficCanvas", "line", labels, dataVals, "#00d2ff");
 
   let catEntries = Object.entries(STATE.specFreq).sort((a,b) => b[1] - a[1]);
-  let catLabels = catEntries.length ? catEntries.map(x => x[0]) : ["General"];
+  let catLabels = catEntries.length ? catEntries.map(x => x[0]) : ["GENERAL"];
   let catVals = catEntries.length ? catEntries.map(x => x[1]) : [STATE.logs.length || 1];
 
   drawChart("categoryCanvas", "doughnut", catLabels, catVals, ["#00d2ff", "#3a86ff", "#8338ec", "#10b981", "#f59e0b"]);
@@ -915,6 +1032,57 @@ function drawChart(canvasId, type, labels, values, colors) {
   });
 }
 
+// --- RECENT 50 CALCULATION LOGS & DETAIL MODAL ---
+function renderRecentLogs(logsToRender) {
+  const container = document.getElementById("recentLogsContainer");
+  container.innerHTML = "";
+  const recent = logsToRender.slice(0, 50);
+
+  if (!recent.length) {
+    container.innerHTML = `<div style="text-align:center;color:var(--text-muted);padding:20px;">No calculation logs found.</div>`;
+    return;
+  }
+
+  recent.forEach(l => {
+    const div = document.createElement("div");
+    div.className = "log-card";
+    div.onclick = () => openLogDetailModal(l);
+    div.innerHTML = `
+      <div class="log-left">
+        <strong>${l.tool || "Calculator Tool"}</strong>
+        <small>By ${l.name || "Unknown Doctor"} (${l.degree || "MD"}) · ${l.timestamp || ""}</small>
+      </div>
+      <div class="log-right">${l.result || "Completed"}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+document.getElementById("logSearchInput").oninput = function(e) {
+  const q = e.target.value.toLowerCase();
+  const filtered = STATE.logs.filter(l => 
+    String(l.name).toLowerCase().includes(q) || 
+    String(l.tool).toLowerCase().includes(q) ||
+    String(l.degree).toLowerCase().includes(q) ||
+    String(l.specialty).toLowerCase().includes(q)
+  );
+  renderRecentLogs(filtered);
+};
+
+window.openLogDetailModal = function(log) {
+  document.getElementById("modalLogTool").textContent = log.tool || "N/A";
+  document.getElementById("modalLogClinician").textContent = `${log.name} (${log.degree}) - ${log.email}`;
+  document.getElementById("modalLogSpecialty").textContent = log.specialty || "GENERAL";
+  document.getElementById("modalLogTime").textContent = log.timestamp || "N/A";
+  document.getElementById("modalLogResult").textContent = log.result || "N/A";
+  document.getElementById("modalLogEquation").textContent = log.eq || "No equation recorded.";
+  document.getElementById("logDetailModal").classList.remove("hidden");
+};
+
+window.closeLogDetailModal = function() {
+  document.getElementById("logDetailModal").classList.add("hidden");
+};
+
 // --- CATEGORY COMPARISON MODAL ---
 window.openCategoryModal = function(categoryName) {
   const modal = document.getElementById("categoryModal");
@@ -922,7 +1090,7 @@ window.openCategoryModal = function(categoryName) {
   
   let filteredLogs = categoryName === "All Categories" 
     ? STATE.logs 
-    : STATE.logs.filter(l => (l.specialty || "General").toLowerCase() === categoryName.toLowerCase());
+    : STATE.logs.filter(l => (l.specialty || "GENERAL").toLowerCase() === categoryName.toLowerCase());
 
   let totalCatCalcs = filteredLogs.length;
   document.getElementById("catModalSubtitle").textContent = `Total calculations in this category: ${totalCatCalcs}`;
@@ -990,46 +1158,13 @@ window.closeCategoryModal = function() {
 
 // --- GOOGLE DRIVE MODAL ---
 window.openDriveModal = function() {
+  document.getElementById("masterSheetLink").href = STATE.masterSheetUrl;
+  document.getElementById("usersFolderLink").href = STATE.usersFolderUrl;
   document.getElementById("driveModal").classList.remove("hidden");
 };
 
 window.closeDriveModal = function() {
   document.getElementById("driveModal").classList.add("hidden");
-};
-
-// --- RECENT LOGS & SEARCH ---
-function renderRecentLogs(logsToRender) {
-  const container = document.getElementById("recentLogsContainer");
-  container.innerHTML = "";
-  const recent = logsToRender.slice(0, 50);
-
-  if (!recent.length) {
-    container.innerHTML = `<div style="text-align:center;color:var(--text-muted);padding:20px;">No calculation logs found.</div>`;
-    return;
-  }
-
-  recent.forEach(l => {
-    const div = document.createElement("div");
-    div.className = "log-card";
-    div.innerHTML = `
-      <div class="log-left">
-        <strong>${l.tool || "Calculator Tool"}</strong>
-        <small>By ${l.name || "Unknown Doctor"} (${l.degree || "MD"}) · ${l.timestamp || ""}</small>
-      </div>
-      <div class="log-right">${l.result || "Completed"}</div>
-    `;
-    container.appendChild(div);
-  });
-}
-
-document.getElementById("logSearchInput").oninput = function(e) {
-  const q = e.target.value.toLowerCase();
-  const filtered = STATE.logs.filter(l => 
-    String(l.name).toLowerCase().includes(q) || 
-    String(l.tool).toLowerCase().includes(q) ||
-    String(l.degree).toLowerCase().includes(q)
-  );
-  renderRecentLogs(filtered);
 };
 
 document.getElementById("refreshBtn").onclick = fetchAdminData;
