@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="light" class="h-full">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,30 +7,6 @@
 <title>DocStat</title>
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
-
-<!-- Tailwind CSS CDN for Chat Assistant Styling -->
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-    tailwind.config = {
-        darkMode: 'class',
-        theme: {
-            extend: {
-                colors: {
-                    medical: {
-                        50: '#f0fdf4',
-                        100: '#dcfce7',
-                        500: '#22c55e',
-                        600: '#16a34a',
-                        700: '#15803d',
-                        800: '#166534',
-                        900: '#14532d',
-                    }
-                }
-            }
-        }
-    }
-</script>
-<script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
 /* CSS VARIABLES FOR THEMES */
@@ -448,7 +424,6 @@ button { cursor: pointer; font: inherit; }
 table.ref-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; }
 table.ref-table th { background: var(--table-head); padding: 10px 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color); }
 table.ref-table td { padding: 10px 12px; border-bottom: 1px solid var(--table-border); color: var(--table-row-text); vertical-align: top; }
-table.ref-table tr:last-child td { border-bottom: none; }
 table.ref-table tr.active-grade { background: var(--active-grade-bg); font-weight: 600; }
 table.ref-table tr.active-grade td { border-top: 2px solid #38a169; border-bottom: 2px solid #38a169; color: var(--active-grade-text); }
 
@@ -505,7 +480,7 @@ footer { text-align: center; font-size: 11px; color: var(--text-muted); padding:
 @media (max-width: 480px) { .fields { grid-template-columns: 1fr; } .card { padding: 11px; } }
 </style>
 </head>
-<body class="h-full flex flex-col">
+<body>
 
 <!-- ANIMATED DOCSTAT SPLASH OVERLAY -->
 <div id="splash">
@@ -575,16 +550,13 @@ C 100 110, 100 128, 100 144
  <div id="headerHospitalDisplay" style="font-size: 11px; opacity: 0.85; color: var(--header-sub);"></div>
  </div>
  </div>
- <div class="flex items-center space-x-2">
-     <button id="openChatBtn" class="icon-btn" type="button" aria-label="Pharmacology Chat">💬 Assistant</button>
-     <button id="openSettingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙ Settings</button>
- </div>
+ <button id="openSettingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙ Settings</button>
  </div>
  <h1>DocStat</h1>
  <p>Calculators & criteria-based classifications</p>
 </header>
 
-<main style="flex: 1;">
+<main>
  <div class="notice"><b>Clinical safety:</b> Educational prototype only. Verify formulas, tables, and criteria independently before clinical use.</div>
 
  <!-- HOME VIEW -->
@@ -682,7 +654,7 @@ C 100 110, 100 128, 100 144
  <footer>DocStat · Educational prototype · Verify before clinical use</footer>
 </main>
 
-<!-- STANDALONE SEPARATE PAGE VIEW FOR NOTES / INFO -->
+<!-- STANDALONE SEPARATE PAGE VIEW FOR INFO / NOTES -->
 <div id="sourcePage" class="hidden" style="position: fixed; inset: 0; background: var(--bg-body); z-index: 2000; display: flex; flex-direction: column; overflow-y: auto;">
  <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--bg-header); color: var(--header-text); position: sticky; top: 0; z-index: 10;">
  <h3 id="sourcePageTitle" style="margin: 0; font-size: 18px;">Clinical Notes & Reference</h3>
@@ -693,105 +665,50 @@ C 100 110, 100 128, 100 144
  </div>
 </div>
 
-<!-- STANDALONE SEPARATE PAGE VIEW FOR PHARMACOLOGY CHAT ASSISTANT -->
-<div id="chatPage" class="hidden fixed inset-0 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col z-[2005] overflow-hidden">
+<!-- STANDALONE SEPARATE PAGE VIEW FOR CHAT / FEEDBACK -->
+<div id="chatPage" class="hidden" style="position: fixed; inset: 0; background: var(--bg-body); z-index: 2000; display: flex; flex-direction: column;">
     <!-- Chat Header -->
-    <header class="flex-none bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between z-10 shadow-sm">
-        <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-medical-600 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-medical-500/20">
-                <i data-lucide="pill" class="w-6 h-6"></i>
+    <header class="flex-none bg-indigo-950 text-white px-4 py-3 flex items-center justify-between z-10 shadow-sm" style="background: var(--bg-header); color: var(--header-text); border-bottom: 1px solid var(--border-color);">
+        <div class="flex items-center space-x-3" style="display: flex; align-items: center; gap: 12px;">
+            <div id="chatHeaderAvatar" class="w-10 h-10 rounded-full bg-white text-indigo-900 flex items-center justify-center font-bold overflow-hidden border-2 border-white/40" style="width: 36px; height: 36px; border-radius: 50%; background: #fff; color: #0f2744; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                🧑🏻‍⚕️
             </div>
             <div>
-                <div class="flex items-center space-x-2">
-                    <h1 class="font-bold text-lg tracking-tight">DocStat Assistant</h1>
-                    <span class="text-xs bg-medical-100 dark:bg-medical-900/50 text-medical-700 dark:text-medical-300 font-medium px-2 py-0.5 rounded-full border border-medical-200 dark:border-medical-800">NLEM Ref</span>
-                </div>
-                <p class="text-xs text-slate-500 dark:text-slate-400 flex items-center space-x-1.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Pharmacology Assistant • Online</span>
-                </p>
+                <h1 class="font-bold text-lg tracking-tight" style="margin: 0; font-size: 16px;">@DocStat Chatbox/Feedback</h1>
+                <p class="text-xs text-indigo-200" style="margin: 0; font-size: 11px; opacity: 0.85; color: var(--header-sub);">DocStat team here</p>
             </div>
         </div>
-
-        <div class="flex items-center space-x-2">
-            <!-- Clear Chat Button -->
-            <button id="clearBtn" title="Clear Conversation" class="p-2 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
-            </button>
-            <!-- Close Chat Page Button -->
-            <button id="closeChatPageBtn" class="icon-btn bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 px-3 py-1.5 font-bold rounded-lg text-xs">
-                ✕ Close
-            </button>
+        <div class="flex items-center space-x-2" style="display: flex; gap: 8px; align-items: center;">
+            <button type="button" id="closeChatPageBtn" class="icon-btn" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 6px 14px; font-weight: 700;">✕ Close</button>
         </div>
     </header>
 
-    <!-- Medical Disclaimer Banner -->
-    <div class="bg-amber-50 dark:bg-amber-950/40 border-b border-amber-200/60 dark:border-amber-900/40 px-4 py-2 text-xs text-amber-800 dark:text-amber-200 flex items-center justify-center text-center space-x-2 flex-none">
-        <i data-lucide="alert-triangle" class="w-4 h-4 flex-shrink-0 text-amber-600 dark:text-amber-400"></i>
-        <span><strong>Educational Reference Only:</strong> Verified pharmacological data based on standard protocols.</span>
-    </div>
-
-    <!-- Chat Container Scroll Area -->
-    <main id="chatContainer" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 max-w-4xl w-full mx-auto">
-        <!-- Greeting Message -->
-        <div class="flex items-start space-x-3">
-            <div class="w-8 h-8 rounded-full bg-medical-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm mt-1">
-                <i data-lucide="bot" class="w-4 h-4"></i>
-            </div>
-            <div class="space-y-2 max-w-[85%] md:max-w-[75%]">
-                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl rounded-tl-sm p-4 shadow-sm text-sm space-y-3">
-                    <p class="font-medium text-slate-900 dark:text-white">Hello Doctor! I am your DocStat Pharmacology Assistant.</p>
-                    <p class="text-slate-600 dark:text-slate-300">You can query drug mechanisms of action (MOA), therapeutic categories, dosages, and strengths.</p>
-                    <div class="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-100 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
-                        💡 <strong>Try asking:</strong> "What is Metformin's MOA?", "Show Cardiovascular Drugs", or click a quick prompt below.
-                    </div>
-                </div>
-                <span class="text-[10px] text-slate-400 dark:text-slate-500 px-1">Just now</span>
-            </div>
+    <!-- Chat Messages Container -->
+    <main id="chatMessagesContainer" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 max-w-4xl w-full mx-auto" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; background: var(--bg-body);">
+        <div style="max-width: 85%; padding: 12px 16px; border-radius: 12px; font-size: 13px; line-height: 1.4; align-self: flex-start; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+            <div>Hello! Send feedback, bug reports, or clinical questions directly to the DocStat team here.</div>
+            <div style="font-size: 10px; opacity: 0.75; margin-top: 4px; text-align: right;">DocStat team · Welcome</div>
         </div>
     </main>
 
-    <!-- Suggestion Pills Bar -->
-    <div class="flex-none px-4 py-2 max-w-4xl w-full mx-auto">
-        <div class="flex items-center space-x-2 overflow-x-auto pb-2">
-            <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider flex-shrink-0 flex items-center space-x-1">
-                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-medical-500"></i>
-                <span>Quick Ask:</span>
-            </span>
-            <button onclick="sendQuickPrompt('What is Metformin\'s MOA?')" class="flex-shrink-0 text-xs bg-white dark:bg-slate-900 hover:bg-medical-50 dark:hover:bg-medical-950/50 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-medical-300 dark:hover:border-medical-700 px-3 py-1.5 rounded-full transition-all shadow-sm">
-                Metformin MOA & Strength
-            </button>
-            <button onclick="sendQuickPrompt('Show Cardiovascular Drugs')" class="flex-shrink-0 text-xs bg-white dark:bg-slate-900 hover:bg-medical-50 dark:hover:bg-medical-950/50 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-medical-300 dark:hover:border-medical-700 px-3 py-1.5 rounded-full transition-all shadow-sm">
-                Cardiovascular Drugs
-            </button>
-            <button onclick="sendQuickPrompt('Check Amoxicillin strength')" class="flex-shrink-0 text-xs bg-white dark:bg-slate-900 hover:bg-medical-50 dark:hover:bg-medical-950/50 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-medical-300 dark:hover:border-medical-700 px-3 py-1.5 rounded-full transition-all shadow-sm">
-                Amoxicillin & Clavulanic
-            </button>
-            <button onclick="sendQuickPrompt('List Analgesics & NSAIDs')" class="flex-shrink-0 text-xs bg-white dark:bg-slate-900 hover:bg-medical-50 dark:hover:bg-medical-950/50 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-medical-300 dark:hover:border-medical-700 px-3 py-1.5 rounded-full transition-all shadow-sm">
-                Analgesics & Paracetamol
-            </button>
-        </div>
-    </div>
-
-    <!-- Input Bar Footer -->
-    <footer class="flex-none bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 p-4 z-10 shadow-lg">
-        <form id="chatForm" class="max-w-4xl w-full mx-auto flex items-center space-x-2">
-            <div class="relative flex-1">
-                <input 
-                    type="text" 
-                    id="userInput" 
-                    placeholder="Ask about any drug name, mechanism, or category..." 
-                    class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-medical-500 focus:border-transparent text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
-                    autocomplete="off"
-                    required
-                >
-            </div>
+    <!-- Chat Input Footer -->
+    <footer class="flex-none p-4 z-10 shadow-lg" style="background: var(--bg-card); border-top: 1px solid var(--border-color);">
+        <form id="standaloneChatForm" class="max-w-4xl w-full mx-auto flex items-center space-x-2" style="display: flex; gap: 8px; align-items: center;">
+            <input 
+                type="text" 
+                id="standaloneChatInput" 
+                placeholder="chat with DocStat team" 
+                class="w-full rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style="flex: 1; padding: 12px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-main); border-radius: 10px; outline: none;"
+                autocomplete="off"
+                required
+            >
             <button 
                 type="submit" 
-                id="sendBtn"
-                class="bg-medical-600 hover:bg-medical-700 text-white p-3.5 rounded-xl transition-all shadow-md shadow-medical-600/25 flex items-center justify-center flex-shrink-0"
+                class="primary"
+                style="flex: 0 0 auto; background: #2463eb; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 750; cursor: pointer;"
             >
-                <i data-lucide="send" class="w-5 h-5"></i>
+                Send
             </button>
         </form>
     </footer>
@@ -1068,9 +985,14 @@ window.S = S;
  const hospDisplay = $("headerHospitalDisplay");
  if (hospDisplay) hospDisplay.textContent = hospital ? hospital : "";
  const avatarEl = $("headerAvatar");
- if (avatarEl) {
- if (avatarBase64) avatarEl.innerHTML = `<img src="${avatarBase64}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
- else avatarEl.innerHTML = "🧑🏻‍⚕️";
+ const chatAvatarEl = $("chatHeaderAvatar");
+ 
+ if (avatarBase64) {
+ if (avatarEl) avatarEl.innerHTML = `<img src="${avatarBase64}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+ if (chatAvatarEl) chatAvatarEl.innerHTML = `<img src="${avatarBase64}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+ } else {
+ if (avatarEl) avatarEl.innerHTML = "🧑🏻‍⚕️";
+ if (chatAvatarEl) chatAvatarEl.innerHTML = "🧑🏻‍⚕️";
  }
  }
 
@@ -1398,7 +1320,7 @@ window.S = S;
  window.scrollTo({ top: 0, behavior: "smooth" });
  }
 
- // --- ROUTER FOR SINGLE-CLICK BACK BUTTON ---
+ // --- NATIVE HASH ROUTER FOR SINGLE-CLICK BACK BUTTON ---
  let isHandlingHash = false;
  window.addEventListener("hashchange", async function () {
  if (isHandlingHash) return;
@@ -1422,12 +1344,6 @@ window.S = S;
  return;
  }
 
- if (rawHash === "chat") {
- showView("chat");
- isHandlingHash = false;
- return;
- }
-
  if (rawHash.startsWith("category=")) {
  const catId = decodeURIComponent(rawHash.replace("category=", ""));
  currentCatId = catId;
@@ -1445,6 +1361,13 @@ window.S = S;
  } else {
  showView("calculator");
  }
+ isHandlingHash = false;
+ return;
+ }
+
+ if (rawHash === "chat") {
+ showView("chat");
+ await loadClinicianMessages();
  isHandlingHash = false;
  return;
  }
@@ -1857,11 +1780,6 @@ window.S = S;
  }
  };
 
- // CHAT NAVIGATION TRIGGERS
- $("openChatBtn").onclick = () => {
- location.hash = "chat";
- };
-
  $("closeChatPageBtn").onclick = () => {
  location.replace("#");
  };
@@ -1878,225 +1796,89 @@ window.S = S;
 })();
 </script>
 
-<!-- PHARMACOLOGY CHAT ASSISTANT LOGIC -->
+<!-- STANDALONE CHAT ENGINE & WIRING SCRIPT -->
 <script>
-    lucide.createIcons();
+(function() {
+ const settingsBtn = document.getElementById("openSettingsBtn");
+ if (settingsBtn && settingsBtn.parentNode) {
+ const wrap = document.createElement("div");
+ wrap.style.display = "flex";
+ wrap.style.gap = "8px";
+ settingsBtn.parentNode.insertBefore(wrap, settingsBtn);
 
-    const chatContainer = document.getElementById('chatContainer');
-    const chatForm = document.getElementById('chatForm');
-    const userInput = document.getElementById('userInput');
-    const clearBtn = document.getElementById('clearBtn');
+ const actualChatBtn = document.createElement("button");
+ actualChatBtn.type = "button";
+ actualChatBtn.className = "icon-btn";
+ actualChatBtn.innerHTML = "💬 Feedback";
+ actualChatBtn.onclick = () => {
+ location.hash = "chat";
+ };
 
-    const knowledgeBase = [
-        {
-            keywords: ['metformin', 'diabetes', 'antidiabetic', 'gluconeogenesis'],
-            title: 'Metformin Hydrochloride',
-            category: 'Endocrine & Metabolic Agents (NLEM Section 9)',
-            forms: 'Tablet: 500 mg, 850 mg, 1000 mg',
-            moa: 'Decreases hepatic glucose production (inhibits gluconeogenesis), decreases intestinal absorption of glucose, and improves insulin sensitivity by increasing peripheral glucose uptake and utilization.',
-            uses: 'Type 2 Diabetes Mellitus management, first-line oral hypoglycemic agent.'
-        },
-        {
-            keywords: ['cardiovascular', 'amlodipine', 'telmisartan', 'blood pressure', 'hypertension'],
-            title: 'Cardiovascular Medicines (NLEM Key Agents)',
-            category: 'Cardiovascular System (NLEM Section 7)',
-            forms: 'Amlodipine (2.5 mg, 5 mg, 10 mg), Telmisartan (20 mg, 40 mg, 80 mg), Atorvastatin (10 mg, 20 mg, 40 mg)',
-            moa: '<strong>Amlodipine:</strong> Dihydropyridine calcium channel blocker that inhibits transmembrane influx of calcium ions into vascular smooth muscle and cardiac muscle.\n<strong>Telmisartan:</strong> Angiotensin II receptor blocker (ARB) that selectively blocks AT1 receptors.',
-            uses: 'Hypertension, angina pectoris, ischemic heart disease, and dyslipidemia.'
-        },
-        {
-            keywords: ['amoxicillin', 'antibiotic', 'clavulanic', 'anti-infective'],
-            title: 'Amoxicillin & Clavulanic Acid',
-            category: 'Anti-Infective Medicines (NLEM Section 6)',
-            forms: 'Capsule: 250 mg, 500 mg; Suspension: 125 mg/5 mL; Tablet (Combo): 500 mg + 125 mg',
-            moa: '<strong>Amoxicillin:</strong> Beta-lactam antibiotic that inhibits bacterial cell wall synthesis by binding to penicillin-binding proteins (PBPs).\n<strong>Clavulanic Acid:</strong> Beta-lactamase inhibitor that protects amoxicillin from degradation by beta-lactamase enzymes.',
-            uses: 'Wide spectrum bacterial infections including respiratory tract, urinary tract, and skin infections.'
-        },
-        {
-            keywords: ['analgesic', 'paracetamol', 'nsaid', 'ibuprofen', 'fever', 'pain'],
-            title: 'Analgesics, Antipyretics & NSAIDs',
-            category: 'Analgesics & NSAIDs (NLEM Section 2)',
-            forms: 'Paracetamol (500 mg, 650 mg tablet; 120 mg/5mL syrup; IV 10 mg/mL), Ibuprofen (200 mg, 400 mg)',
-            moa: '<strong>Paracetamol:</strong> Central inhibition of prostaglandin synthesis and action on the hypothalamic heat-regulating center.\n<strong>Ibuprofen:</strong> Non-selective inhibitor of cyclooxygenase (COX-1 and COX-2), reducing synthesis of inflammatory prostaglandins.',
-            uses: 'Mild to moderate pain relief (analgesic) and reduction of fever (antipyretic).'
-        },
-        {
-            keywords: ['salbutamol', 'respiratory', 'asthma', 'bronchodilator', 'budesonide'],
-            title: 'Salbutamol & Budesonide',
-            category: 'Respiratory Medicines (NLEM Section 10)',
-            forms: 'Salbutamol MDI (100 mcg/puff), Respirator solution (5 mg/mL); Budesonide Respules (0.5 mg/2 mL)',
-            moa: '<strong>Salbutamol:</strong> Selective short-acting beta-2 adrenergic agonist that relaxes bronchial smooth muscle.\n<strong>Budesonide:</strong> Corticosteroid with potent glucocorticoid and weak mineralocorticoid activity, reducing airway inflammation.',
-            uses: 'Bronchospasm in asthma, chronic obstructive pulmonary disease (COPD), and acute wheezing.'
-        }
-    ];
+ wrap.appendChild(actualChatBtn);
+ wrap.appendChild(settingsBtn);
+ }
 
-    function getCurrentTime() {
-        const now = new Date();
-        return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    }
+ async function loadClinicianMessages() {
+ if (!navigator.onLine || !window.GOOGLE_SHEET_WEBHOOK_URL) return;
+ const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
+ const box = document.getElementById("chatMessagesContainer");
 
-    function appendUserMessage(text) {
-        const messageHTML = `
-            <div class="flex items-start justify-end space-x-3">
-                <div class="space-y-1 max-w-[85%] md:max-w-[75%] text-right">
-                    <div class="bg-medical-600 text-white rounded-2xl rounded-tr-sm p-4 shadow-sm text-sm text-left leading-relaxed">
-                        ${escapeHTML(text)}
-                    </div>
-                    <span class="text-[10px] text-slate-400 dark:text-slate-500 px-1">${getCurrentTime()}</span>
-                </div>
-                <div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center flex-shrink-0 shadow-sm mt-1">
-                    <i data-lucide="user" class="w-4 h-4"></i>
-                </div>
-            </div>
-        `;
-        chatContainer.insertAdjacentHTML('beforeend', messageHTML);
-        lucide.createIcons();
-        scrollToBottom();
-    }
+ try {
+ const res = await fetch(`${window.GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(email)}&t=${Date.now()}`);
+ const data = await res.json();
+ if (data.status === "success" && data.messages && data.messages.length) {
+ box.innerHTML = "";
+ data.messages.messages.forEach(m => {
+ const div = document.createElement("div");
+ const isMe = m.sender === "clinician";
+ div.style.cssText = `max-width:85%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.4;align-self:${isMe ? "flex-end" : "flex-start"};background:${isMe ? "#2463eb" : "var(--bg-card)"};color:${isMe ? "#fff" : "var(--text-main)"};border:1px solid var(--border-color);box-shadow:0 1px 2px rgba(0,0,0,0.05);`;
+ div.innerHTML = `<div>${m.message}</div><div style="font-size:10px;opacity:0.75;margin-top:4px;text-align:right;">${isMe ? "You" : "DocStat team"} · ${m.timestamp}</div>`;
+ box.appendChild(div);
+ });
+ box.scrollTop = box.scrollHeight;
+ }
+ } catch (e) {
+ console.warn("Could not load chat history:", e);
+ }
+ }
 
-    function showTypingIndicator() {
-        const typingHTML = `
-            <div id="typingIndicator" class="flex items-start space-x-3">
-                <div class="w-8 h-8 rounded-full bg-medical-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm mt-1">
-                    <i data-lucide="bot" class="w-4 h-4"></i>
-                </div>
-                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl rounded-tl-sm p-4 shadow-sm text-sm flex items-center space-x-2">
-                    <div class="w-2 h-2 rounded-full bg-medical-500 animate-bounce" style="animation-delay: 0ms"></div>
-                    <div class="w-2 h-2 rounded-full bg-medical-500 animate-bounce" style="animation-delay: 150ms"></div>
-                    <div class="w-2 h-2 rounded-full bg-medical-500 animate-bounce" style="animation-delay: 300ms"></div>
-                    <span class="text-xs text-slate-400 ml-2">Analyzing NLEM database...</span>
-                </div>
-            </div>
-        `;
-        chatContainer.insertAdjacentHTML('beforeend', typingHTML);
-        lucide.createIcons();
-        scrollToBottom();
-    }
+ window.loadClinicianMessages = loadClinicianMessages;
 
-    function removeTypingIndicator() {
-        const indicator = document.getElementById('typingIndicator');
-        if (indicator) indicator.remove();
-    }
+ document.getElementById("standaloneChatForm").onsubmit = function(e) {
+ e.preventDefault();
+ const inp = document.getElementById("standaloneChatInput");
+ const msg = inp.value.trim();
+ if (!msg) return;
 
-    function appendBotResponse(drugData) {
-        let cardContent = '';
-        if (drugData) {
-            cardContent = `
-                <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl p-4 space-y-3 shadow-inner">
-                    <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2">
-                        <h3 class="font-bold text-base text-medical-700 dark:text-medical-400 flex items-center space-x-2">
-                            <i data-lucide="pill" class="w-4 h-4"></i>
-                            <span>${drugData.title}</span>
-                        </h3>
-                        <span class="text-[11px] bg-medical-100 dark:bg-medical-950 text-medical-800 dark:text-medical-300 px-2 py-0.5 rounded font-medium border border-medical-200 dark:border-medical-800">${drugData.category}</span>
-                    </div>
-                    <div class="space-y-2 text-xs md:text-sm">
-                        <div>
-                            <span class="font-semibold text-slate-700 dark:text-slate-300 flex items-center space-x-1 mb-0.5">
-                                <i data-lucide="layers" class="w-3.5 h-3.5 text-medical-500"></i>
-                                <span>Dosage Forms & Strengths:</span>
-                            </span>
-                            <p class="text-slate-600 dark:text-slate-300 font-mono bg-white dark:bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-800">${drugData.forms}</p>
-                        </div>
-                        <div>
-                            <span class="font-semibold text-slate-700 dark:text-slate-300 flex items-center space-x-1 mb-0.5">
-                                <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-500"></i>
-                                <span>Mechanism of Action (MOA):</span>
-                            </span>
-                            <p class="text-slate-600 dark:text-slate-300 leading-relaxed">${drugData.moa}</p>
-                        </div>
-                        <div>
-                            <span class="font-semibold text-slate-700 dark:text-slate-300 flex items-center space-x-1 mb-0.5">
-                                <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i>
-                                <span>Primary Indications:</span>
-                            </span>
-                            <p class="text-slate-600 dark:text-slate-300">${drugData.uses}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        } else {
-            cardContent = `<p class="text-slate-600 dark:text-slate-300">I searched the NLEM database for that query. Please specify a drug name (e.g., <em>Metformin, Amlodipine, Paracetamol</em>).</p>`;
-        }
+ const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
+ const name = (localStorage.getItem("doccalc_dr_name") || "Anonymous").trim();
+ const degree = (localStorage.getItem("doccalc_dr_degree") || "N/A").trim();
+ const avatar = (localStorage.getItem("doccalc_dr_avatar") || "").trim();
+ const timestamp = new Date().toLocaleString();
 
-        const responseHTML = `
-            <div class="flex items-start space-x-3">
-                <div class="w-8 h-8 rounded-full bg-medical-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm mt-1">
-                    <i data-lucide="bot" class="w-4 h-4"></i>
-                </div>
-                <div class="space-y-2 max-w-[90%] md:max-w-[80%]">
-                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl rounded-tl-sm p-4 shadow-sm text-sm space-y-3">
-                        ${cardContent}
-                    </div>
-                    <span class="text-[10px] text-slate-400 dark:text-slate-500 px-1">${getCurrentTime()}</span>
-                </div>
-            </div>
-        `;
-        chatContainer.insertAdjacentHTML('beforeend', responseHTML);
-        lucide.createIcons();
-        scrollToBottom();
-    }
+ const box = document.getElementById("chatMessagesContainer");
+ if (box.querySelector(".muted")) box.innerHTML = "";
 
-    function processQuery(query) {
-        const lowerQuery = query.toLowerCase();
-        let matched = knowledgeBase.find(item => 
-            item.keywords.some(keyword => lowerQuery.includes(keyword))
-        );
-        return matched || null;
-    }
+ const div = document.createElement("div");
+ div.style.cssText = "max-width:85%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.4;align-self:flex-end;background:#2463eb;color:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.05);";
+ div.innerHTML = `<div>${msg}${!navigator.onLine ? " (Queued offline)" : ""}</div><div style="font-size:10px;opacity:0.75;margin-top:4px;text-align:right;">You · ${timestamp}</div>`;
+ box.appendChild(div);
+ box.scrollTop = box.scrollHeight;
+ inp.value = "";
 
-    chatForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const text = userInput.value.trim();
-        if (!text) return;
-
-        appendUserMessage(text);
-        userInput.value = '';
-
-        showTypingIndicator();
-
-        setTimeout(() => {
-            removeTypingIndicator();
-            const result = processQuery(text);
-            appendBotResponse(result);
-        }, 1000);
-    });
-
-    window.sendQuickPrompt = function(promptText) {
-        userInput.value = promptText;
-        chatForm.dispatchEvent(new Event('submit'));
-    };
-
-    clearBtn.addEventListener('click', () => {
-        chatContainer.innerHTML = `
-            <div class="flex items-start space-x-3">
-                <div class="w-8 h-8 rounded-full bg-medical-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm mt-1">
-                    <i data-lucide="bot" class="w-4 h-4"></i>
-                </div>
-                <div class="space-y-2 max-w-[85%] md:max-w-[75%]">
-                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl rounded-tl-sm p-4 shadow-sm text-sm space-y-3">
-                        <p class="font-medium text-slate-900 dark:text-white">Conversation cleared.</p>
-                        <p class="text-slate-600 dark:text-slate-300">How else can I assist you with NLEM pharmacology data today?</p>
-                    </div>
-                    <span class="text-[10px] text-slate-400 dark:text-slate-500 px-1">Just now</span>
-                </div>
-            </div>
-        `;
-        lucide.createIcons();
-    });
-
-    function scrollToBottom() {
-        chatContainer.scrollTo({
-            top: chatContainer.scrollHeight,
-            behavior: 'smooth'
-        });
-    }
-
-    function escapeHTML(str) {
-        return str.replace(/[&<>'"]/g, 
-            tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-        );
-    }
+ if (window.sendDataToWebhook) {
+ window.sendDataToWebhook({
+ type: "feedback",
+ timestamp: timestamp,
+ email: email,
+ name: name,
+ degree: degree,
+ message: msg,
+ avatar: avatar
+ });
+ }
+ };
+})();
 </script>
 </body>
 </html>
