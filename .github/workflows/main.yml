@@ -22,6 +22,24 @@ jobs:
           npm install
           npm install -D @capacitor/assets
 
+      # Automatically packages your folders into www/ on the fly during cloud build
+      - name: Prepare Web Assets for Capacitor
+        run: |
+          mkdir -p www/Subjects
+          mkdir -p www/InfoHTMLs
+          
+          # Copy main HTML file
+          cp app.html www/index.html 2>/dev/null || cp index.html www/index.html
+          
+          # Copy files into their respective subfolders inside www
+          cp Subjects/*.js www/Subjects/ 2>/dev/null || true
+          cp InfoHTMLs/*.html www/InfoHTMLs/ 2>/dev/null || true
+          
+          # Copy root assets (images, icons, etc.)
+          cp *.png www/ 2>/dev/null || true
+          cp *.jpg www/ 2>/dev/null || true
+          cp *.svg www/ 2>/dev/null || true
+
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
