@@ -1,8 +1,7 @@
 {
   "appId": "com.docstat.app",
   "appName": "DocStat",
-  "webDir": ".",
-  "bundledWebRuntime": false,
+  "webDir": "www",
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 0,
