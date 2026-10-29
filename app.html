@@ -1846,9 +1846,9 @@ window.S = S;
  if (iframe) iframe.src = "about:blank";
 
  if (currentTool) {
- location.replace("#tool=" + encodeURIComponent(currentTool.id));
+ location.hash = "tool=" + encodeURIComponent(currentTool.id);
  } else {
- location.replace("#");
+ location.hash = "";
  }
  };
 
