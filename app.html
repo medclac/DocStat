@@ -584,7 +584,7 @@ C 100 110, 100 128, 100 144
 </header>
 
 <main>
- <div class="notice"><b>Clinical safety:</b> Educational prototype only. Verify formulas, tables, and criteria independently before clinical use.</div>
+ <div class="notice"><b>Clinical safety:</b> Verify formulas, tables, and criteria independently before clinical use.</div>
 
  <!-- HOME VIEW -->
  <div id="home">
@@ -678,7 +678,7 @@ C 100 110, 100 128, 100 144
  </section>
  </div>
 
- <footer>DocStat · Educational prototype · Verify before clinical use</footer>
+ <footer>DocStat · Educational purpose app · Verify before realtime clinical use</footer>
 </main>
 
 <!-- STANDALONE SEPARATE PAGE VIEW FOR INFO / NOTES -->
@@ -692,7 +692,7 @@ C 100 110, 100 128, 100 144
  </div>
 </div>
 
-<!-- STANDALONE SEPARATE PAGE VIEW FOR WHATSAPP CHAT / FEEDBACK -->
+<!-- STANDALONE WHATSAPP CHAT & FEEDBACK VIEW -->
 <div id="chatPage" class="hidden" style="position: fixed; inset: 0; background: var(--bg-body); z-index: 2000; display: flex; flex-direction: column;">
     <div id="whatsappDesktopWrapper" style="display: flex; flex-direction: column; flex: 1; width: 100%; height: 100%;">
         <!-- WhatsApp Chat Header -->
@@ -708,7 +708,7 @@ C 100 110, 100 128, 100 144
             </div>
         </header>
 
-        <!-- WhatsApp Messages Container (Doodle Background Pattern Look) -->
+        <!-- WhatsApp Messages Container -->
         <main id="chatMessagesContainer" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-3" style="flex: 1; overflow-y: auto; padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; background-color: var(--wa-bg-light); background-image: radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px); background-size: 20px 20px;">
             <div style="max-width: 85%; padding: 8px 12px; border-radius: 7.5px; font-size: 13.5px; line-height: 1.4; align-self: flex-start; background: var(--wa-bubble-in-light); color: var(--text-main); box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); position: relative;">
                 <div>Hello! Send feedback, bug reports, or clinical questions directly to the DocStat team here.</div>
@@ -765,7 +765,7 @@ C 100 110, 100 128, 100 144
  </div>
 </div>
 
-<!-- LOGIN / PROFILE MODAL -->
+<!-- EMAIL OTP VERIFICATION & PROFILE SETUP LOGIN MODAL -->
 <div id="loginModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
  <div class="modal" style="max-width: 400px; text-align: left;">
  <div style="font-size: 32px; margin-bottom: 8px;">🧑🏻‍⚕️</div>
@@ -826,7 +826,9 @@ C 100 110, 100 128, 100 144
  </div>
 </div>
 
-<!-- CORE DATA REGISTRY -->
+<!-- ============================================================== -->
+<!-- 1. CORE DATA REGISTRY & GLOBAL HELPERS -->
+<!-- ============================================================== -->
 <script>
 window.categories = window.categories || [];
 window.tools = window.tools || [];
@@ -845,7 +847,9 @@ window.N = N;
 window.S = S;
 </script>
 
-<!-- SPECIALTY MODULE SCRIPTS -->
+<!-- ============================================================== -->
+<!-- 2. SPECIALTY MODULE SCRIPTS -->
+<!-- ============================================================== -->
 <script src="Subjects/obgy.js"></script>
 <script src="Subjects/ortho.js"></script>
 <script src="Subjects/Emgicu.js"></script>
@@ -857,7 +861,9 @@ window.S = S;
 <script src="Subjects/rheum.js"></script>
 <script src="Subjects/surg.js"></script>
 
-<!-- APPLICATION ENGINE -->
+<!-- ============================================================== -->
+<!-- 3. APPLICATION ENGINE, OFFLINE SYNC & CONTROLLER -->
+<!-- ============================================================== -->
 <script>
 (function () {
  "use strict";
@@ -1022,11 +1028,10 @@ window.S = S;
  }
  }
 
- // --- CHECK USER STATUS & SCRIPT-INITIATED ACCOUNT WIPE ---
+ // --- CHECK USER SESSION & SCRIPT-INITIATED ACCOUNT WIPE ---
  async function checkUserSession() {
  const savedEmail = localStorage.getItem("doccalc_dr_email");
  
- // If online, check if admin flagged this account as deleted/reset in sheet directory
  if (navigator.onLine && savedEmail && GOOGLE_SHEET_WEBHOOK_URL && !GOOGLE_SHEET_WEBHOOK_URL.includes("PASTE_YOUR")) {
    try {
      const res = await fetch(`${GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(savedEmail)}&t=${Date.now()}`);
@@ -1175,7 +1180,7 @@ window.S = S;
  if (data.status === "success") {
  const name = $("loginDrName").value.trim();
  const degree = $("loginDrDegree").value.trim();
- const hospital = localStorage.getItem("doccalc_temp_hospital"] || "";
+ const hospital = localStorage.getItem("doccalc_temp_hospital") || "";
  const avatar = localStorage.getItem("doccalc_temp_avatar") || "";
 
  localStorage.setItem("doccalc_dr_name", name);
@@ -1873,7 +1878,6 @@ window.S = S;
  const res = await fetch(`${window.GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(email)}&t=${Date.now()}`);
  const data = await res.json();
  
- // Check if script signalled account wipe/deletion from admin side
  if (data.status === "account_wiped" || data.status === "not_found") {
    localStorage.clear();
    alert("Your account has been reset by administration. Please log in again.");
