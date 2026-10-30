@@ -56,12 +56,12 @@
  --tag-text: #475569;
  --splash-bg: #ffffff;
  --modal-overlay: rgba(0, 0, 0, 0.45);
- /* WhatsApp Chat Theme Variables */
- --wa-bg-light: #efeae2;
+ /* WhatsApp Chat Theme Variables - Changed to Pure White */
+ --wa-bg-light: #ffffff;
  --wa-bg-dark: #0b141a;
  --wa-bubble-out-light: #d9fdd3;
  --wa-bubble-out-dark: #005c4b;
- --wa-bubble-in-light: #ffffff;
+ --wa-bubble-in-light: #f0f2f5;
  --wa-bubble-in-dark: #202c33;
 }
 
@@ -487,23 +487,14 @@ table.ref-table tr.active-grade td { border-top: 2px solid #38a169; border-botto
 footer { text-align: center; font-size: 11px; color: var(--text-muted); padding: 24px 0; }
 @media (max-width: 480px) { .fields { grid-template-columns: 1fr; } .card { padding: 11px; } }
 
-/* WhatsApp Desktop Wrapper Effect */
-@media (min-width: 768px) {
-  #chatPage {
-    padding: 20px;
-    background-color: #dadada !important;
-  }
-  #whatsappDesktopWrapper {
-    max-width: 1200px;
-    height: calc(100vh - 40px);
-    margin: 0 auto;
-    background: var(--bg-body);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
+/* Full Width Chat Layout Fix (Removed max-width restriction) */
+#whatsappDesktopWrapper {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: var(--bg-body);
+  display: flex;
+  flex-direction: column;
 }
 </style>
 </head>
@@ -692,9 +683,9 @@ C 100 110, 100 128, 100 144
  </div>
 </div>
 
-<!-- STANDALONE WHATSAPP CHAT & FEEDBACK VIEW -->
+<!-- STANDALONE WHATSAPP CHAT & FEEDBACK VIEW (Full Screen White Background) -->
 <div id="chatPage" class="hidden" style="position: fixed; inset: 0; background: var(--bg-body); z-index: 2000; display: flex; flex-direction: column;">
-    <div id="whatsappDesktopWrapper" style="display: flex; flex-direction: column; flex: 1; width: 100%; height: 100%;">
+    <div id="whatsappDesktopWrapper">
         <!-- WhatsApp Chat Header -->
         <header class="flex-none text-white px-4 py-3 flex items-center justify-between z-10 shadow-sm" style="background: var(--bg-header); color: var(--header-text); border-bottom: 1px solid var(--border-color);">
             <div class="flex items-center space-x-3" style="display: flex; align-items: center; gap: 12px;">
@@ -708,23 +699,23 @@ C 100 110, 100 128, 100 144
             </div>
         </header>
 
-        <!-- WhatsApp Messages Container -->
-        <main id="chatMessagesContainer" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-3" style="flex: 1; overflow-y: auto; padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; background-color: var(--wa-bg-light); background-image: radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px); background-size: 20px 20px;">
-            <div style="max-width: 85%; padding: 8px 12px; border-radius: 7.5px; font-size: 13.5px; line-height: 1.4; align-self: flex-start; background: var(--wa-bubble-in-light); color: var(--text-main); box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); position: relative;">
+        <!-- WhatsApp Messages Container (Pure White Background) -->
+        <main id="chatMessagesContainer" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-3" style="flex: 1; overflow-y: auto; padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; background-color: var(--wa-bg-light);">
+            <div style="max-width: 85%; padding: 8px 12px; border-radius: 7.5px; font-size: 13.5px; line-height: 1.4; align-self: flex-start; background: var(--wa-bubble-in-light); color: var(--text-main); border: 1px solid var(--border-color); position: relative;">
                 <div>Hello! Send feedback, bug reports, or clinical questions directly to the DocStat team here.</div>
                 <div style="font-size: 10px; opacity: 0.6; margin-top: 2px; text-align: right;">DocStat team · Just now</div>
             </div>
         </main>
 
         <!-- WhatsApp Input Footer -->
-        <footer class="flex-none p-3 z-10" style="background: #f0f2f5; border-top: 1px solid #e2e8f0; display: flex; align-items: center;">
+        <footer class="flex-none p-3 z-10" style="background: var(--bg-card); border-top: 1px solid var(--border-color); display: flex; align-items: center;">
             <form id="standaloneChatForm" class="w-full mx-auto flex items-center space-x-2" style="display: flex; gap: 8px; align-items: center; width: 100%;">
                 <input 
                     type="text" 
                     id="standaloneChatInput" 
                     placeholder="chat with DocStat team" 
                     class="w-full rounded-lg px-4 py-2.5 text-sm focus:outline-none"
-                    style="flex: 1; padding: 10px 14px; border: none; background: #ffffff; color: #111b21; border-radius: 8px; outline: none; font-size: 14px; box-shadow: 0 1px 0.5px rgba(0,0,0,0.05);"
+                    style="flex: 1; padding: 10px 14px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main); border-radius: 8px; outline: none; font-size: 14px;"
                     autocomplete="off"
                     required
                 >
@@ -1021,20 +1012,7 @@ window.S = S;
  
  if (avatarBase64) {
  if (avatarEl) avatarEl.innerHTML = `<img src="${avatarBase64}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
- if (chatAvatarEl) chatAvatarEl.innerHTML = `<img src="${avatarBase64}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
- } else {
- if (avatarEl) avatarEl.innerHTML = "🧑🏻‍⚕️";
- if (chatAvatarEl) chatAvatarEl.innerHTML = "🧑🏻‍⚕️";
- }
- }
-
- // --- CHECK USER SESSION & SCRIPT-INITIATED ACCOUNT WIPE ---
- async function checkUserSession() {
- const savedEmail = localStorage.getItem("doccalc_dr_email");
- 
- if (navigator.onLine && savedEmail && GOOGLE_SHEET_WEBHOOK_URL && !GOOGLE_SHEET_WEBHOOK_URL.includes("PASTE_YOUR")) {
-   try {
-     const res = await fetch(`${GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(savedEmail)}&t=${Date.now()}`);
+ if (chatAvatarEl) chatAvatarEl.innerHTML = `<img src="${avatarBase64}" style="width:100\%;height:100\%;border-radius:50\%;object-fit:cover;">`; } else { if (avatarEl) avatarEl.innerHTML = "🧑🏻‍⚕️"; if (chatAvatarEl) chatAvatarEl.innerHTML = "🧑🏻‍⚕️"; } }  // --- CHECK USER SESSION & SCRIPT-INITIATED ACCOUNT WIPE --- async function checkUserSession() { const savedEmail = localStorage.getItem("doccalc_dr_email");  if (navigator.onLine && savedEmail && GOOGLE_SHEET_WEBHOOK_URL && !GOOGLE_SHEET_WEBHOOK_URL.includes("PASTE_YOUR")) { try { const res = await fetch(`${GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(savedEmail)}&t=${Date.now()}`);
      const data = await res.json();
      if (data.status === "account_wiped" || data.status === "not_found") {
        localStorage.clear();
@@ -1255,181 +1233,7 @@ window.S = S;
  const savedAvatar = localStorage.getItem("doccalc_dr_avatar");
  if (savedAvatar) {
  tempAvatarBase64 = savedAvatar;
- $("avatarPreviewContainer").innerHTML = `<img src="${savedAvatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
- } else {
- $("avatarPreviewContainer").innerHTML = "🧑🏻‍⚕️";
- }
-
- $("emailFieldWrap").style.display = "none";
- $("sendOtpBtn").classList.add("hidden");
- $("saveProfileOnlyBtn").classList.remove("hidden");
- $("loginStep1").style.display = "flex";
- $("loginStep2").style.display = "none";
- $("loginErrorMsg").textContent = "";
- $("loginModal").classList.remove("hidden");
- };
-
- $("saveProfileOnlyBtn").onclick = function() {
- const name = $("loginDrName").value.trim();
- const degree = $("loginDrDegree").value.trim();
- const hospital = $("loginDrHospital").value.trim();
- const errorMsg = $("loginErrorMsg");
-
- if (!name || !degree) {
- errorMsg.textContent = "Please provide Name and Degree.";
- return;
- }
-
- localStorage.setItem("doccalc_dr_name", name);
- localStorage.setItem("doccalc_dr_degree", degree);
- localStorage.setItem("doccalc_dr_hospital", hospital);
- if (tempAvatarBase64) localStorage.setItem("doccalc_dr_avatar", tempAvatarBase64);
-
- $("loginModal").classList.add("hidden");
- applyDoctorProfile(name, degree, hospital, localStorage.getItem("doccalc_dr_avatar"));
-
- sendDataToWebhook({
- type: "registration",
- timestamp: new Date().toLocaleString(),
- email: localStorage.getItem("doccalc_dr_email"),
- name: name,
- degree: degree,
- hospital: hospital,
- avatar: localStorage.getItem("doccalc_dr_avatar") || ""
- });
- };
-
- $("deleteAccountBtn").onclick = function() {
- if (confirm("Are you sure you want to delete your account data and reset login?")) {
- const email = localStorage.getItem("doccalc_dr_email");
- if (email && window.sendDataToWebhook) {
- window.sendDataToWebhook({
- type: "account_deletion",
- timestamp: new Date().toLocaleString(),
- email: email
- });
- }
- localStorage.clear();
- location.reload();
- }
- };
-
- checkUserSession();
-
- let currentCatId = null;
- let currentTool = null;
- let activeFilter = "all";
-
- // --- THEME ENGINE ---
- let activeThemeMode = localStorage.getItem("doccalc_theme") || "system";
- function applyTheme(mode) {
- activeThemeMode = mode;
- localStorage.setItem("doccalc_theme", mode);
- let effective = mode === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : mode;
- document.documentElement.setAttribute("data-theme", effective);
- document.querySelectorAll(".theme-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.themeVal === mode));
- const meta = document.querySelector('meta[name="theme-color"]');
- if (meta) meta.setAttribute("content", effective === "dark" ? "#0b1523" : "#0f2744");
- }
- window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
- if (activeThemeMode === "system") applyTheme("system");
- });
- applyTheme(activeThemeMode);
-
- $("openSettingsBtn").onclick = () => $("settingsModal").classList.remove("hidden");
- $("closeSettingsBtn").onclick = () => $("settingsModal").classList.add("hidden");
- $("settingsModal").onclick = e => { if (e.target === $("settingsModal")) $("settingsModal").classList.add("hidden"); };
- document.querySelectorAll(".theme-btn").forEach(btn => btn.onclick = () => applyTheme(btn.dataset.themeVal));
-
- // --- SPLASH DISMISSAL FAIL-SAFE ---
- function triggerSplashSequence() {
- const logoWrap = $("splashLogoWrap");
- const splash = $("splash");
-
- setTimeout(() => {
- if (logoWrap) logoWrap.classList.add("pulse-lockup");
- }, 1900);
-
- setTimeout(() => {
- if (splash) {
- splash.classList.add("fade-out");
- setTimeout(() => {
- if (splash.parentNode) splash.parentNode.removeChild(splash);
- }, 400);
- }
-
- if (window.AndroidBridge && typeof window.AndroidBridge.onSplashComplete === "function") {
- window.AndroidBridge.onSplashComplete();
- }
- }, 2200);
- }
-
- window.addEventListener("load", triggerSplashSequence);
-
- function showView(view) {
- $("home").classList.toggle("hidden", view !== "home");
- $("categoryPage").classList.toggle("hidden", view !== "category");
- $("calculatorPage").classList.toggle("hidden", view !== "calculator");
- $("sourcePage").classList.toggle("hidden", view !== "source");
- $("chatPage").classList.toggle("hidden", view !== "chat");
- window.scrollTo({ top: 0, behavior: "smooth" });
- }
-
- // --- NATIVE HASH ROUTER FOR SINGLE-CLICK BACK BUTTON ---
- let isHandlingHash = false;
- window.addEventListener("hashchange", async function () {
- if (isHandlingHash) return;
- isHandlingHash = true;
-
- const rawHash = location.hash.replace(/^#/, "");
-
- const modal = $("settingsModal");
- if (modal && !modal.classList.contains("hidden")) modal.classList.add("hidden");
-
- const searchInput = $("search");
- if (searchInput && searchInput.value) {
- searchInput.value = "";
- $("homeDefaultContent").classList.remove("hidden");
- $("searchResultsSection").classList.add("hidden");
- }
-
- if (!rawHash) {
- showView("home");
- isHandlingHash = false;
- return;
- }
-
- if (rawHash.startsWith("category=")) {
- const catId = decodeURIComponent(rawHash.replace("category=", ""));
- currentCatId = catId;
- renderCategoryTools();
- showView("category");
- isHandlingHash = false;
- return;
- }
-
- if (rawHash.startsWith("tool=")) {
- const toolId = decodeURIComponent(rawHash.replace("tool=", ""));
- const foundTool = (window.tools || []).find(t => t.id === toolId);
- if (foundTool && (!currentTool || currentTool.id !== toolId)) {
- openToolView(foundTool, true);
- } else {
- showView("calculator");
- }
- isHandlingHash = false;
- return;
- }
-
- if (rawHash === "chat") {
- showView("chat");
- await loadClinicianMessages();
- isHandlingHash = false;
- return;
- }
-
- if (rawHash.startsWith("source=")) {
- const calcId = decodeURIComponent(rawHash.replace("source=", ""));
- const sourcePath = `InfoHTMLs/${calcId}.html`;
+ $("avatarPreviewContainer").innerHTML = `<img src="${savedAvatar}" style="width:100\%;height:100\%;border-radius:50\%;object-fit:cover;">`; } else { $("avatarPreviewContainer").innerHTML = "🧑🏻‍⚕️"; }  $("emailFieldWrap").style.display = "none"; $("sendOtpBtn").classList.add("hidden"); $("saveProfileOnlyBtn").classList.remove("hidden"); $("loginStep1").style.display = "flex"; $("loginStep2").style.display = "none"; $("loginErrorMsg").textContent = ""; $("loginModal").classList.remove("hidden"); };  $("saveProfileOnlyBtn").onclick = function() { const name = $("loginDrName").value.trim(); const degree = $("loginDrDegree").value.trim(); const hospital = $("loginDrHospital").value.trim(); const errorMsg = $("loginErrorMsg");  if (!name \vert{}\vert{} !degree) { errorMsg.textContent = "Please provide Name and Degree."; return; }  localStorage.setItem("doccalc_dr_name", name); localStorage.setItem("doccalc_dr_degree", degree); localStorage.setItem("doccalc_dr_hospital", hospital); if (tempAvatarBase64) localStorage.setItem("doccalc_dr_avatar", tempAvatarBase64);  $("loginModal").classList.add("hidden"); applyDoctorProfile(name, degree, hospital, localStorage.getItem("doccalc_dr_avatar"));  sendDataToWebhook({ type: "registration", timestamp: new Date().toLocaleString(), email: localStorage.getItem("doccalc_dr_email"), name: name, degree: degree, hospital: hospital, avatar: localStorage.getItem("doccalc_dr_avatar") \vert{}\vert{} "" }); };  $("deleteAccountBtn").onclick = function() { if (confirm("Are you sure you want to delete your account data and reset login?")) { const email = localStorage.getItem("doccalc_dr_email"); if (email && window.sendDataToWebhook) { window.sendDataToWebhook({ type: "account_deletion", timestamp: new Date().toLocaleString(), email: email }); } localStorage.clear(); location.reload(); } };  checkUserSession();  let currentCatId = null; let currentTool = null; let activeFilter = "all";  // --- THEME ENGINE --- let activeThemeMode = localStorage.getItem("doccalc_theme") \vert{}\vert{} "system"; function applyTheme(mode) { activeThemeMode = mode; localStorage.setItem("doccalc_theme", mode); let effective = mode === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : mode; document.documentElement.setAttribute("data-theme", effective); document.querySelectorAll(".theme-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.themeVal === mode)); const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.setAttribute("content", effective === "dark" ? "#0b1523" : "#0f2744"); } window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { if (activeThemeMode === "system") applyTheme("system"); }); applyTheme(activeThemeMode);  $("openSettingsBtn").onclick = () => $("settingsModal").classList.remove("hidden"); $("closeSettingsBtn").onclick = () => $("settingsModal").classList.add("hidden"); $("settingsModal").onclick = e => { if (e.target === $("settingsModal")) $("settingsModal").classList.add("hidden"); }; document.querySelectorAll(".theme-btn").forEach(btn => btn.onclick = () => applyTheme(btn.dataset.themeVal));  // --- SPLASH DISMISSAL FAIL-SAFE --- function triggerSplashSequence() { const logoWrap = $("splashLogoWrap"); const splash = $("splash");  setTimeout(() => { if (logoWrap) logoWrap.classList.add("pulse-lockup"); }, 1900);  setTimeout(() => { if (splash) { splash.classList.add("fade-out"); setTimeout(() => { if (splash.parentNode) splash.parentNode.removeChild(splash); }, 400); }  if (window.AndroidBridge && typeof window.AndroidBridge.onSplashComplete === "function") { window.AndroidBridge.onSplashComplete(); } }, 2200); }  window.addEventListener("load", triggerSplashSequence);  function showView(view) { $("home").classList.toggle("hidden", view !== "home"); $("categoryPage").classList.toggle("hidden", view !== "category"); $("calculatorPage").classList.toggle("hidden", view !== "calculator"); $("sourcePage").classList.toggle("hidden", view !== "source"); $("chatPage").classList.toggle("hidden", view !== "chat"); window.scrollTo({ top: 0, behavior: "smooth" }); }  // --- NATIVE HASH ROUTER FOR SINGLE-CLICK BACK BUTTON --- let isHandlingHash = false; window.addEventListener("hashchange", async function () { if (isHandlingHash) return; isHandlingHash = true;  const rawHash = location.hash.replace(/^#/, "");  const modal = $("settingsModal"); if (modal && !modal.classList.contains("hidden")) modal.classList.add("hidden");  const searchInput = $("search"); if (searchInput && searchInput.value) { searchInput.value = ""; $("homeDefaultContent").classList.remove("hidden"); $("searchResultsSection").classList.add("hidden"); }  if (!rawHash) { showView("home"); isHandlingHash = false; return; }  if (rawHash.startsWith("category=")) { const catId = decodeURIComponent(rawHash.replace("category=", "")); currentCatId = catId; renderCategoryTools(); showView("category"); isHandlingHash = false; return; }  if (rawHash.startsWith("tool=")) { const toolId = decodeURIComponent(rawHash.replace("tool=", "")); const foundTool = (window.tools \vert{}\vert{} []).find(t => t.id === toolId); if (foundTool && (!currentTool \vert{}\vert{} currentTool.id !== toolId)) { openToolView(foundTool, true); } else { showView("calculator"); } isHandlingHash = false; return; }  if (rawHash === "chat") { showView("chat"); await loadClinicianMessages(); isHandlingHash = false; return; }  if (rawHash.startsWith("source=")) { const calcId = decodeURIComponent(rawHash.replace("source=", "")); const sourcePath = `InfoHTMLs/${calcId}.html`;
  const container = $("sourceContentContainer");
  container.innerHTML = `<p class="muted" style="text-align: center; margin-top: 40px;">Loading reference details...</p>`;
 
@@ -1634,11 +1438,7 @@ window.S = S;
 
  const typeBadge = $("toolTypeBadge");
  typeBadge.textContent = tool.type === "class" ? "Classification" : "Calculator";
- typeBadge.className = `badge ${tool.type === "class" ? "badge-class" : "badge-calc"}`;
-
- const specBadge = $("toolSpecBadge");
- specBadge.textContent = tool.cat ? tool.cat.toUpperCase() : "GENERAL";
- specBadge.className = `badge ${getSpecialtyBadgeClass(tool.cat)}`;
+ typeBadge.className = `badge ${tool.type === "class" ? "badge-class" : "badge-calc"}`;  const specBadge = $("toolSpecBadge"); specBadge.textContent = tool.cat ? tool.cat.toUpperCase() : "GENERAL"; specBadge.className = `badge ${getSpecialtyBadgeClass(tool.cat)}`;
 
  updatePinButtonState(tool.id);
  $("pinToolBtn").onclick = () => togglePinTool(tool.id);
@@ -1711,9 +1511,7 @@ window.S = S;
  const body = $("refTableBody");
  if (tool.table && tool.table.headers && tool.table.rows) {
  refCard.classList.remove("hidden");
- head.innerHTML = `<tr>${tool.table.headers.map(h => `<th>${h}</th>`).join("")}</tr>`;
- body.innerHTML = tool.table.rows.map(row => {
- const rowId = row.id ? ` id="ref-row-${row.id}"` : "";
+ head.innerHTML = `<tr>${tool.table.headers.map(h => `<th>${h}</th>`).join("")}</tr>`; body.innerHTML = tool.table.rows.map(row => { const rowId = row.id ? ` id="ref-row-${row.id}"` : "";
  const cols = row.cols || (Array.isArray(row) ? row : []);
  return `<tr${rowId}>${cols.map(c => `<td>${c}</td>`).join("")}</tr>`;
  }).join("");
@@ -1733,7 +1531,7 @@ window.S = S;
  if (lit.links && lit.links.length) {
  linksHtml = `<div class="ref-card-links">${lit.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer" class="ref-btn-link ${l.secondary ? "secondary" : ""}">${l.text}</a>`).join("")}</div>`;
  }
- refItem.innerHTML = `<div style="font-weight:700;margin-bottom:4px;">${lit.icon || "📄"} ${lit.title || ""}</div><div class="ref-card-citation">${lit.citation || ""}</div>${linksHtml}`;
+ refItem.innerHTML = `<div style="font-weight:700;margin-bottom:4px;">${lit.icon \vert{}\vert{} "📄"} ${lit.title || ""}</div><div class="ref-card-citation">${lit.citation \vert{}\vert{} ""}</div>${linksHtml}`;
  refsList.appendChild(refItem);
  });
  } else if (tool.references) {
@@ -1767,7 +1565,7 @@ window.S = S;
 
  resBox.classList.remove("severity-mild", "severity-moderate", "severity-critical");
 
- const combinedText = `${res.value || ""} ${res.eq || ""}`.toLowerCase();
+ const combinedText = `${res.value \vert{}\vert{} ""} ${res.eq || ""}`.toLowerCase();
  const numMatch = String(res.value || "").match(/-?\d+(\.\d+)?/);
  const scoreNum = numMatch ? parseFloat(numMatch[0]) : null;
 
@@ -1782,11 +1580,7 @@ window.S = S;
  else severity = "mild";
  }
 
- resBox.classList.add(`severity-${severity}`);
-
- if (res.matchId) {
- document.querySelectorAll("#refTable tr").forEach(r => r.classList.remove("active-grade"));
- const activeRow = $(`ref-row-${res.matchId}`);
+ resBox.classList.add(`severity-${severity}`);  if (res.matchId) { document.querySelectorAll("#refTable tr").forEach(r => r.classList.remove("active-grade")); const activeRow = $(`ref-row-${res.matchId}`);
  if (activeRow) activeRow.classList.add("active-grade");
  }
 
@@ -1811,71 +1605,7 @@ window.S = S;
  $("copy").onclick = () => {
  const valText = $("value").textContent;
  const eqText = $("equation").textContent;
- const txt = `${currentTool.name}\n${valText}\n${eqText}`;
-
- navigator.clipboard.writeText(txt).then(() => {
- const btn = $("copy");
- btn.textContent = "Copied!";
- setTimeout(() => btn.textContent = "Copy", 1500);
- });
-
- logToolCalculation(currentTool.name, valText, eqText);
- };
-
- $("notesBtn").onclick = () => {
- if (!currentTool || !currentTool.id) return;
- location.hash = "source=" + encodeURIComponent(currentTool.id);
- };
-
- $("closeSourcePageBtn").onclick = () => {
- if (currentTool) {
- location.replace("#tool=" + encodeURIComponent(currentTool.id));
- } else {
- location.replace("#");
- }
- };
-
- renderHome();
- window.addEventListener("load", renderHome);
-
- let checkCount = 0;
- const pollTimer = setInterval(() => {
- renderHome();
- checkCount++;
- if (checkCount >= 8) clearInterval(pollTimer);
- }, 250);
-})();
-</script>
-
-<!-- STANDALONE CHAT ENGINE & WIRING SCRIPT -->
-<script>
-(function() {
- const settingsBtn = document.getElementById("openSettingsBtn");
- if (settingsBtn && settingsBtn.parentNode) {
- const wrap = document.createElement("div");
- wrap.style.display = "flex";
- wrap.style.gap = "8px";
- settingsBtn.parentNode.insertBefore(wrap, settingsBtn);
-
- const actualChatBtn = document.createElement("button");
- actualChatBtn.type = "button";
- actualChatBtn.className = "icon-btn";
- actualChatBtn.innerHTML = "💬 Feedback";
- actualChatBtn.onclick = () => {
- location.hash = "chat";
- };
-
- wrap.appendChild(actualChatBtn);
- wrap.appendChild(settingsBtn);
- }
-
- async function loadClinicianMessages() {
- if (!navigator.onLine || !window.GOOGLE_SHEET_WEBHOOK_URL) return;
- const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
- const box = document.getElementById("chatMessagesContainer");
-
- try {
- const res = await fetch(`${window.GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(email)}&t=${Date.now()}`);
+ const txt = `${currentTool.name}\n${valText}\n${eqText}`;  navigator.clipboard.writeText(txt).then(() => { const btn = $("copy"); btn.textContent = "Copied!"; setTimeout(() => btn.textContent = "Copy", 1500); });  logToolCalculation(currentTool.name, valText, eqText); };  $("notesBtn").onclick = () => { if (!currentTool \vert{}\vert{} !currentTool.id) return; location.hash = "source=" + encodeURIComponent(currentTool.id); };  $("closeSourcePageBtn").onclick = () => { if (currentTool) { location.replace("#tool=" + encodeURIComponent(currentTool.id)); } else { location.replace("#"); } };  renderHome(); window.addEventListener("load", renderHome);  let checkCount = 0; const pollTimer = setInterval(() => { renderHome(); checkCount++; if (checkCount >= 8) clearInterval(pollTimer); }, 250); })(); </script>  <!-- STANDALONE CHAT ENGINE & WIRING SCRIPT --> <script> (function() { const settingsBtn = document.getElementById("openSettingsBtn"); if (settingsBtn && settingsBtn.parentNode) { const wrap = document.createElement("div"); wrap.style.display = "flex"; wrap.style.gap = "8px"; settingsBtn.parentNode.insertBefore(wrap, settingsBtn);  const actualChatBtn = document.createElement("button"); actualChatBtn.type = "button"; actualChatBtn.className = "icon-btn"; actualChatBtn.innerHTML = "💬 Feedback"; actualChatBtn.onclick = () => { location.hash = "chat"; };  wrap.appendChild(actualChatBtn); wrap.appendChild(settingsBtn); }  async function loadClinicianMessages() { if (!navigator.onLine \vert{}\vert{} !window.GOOGLE_SHEET_WEBHOOK_URL) return; const email = (localStorage.getItem("doccalc_dr_email") \vert{}\vert{} "").trim().toLowerCase(); const box = document.getElementById("chatMessagesContainer");  try { const res = await fetch(`${window.GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(email)}&t=${Date.now()}`);
  const data = await res.json();
  
  if (data.status === "account_wiped" || data.status === "not_found") {
@@ -1890,7 +1620,7 @@ window.S = S;
  data.messages.messages.forEach(m => {
  const div = document.createElement("div");
  const isMe = m.sender === "clinician";
- div.style.cssText = `max-width:80%; padding:8px 12px; border-radius:7.5px; font-size:13.5px; line-height:1.4; align-self:${isMe ? "flex-end" : "flex-start"}; background:${isMe ? "var(--wa-bubble-out-light)" : "var(--wa-bubble-in-light)"}; color: #111b21; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); position:relative; word-break: break-word;`;
+ div.style.cssText = `max-width:80%; padding:8px 12px; border-radius:7.5px; font-size:13.5px; line-height:1.4; align-self:${isMe ? "flex-end" : "flex-start"}; background:${isMe ? "var(--wa-bubble-out-light)" : "var(--wa-bubble-in-light)"}; color: #111b21; border: 1px solid var(--border-color); position:relative; word-break: break-word;`;
  div.innerHTML = `<div>${m.message}</div><div style="font-size:10px; opacity:0.6; margin-top:2px; text-align:right;">${isMe ? "You" : "DocStat team"} · ${m.timestamp}</div>`;
  box.appendChild(div);
  });
@@ -1919,25 +1649,5 @@ window.S = S;
  if (box.querySelector(".muted")) box.innerHTML = "";
 
  const div = document.createElement("div");
- div.style.cssText = "max-width:80%; padding:8px 12px; border-radius:7.5px; font-size:13.5px; line-height:1.4; align-self:flex-end; background:var(--wa-bubble-out-light); color:#111b21; box-shadow:0 1px 0.5px rgba(0,0,0,0.13); position:relative; word-break: break-word;";
- div.innerHTML = `<div>${msg}${!navigator.onLine ? " (Queued offline)" : ""}</div><div style="font-size:10px; opacity:0.6; margin-top:2px; text-align:right;">You · ${timestamp}</div>`;
- box.appendChild(div);
- box.scrollTop = box.scrollHeight;
- inp.value = "";
-
- if (window.sendDataToWebhook) {
- window.sendDataToWebhook({
- type: "feedback",
- timestamp: timestamp,
- email: email,
- name: name,
- degree: degree,
- message: msg,
- avatar: avatar
- });
- }
- };
-})();
-</script>
-</body>
-</html>
+ div.style.cssText = "max-width:80%; padding:8px 12px; border-radius:7.5px; font-size:13.5px; line-height:1.4; align-self:flex-end; background:var(--wa-bubble-out-light); color:#111b21; border:1px solid var(--border-color); position:relative; word-break: break-word;";
+ div.innerHTML = `<div>${msg}${!navigator.onLine ? " (Queued offline)" : ""}</div><div style="font-size:10px; opacity:0.6; margin-top:2px; text-align
