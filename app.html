@@ -1132,6 +1132,7 @@ window.S = S;
  async function callWebhookAsync(payload) {
    const res = await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
      method: "POST",
+     headers: { "Content-Type": "text/plain;charset=utf-8" },
      body: JSON.stringify(payload)
    });
    return await res.json();
@@ -1408,6 +1409,7 @@ window.S = S;
    $("chatPage").classList.toggle("hidden", view !== "chat");
    window.scrollTo({ top: 0, behavior: "smooth" });
  }
+ window.showView = showView; // Expose globally for bottom script
 
  // --- BULLETPROOF HASH & HARDWARE ROUTER ---
  let isHandlingHash = false;
@@ -1457,7 +1459,9 @@ window.S = S;
 
      if (rawHash === "chat") {
        showView("chat");
-       await loadClinicianMessages();
+       if (window.loadClinicianMessages) {
+         await window.loadClinicianMessages();
+       }
        return;
      }
 
@@ -1918,9 +1922,8 @@ window.S = S;
    actualChatBtn.innerHTML = "💬 Feedback";
    actualChatBtn.onclick = () => {
      clearUnreadBadge();
-     window.history.pushState({ modal: "chat" }, "", "#chat");
-     showView("chat");
-     loadClinicianMessages();
+     // Safely update hash so router fires smoothly
+     location.hash = "chat";
    };
 
    unreadDot = document.createElement("span");
@@ -1974,16 +1977,12 @@ window.S = S;
 
    const chatPage = document.getElementById("chatPage");
    if (chatPage && !chatPage.classList.contains("hidden")) {
-     if (window.history.state && window.history.state.modal === "chat") {
-       window.history.back();
+     chatPage.classList.add("hidden");
+     document.getElementById("home").classList.remove("hidden");
+     if (window.history.replaceState) {
+       window.history.replaceState(null, null, window.location.pathname);
      } else {
-       chatPage.classList.add("hidden");
-       document.getElementById("home").classList.remove("hidden");
-       if (window.history.replaceState) {
-         window.history.replaceState(null, null, window.location.pathname);
-       } else {
-         location.hash = "";
-       }
+       location.hash = "";
      }
    }
  };
