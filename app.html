@@ -877,7 +877,8 @@ window.S = S;
  "use strict";
  const $ = id => document.getElementById(id);
 
- const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbysawxhVYm2T3esrWSfwVipAnZ8gI-JBeYk40d65rw63KGCmn5b6h4jJg9RKbQQjTW4/exec";
+ // Insert your Google Apps Script Web App Deployment URL here
+ const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxKp1_BygA9x35tUauvO69H77fAGOshZK6upNcklF3WMn5Jr9aDSZyu037nN8rjyyBz/exec";
  const OFFLINE_QUEUE_KEY = "doccalc_offline_sync_queue";
  let isSyncingQueue = false;
 
@@ -1820,99 +1821,125 @@ window.S = S;
 (function() {
  const settingsBtn = document.getElementById("openSettingsBtn");
  if (settingsBtn && settingsBtn.parentNode) {
- const wrap = document.createElement("div");
- wrap.style.display = "flex";
- wrap.style.gap = "8px";
- settingsBtn.parentNode.insertBefore(wrap, settingsBtn);
+   const wrap = document.createElement("div");
+   wrap.style.display = "flex";
+   wrap.style.gap = "8px";
+   settingsBtn.parentNode.insertBefore(wrap, settingsBtn);
 
- const actualChatBtn = document.createElement("button");
- actualChatBtn.type = "button";
- actualChatBtn.className = "icon-btn";
- actualChatBtn.innerHTML = "💬 Feedback";
- actualChatBtn.onclick = () => {
- location.hash = "chat";
- };
+   const actualChatBtn = document.createElement("button");
+   actualChatBtn.type = "button";
+   actualChatBtn.className = "icon-btn";
+   actualChatBtn.innerHTML = "💬 Feedback";
+   actualChatBtn.onclick = () => {
+     location.hash = "chat";
+   };
 
- wrap.appendChild(actualChatBtn);
- wrap.appendChild(settingsBtn);
+   wrap.appendChild(actualChatBtn);
+   wrap.appendChild(settingsBtn);
  }
 
- async function loadClinicianMessages() {
- const box = document.getElementById("chatMessagesContainer");
- 
- // Always render the mandatory admin greeting on start of a new chat/session view
- box.innerHTML = `
-     <div style="max-width: 85%; padding: 10px 14px; border-radius: 7.5px; font-size: 13.5px; line-height: 1.5; align-self: flex-start; background: var(--wa-bubble-in-light); color: var(--text-main); border: 1px solid var(--border-color); box-shadow: 0 1px 0.5px rgba(0,0,0,0.05); position: relative;">
-         <div>We value your feedback and tell us anything you would like us to add , new calculator ,classification or anything new in app that would be helpful for you and healthcare professionals.<br><br>Feel free to connect to our team<br>Regards<br><b>DocStat team</b></div>
-         <div style="font-size: 10px; opacity: 0.6; margin-top: 4px; text-align: right;">DocStat team · Just now</div>
-     </div>
+ function getSavedLocalChats() {
+   try {
+     return JSON.parse(localStorage.getItem("doccalc_saved_chat_history") || "[]");
+   } catch(e) {
+     return [];
+   }
+ }
+
+ function saveLocalChat(msg, timestamp) {
+   const chats = getSavedLocalChats();
+   chats.push({ sender: "clinician", message: msg, timestamp: timestamp });
+   localStorage.setItem("doccalc_saved_chat_history", JSON.stringify(chats));
+ }
+
+ function renderChatBubble(box, m) {
+   const div = document.createElement("div");
+   const isMe = m.sender === "clinician";
+   div.style.cssText = `max-width:85%; padding:8px 12px; border-radius:7.5px; font-size:13.5px; line-height:1.4; align-self:${isMe ? "flex-end" : "flex-start"}; background:${isMe ? "var(--wa-bubble-out-light)" : "var(--wa-bubble-in-light)"}; color: #111b21; border: 1px solid var(--border-color); box-shadow: 0 1px 0.5px rgba(0,0,0,0.05); position:relative; word-break: break-word;`;
+   div.innerHTML = `<div>${m.message}</div><div style="font-size:10px; opacity:0.6; margin-top:2px; text-align:right;">${isMe ? "You" : "DocStat team"} · ${m.timestamp}</div>`;
+   box.appendChild(div);
+ }
+
+ const ADMIN_WELCOME_HTML = `
+   <div style="max-width: 85%; padding: 10px 14px; border-radius: 7.5px; font-size: 13.5px; line-height: 1.5; align-self: flex-start; background: var(--wa-bubble-in-light); color: var(--text-main); border: 1px solid var(--border-color); box-shadow: 0 1px 0.5px rgba(0,0,0,0.05); position: relative;">
+       <div>We value your feedback and tell us anything you would like us to add , new calculator ,classification or anything new in app that would be helpful for you and healthcare professionals.<br><br>Feel free to connect to our team<br>Regards<br><b>DocStat team</b></div>
+       <div style="font-size: 10px; opacity: 0.6; margin-top: 4px; text-align: right;">DocStat team · Just now</div>
+   </div>
  `;
 
- if (!navigator.onLine || !window.GOOGLE_SHEET_WEBHOOK_URL) return;
- const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
- if (!email) return;
-
- try {
- const res = await fetch(`${window.GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(email)}&t=${Date.now()}`);
- const data = await res.json();
+ async function loadClinicianMessages() {
+   const box = document.getElementById("chatMessagesContainer");
  
- if (data.status === "account_wiped" || data.status === "not_found") {
-   localStorage.clear();
-   alert("Your account has been reset by administration. Please log in again.");
-   location.reload();
-   return;
- }
+   // 1. Initial admin greeting
+   box.innerHTML = ADMIN_WELCOME_HTML;
 
- if (data.status === "success" && data.messages) {
-   const messageList = Array.isArray(data.messages) ? data.messages : (data.messages.messages || []);
-   
-   messageList.forEach(m => {
-     const div = document.createElement("div");
-     const isMe = m.sender === "clinician";
-     div.style.cssText = `max-width:85%; padding:8px 12px; border-radius:7.5px; font-size:13.5px; line-height:1.4; align-self:${isMe ? "flex-end" : "flex-start"}; background:${isMe ? "var(--wa-bubble-out-light)" : "var(--wa-bubble-in-light)"}; color: #111b21; border: 1px solid var(--border-color); box-shadow: 0 1px 0.5px rgba(0,0,0,0.05); position:relative; word-break: break-word;`;
-     div.innerHTML = `<div>${m.message}</div><div style="font-size:10px; opacity:0.6; margin-top:2px; text-align:right;">${isMe ? "You" : "DocStat team"} · ${m.timestamp}</div>`;
-     box.appendChild(div);
-   });
- }
- box.scrollTop = box.scrollHeight;
- } catch (e) {
- console.warn("Could not load chat history:", e);
- }
+   // 2. Render locally cached messages instantly
+   let localChats = getSavedLocalChats();
+   localChats.forEach(m => renderChatBubble(box, m));
+   box.scrollTop = box.scrollHeight;
+
+   if (!navigator.onLine || !window.GOOGLE_SHEET_WEBHOOK_URL) return;
+   const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
+
+   try {
+     const res = await fetch(`${window.GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(email)}&t=${Date.now()}`);
+     const data = await res.json();
+     
+     if (data.status === "success" && data.messages && data.messages.length) {
+       // Merge remote history with local and deduplicate
+       const combined = [...localChats, ...data.messages];
+       const seen = new Set();
+       const deduped = [];
+       combined.forEach(item => {
+         if (!seen.has(item.message)) {
+           seen.add(item.message);
+           deduped.push(item);
+         }
+       });
+
+       box.innerHTML = ADMIN_WELCOME_HTML;
+       deduped.forEach(m => renderChatBubble(box, m));
+       localStorage.setItem("doccalc_saved_chat_history", JSON.stringify(deduped));
+       box.scrollTop = box.scrollHeight;
+     }
+   } catch (e) {
+     console.warn("Could not sync remote chat history:", e);
+   }
  }
 
  window.loadClinicianMessages = loadClinicianMessages;
 
  document.getElementById("standaloneChatForm").onsubmit = function(e) {
- e.preventDefault();
- const inp = document.getElementById("standaloneChatInput");
- const msg = inp.value.trim();
- if (!msg) return;
+   e.preventDefault();
+   const inp = document.getElementById("standaloneChatInput");
+   const msg = inp.value.trim();
+   if (!msg) return;
 
- const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
- const name = (localStorage.getItem("doccalc_dr_name") || "Anonymous").trim();
- const degree = (localStorage.getItem("doccalc_dr_degree") || "N/A").trim();
- const avatar = (localStorage.getItem("doccalc_dr_avatar") || "").trim();
- const timestamp = new Date().toLocaleString();
+   const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
+   const name = (localStorage.getItem("doccalc_dr_name") || "Anonymous").trim();
+   const degree = (localStorage.getItem("doccalc_dr_degree") || "N/A").trim();
+   const avatar = (localStorage.getItem("doccalc_dr_avatar") || "").trim();
+   const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
- const box = document.getElementById("chatMessagesContainer");
- const div = document.createElement("div");
- div.style.cssText = "max-width:85%; padding:8px 12px; border-radius:7.5px; font-size:13.5px; line-height:1.4; align-self:flex-end; background:var(--wa-bubble-out-light); color:#111b21; border: 1px solid var(--border-color); box-shadow:0 1px 0.5px rgba(0,0,0,0.05); position:relative; word-break: break-word;";
- div.innerHTML = `<div>${msg}${!navigator.onLine ? " (Queued offline)" : ""}</div><div style="font-size:10px; opacity:0.6; margin-top:2px; text-align:right;">You · ${timestamp}</div>`;
- box.appendChild(div);
- box.scrollTop = box.scrollHeight;
- inp.value = "";
+   const box = document.getElementById("chatMessagesContainer");
+   renderChatBubble(box, { sender: "clinician", message: msg, timestamp: timestamp });
+   box.scrollTop = box.scrollHeight;
+   
+   // Save to local device immediately so closing and reopening preserves it
+   saveLocalChat(msg, timestamp);
+   inp.value = "";
 
- if (window.sendDataToWebhook) {
- window.sendDataToWebhook({
- type: "feedback",
- timestamp: timestamp,
- email: email,
- name: name,
- degree: degree,
- message: msg,
- avatar: avatar
- });
- }
+   if (window.sendDataToWebhook) {
+     window.sendDataToWebhook({
+       type: "feedback",
+       timestamp: new Date().toLocaleString(),
+       email: email,
+       name: name,
+       degree: degree,
+       message: msg,
+       avatar: avatar
+     });
+   }
  };
 })();
 </script>
