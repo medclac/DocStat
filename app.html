@@ -1850,6 +1850,7 @@ window.S = S;
 
  if (!navigator.onLine || !window.GOOGLE_SHEET_WEBHOOK_URL) return;
  const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
+ if (!email) return;
 
  try {
  const res = await fetch(`${window.GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(email)}&t=${Date.now()}`);
@@ -1862,14 +1863,16 @@ window.S = S;
    return;
  }
 
- if (data.status === "success" && data.messages && data.messages.length) {
- data.messages.messages.forEach(m => {
- const div = document.createElement("div");
- const isMe = m.sender === "clinician";
- div.style.cssText = `max-width:85%; padding:8px 12px; border-radius:7.5px; font-size:13.5px; line-height:1.4; align-self:${isMe ? "flex-end" : "flex-start"}; background:${isMe ? "var(--wa-bubble-out-light)" : "var(--wa-bubble-in-light)"}; color: #111b21; border: 1px solid var(--border-color); box-shadow: 0 1px 0.5px rgba(0,0,0,0.05); position:relative; word-break: break-word;`;
- div.innerHTML = `<div>${m.message}</div><div style="font-size:10px; opacity:0.6; margin-top:2px; text-align:right;">${isMe ? "You" : "DocStat team"} · ${m.timestamp}</div>`;
- box.appendChild(div);
- });
+ if (data.status === "success" && data.messages) {
+   const messageList = Array.isArray(data.messages) ? data.messages : (data.messages.messages || []);
+   
+   messageList.forEach(m => {
+     const div = document.createElement("div");
+     const isMe = m.sender === "clinician";
+     div.style.cssText = `max-width:85%; padding:8px 12px; border-radius:7.5px; font-size:13.5px; line-height:1.4; align-self:${isMe ? "flex-end" : "flex-start"}; background:${isMe ? "var(--wa-bubble-out-light)" : "var(--wa-bubble-in-light)"}; color: #111b21; border: 1px solid var(--border-color); box-shadow: 0 1px 0.5px rgba(0,0,0,0.05); position:relative; word-break: break-word;`;
+     div.innerHTML = `<div>${m.message}</div><div style="font-size:10px; opacity:0.6; margin-top:2px; text-align:right;">${isMe ? "You" : "DocStat team"} · ${m.timestamp}</div>`;
+     box.appendChild(div);
+   });
  }
  box.scrollTop = box.scrollHeight;
  } catch (e) {
