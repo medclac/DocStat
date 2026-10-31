@@ -877,7 +877,7 @@ window.S = S;
  "use strict";
  const $ = id => document.getElementById(id);
 
- const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyWB-ebKOGd7-dFc4S57LirCE63bBm42JQn0PO1eFlEw2dngXO6W9MDFhjl13mxyUrU/exec";
+ const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxDKeQ5VK1iZDKWW3qdVciVmuNbGLU35xlkI4EldY7Sj5zMg5MyBiRbIPDk_mjZ5ihI/exec";
  const OFFLINE_QUEUE_KEY = "doccalc_offline_sync_queue";
  let isSyncingQueue = false;
 
@@ -1037,18 +1037,6 @@ window.S = S;
  }
 
  async function checkUserSession() {
- const savedEmail = localStorage.getItem("doccalc_dr_email");
- 
- if (navigator.onLine && savedEmail && GOOGLE_SHEET_WEBHOOK_URL && !GOOGLE_SHEET_WEBHOOK_URL.includes("PASTE_YOUR")) {
-   try {
-     const res = await fetch(`${GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(savedEmail)}&t=${Date.now()}`);
-     const data = await res.json();
-     if (data.status === "account_wiped" || data.status === "not_found") {
-       localStorage.clear();
-     }
-   } catch (e) {}
- }
-
  const savedName = localStorage.getItem("doccalc_dr_name");
  const savedDegree = localStorage.getItem("doccalc_dr_degree");
  const savedEmailKey = localStorage.getItem("doccalc_dr_email");
@@ -1111,28 +1099,6 @@ window.S = S;
 
  if (!name || !degree || !email) {
  errorMsg.textContent = "Please fill in all required fields.";
- return;
- }
-
- if (email.toLowerCase() === "nogain") {
- localStorage.setItem("doccalc_dr_name", name);
- localStorage.setItem("doccalc_dr_degree", degree);
- localStorage.setItem("doccalc_dr_hospital", hospital);
- if (tempAvatarBase64) localStorage.setItem("doccalc_dr_avatar", tempAvatarBase64);
- localStorage.setItem("doccalc_dr_email", "bypassed@nogain.com");
-
- $("loginModal").classList.add("hidden");
- applyDoctorProfile(name, degree, hospital, tempAvatarBase64);
-
- sendDataToWebhook({
- type: "registration",
- timestamp: new Date().toLocaleString(),
- email: "bypassed@nogain.com",
- name: name,
- degree: degree,
- hospital: hospital,
- avatar: tempAvatarBase64
- });
  return;
  }
 
