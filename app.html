@@ -753,7 +753,7 @@ C 100 110, 100 128, 100 144
 
         <!-- Interruption Alert Banner -->
         <div id="chatInterruptedBanner" class="hidden" style="background: #fee2e2; border-bottom: 1px solid #f87171; color: #991b1b; padding: 8px 16px; font-size: 12px; font-weight: 600; text-align: center;">
-            ⚠️ Upload was interrupted because you closed the chat. Please try again.
+            ⚠️ Upload was interrupted or failed. Please check your internet connection and try again.
         </div>
 
         <!-- WhatsApp Messages Container (Clean White Background) -->
@@ -941,7 +941,7 @@ window.S = S;
  "use strict";
  const $ = id => document.getElementById(id);
 
- // Insert your Google Apps Script Web App Deployment URL here:
+ // Primary Webhook URL:
  const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyIcYUMlVYIEizyu4ypsG0zLz5vcoRDRsmTKpHd5sG3rcRWXCFkvuHyS6y4KAkjaPNL/exec";
  const OFFLINE_QUEUE_KEY = "doccalc_offline_sync_queue";
  let isSyncingQueue = false;
@@ -1409,7 +1409,7 @@ window.S = S;
    $("chatPage").classList.toggle("hidden", view !== "chat");
    window.scrollTo({ top: 0, behavior: "smooth" });
  }
- window.showView = showView; // Expose globally for bottom script
+ window.showView = showView;
 
  // --- BULLETPROOF HASH & HARDWARE ROUTER ---
  let isHandlingHash = false;
@@ -1494,7 +1494,6 @@ window.S = S;
    }
  });
 
- // Android Hardware Back / System Swipe Gesture popstate Listener
  window.addEventListener("popstate", function (event) {
    const chatPage = document.getElementById("chatPage");
    if (chatPage && !chatPage.classList.contains("hidden")) {
@@ -1905,7 +1904,6 @@ window.S = S;
  let selectedFileName = "";
  let selectedFileMime = "";
  let isUploadingNow = false;
- let activeUploadXhr = null;
 
  if (settingsBtn && settingsBtn.parentNode) {
    const wrap = document.createElement("div");
@@ -1922,7 +1920,6 @@ window.S = S;
    actualChatBtn.innerHTML = "💬 Feedback";
    actualChatBtn.onclick = () => {
      clearUnreadBadge();
-     // Safely update hash so router fires smoothly
      location.hash = "chat";
    };
 
@@ -1952,29 +1949,15 @@ window.S = S;
    localStorage.setItem("doccalc_last_read_feedback_time", Date.now().toString());
  }
 
- // Vibration Alert Function
  function triggerNotificationVibration() {
    if ("vibrate" in navigator) {
      try {
        navigator.vibrate([200, 100, 200]);
-     } catch (err) {
-       console.warn("Vibration unsupported:", err);
-     }
+     } catch (err) {}
    }
  }
 
- // Safe Close Handler with Interruption Detection
  window.closeChatView = function() {
-   if (isUploadingNow) {
-     if (activeUploadXhr) {
-       activeUploadXhr.abort();
-       activeUploadXhr = null;
-     }
-     isUploadingNow = false;
-     resetUploadProgressUI();
-     showInterruptedAlert();
-   }
-
    const chatPage = document.getElementById("chatPage");
    if (chatPage && !chatPage.classList.contains("hidden")) {
      chatPage.classList.add("hidden");
@@ -1991,9 +1974,7 @@ window.S = S;
    const banner = document.getElementById("chatInterruptedBanner");
    if (banner) {
      banner.classList.remove("hidden");
-     setTimeout(() => {
-       banner.classList.add("hidden");
-     }, 6000);
+     setTimeout(() => { banner.classList.add("hidden"); }, 5000);
    }
  }
 
@@ -2005,10 +1986,17 @@ window.S = S;
    }
  }
 
+ // Safe local chat save: Never stores multi-megabyte base64 strings in localStorage
  function saveLocalChat(msg, timestamp, mediaUrl) {
-   const chats = getSavedLocalChats();
-   chats.push({ sender: "clinician", message: msg, timestamp: timestamp, mediaUrl: mediaUrl || "" });
-   localStorage.setItem("doccalc_saved_chat_history", JSON.stringify(chats));
+   try {
+     const chats = getSavedLocalChats();
+     const safeMedia = (mediaUrl && mediaUrl.startsWith("data:")) ? "[Local Attachment]" : (mediaUrl || "");
+     chats.push({ sender: "clinician", message: msg, timestamp: timestamp, mediaUrl: safeMedia });
+     localStorage.setItem("doccalc_saved_chat_history", JSON.stringify(chats.slice(-40)));
+   } catch(e) {
+     console.warn("Storage quota warning, cleared old history.");
+     localStorage.removeItem("doccalc_saved_chat_history");
+   }
  }
 
  function renderChatBubble(box, m) {
@@ -2017,13 +2005,15 @@ window.S = S;
    div.style.cssText = `max-width:85%; padding:8px 12px; border-radius:7.5px; font-size:13.5px; line-height:1.4; align-self:${isMe ? "flex-end" : "flex-start"}; background:${isMe ? "var(--wa-bubble-out-light)" : "var(--wa-bubble-in-light)"}; color: #111b21; border: 1px solid var(--border-color); box-shadow: 0 1px 0.5px rgba(0,0,0,0.05); position:relative; word-break: break-word;`;
    
    let mediaHtml = "";
-   if (m.mediaUrl) {
+   if (m.mediaUrl && m.mediaUrl !== "[Local Attachment]") {
      const isImg = /\.(jpeg|jpg|gif|png|webp)($|\?)/i.test(m.mediaUrl) || (m.mediaUrl.startsWith("data:image"));
      if (isImg) {
        mediaHtml = `<div style="margin-top:6px;"><a href="${m.mediaUrl}" target="_blank"><img src="${m.mediaUrl}" style="max-width:100%; max-height:200px; border-radius:6px; border:1px solid #cbd5e1; display:block;"></a></div>`;
      } else {
        mediaHtml = `<div style="margin-top:6px;"><a href="${m.mediaUrl}" target="_blank" style="color:#2563eb; text-decoration:underline; font-weight:600; display:inline-flex; align-items:center; gap:4px;">📎 View Bug Attachment / Video</a></div>`;
      }
+   } else if (m.mediaUrl === "[Local Attachment]") {
+     mediaHtml = `<div style="margin-top:4px; font-size:11px; color:#64748b; font-style:italic;">📎 Media attached (Uploaded to Drive)</div>`;
    }
 
    div.innerHTML = `<div>${m.message || ""}</div>${mediaHtml}<div style="font-size:10px; opacity:0.6; margin-top:3px; text-align:right;">${isMe ? "You" : "DocStat team"} · ${m.timestamp}</div>`;
@@ -2032,7 +2022,7 @@ window.S = S;
 
  const ADMIN_WELCOME_HTML = `
    <div style="max-width: 85%; padding: 10px 14px; border-radius: 7.5px; font-size: 13.5px; line-height: 1.5; align-self: flex-start; background: var(--wa-bubble-in-light); color: var(--text-main); border: 1px solid var(--border-color); box-shadow: 0 1px 0.5px rgba(0,0,0,0.05); position: relative;">
-       <div>We value your feedback and tell us anything you would like us to add , new calculator ,classification or anything new in app that would be helpful for you and healthcare professionals.<br><br>Feel free to connect to our team or send screenshots/videos of any bugs directly.<br>Regards<br><b>DocStat team</b></div>
+       <div>We value your feedback. Tell us anything you would like us to add or send screenshots/videos of any bugs directly.<br><br>Regards,<br><b>DocStat team</b></div>
        <div style="font-size: 10px; opacity: 0.6; margin-top: 4px; text-align: right;">DocStat team · Just now</div>
    </div>
  `;
@@ -2056,22 +2046,9 @@ window.S = S;
      const data = await res.json();
      
      if (data.status === "success" && data.messages) {
-       const currentLocal = getSavedLocalChats();
-       const combined = [...currentLocal, ...data.messages];
-       
-       const seen = new Set();
-       const deduped = [];
-       combined.forEach(item => {
-         const key = `${item.sender}_${item.message.trim()}_${item.mediaUrl || ""}`;
-         if (!seen.has(key)) {
-           seen.add(key);
-           deduped.push(item);
-         }
-       });
-
        box.innerHTML = ADMIN_WELCOME_HTML;
-       deduped.forEach(m => renderChatBubble(box, m));
-       localStorage.setItem("doccalc_saved_chat_history", JSON.stringify(deduped));
+       data.messages.forEach(m => renderChatBubble(box, m));
+       localStorage.setItem("doccalc_saved_chat_history", JSON.stringify(data.messages.slice(-40)));
        box.scrollTop = box.scrollHeight;
      }
    } catch (e) {
@@ -2081,15 +2058,10 @@ window.S = S;
 
  window.loadClinicianMessages = loadClinicianMessages;
 
- // -------------------------------------------------------------
- // VIDEO-ONLY CLIENT COMPRESSION ENGINE
- // -------------------------------------------------------------
+ // Video compression engine
  async function compressVideoFile(videoFile, onProgress) {
-   return new Promise((resolve, reject) => {
-     if (!window.MediaRecorder) {
-       console.warn("MediaRecorder not supported, uploading original video.");
-       return resolve(videoFile);
-     }
+   return new Promise((resolve) => {
+     if (!window.MediaRecorder) return resolve(videoFile);
 
      const video = document.createElement("video");
      video.preload = "auto";
@@ -2125,37 +2097,24 @@ window.S = S;
        canvas.width = width;
        canvas.height = height;
        const ctx = canvas.getContext("2d");
-
        const stream = canvas.captureStream(24);
        
-       let mimeType = 'video/webm;codecs=vp8';
-       if (!MediaRecorder.isTypeSupported(mimeType)) {
-         mimeType = 'video/webm';
-       }
+       let mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp8') ? 'video/webm;codecs=vp8' : 'video/webm';
 
        let recorder;
        try {
-         recorder = new MediaRecorder(stream, {
-           mimeType: mimeType,
-           videoBitsPerSecond: 900000
-         });
+         recorder = new MediaRecorder(stream, { mimeType: mimeType, videoBitsPerSecond: 900000 });
        } catch (e) {
          URL.revokeObjectURL(url);
          return resolve(videoFile);
        }
 
        const chunks = [];
-       recorder.ondataavailable = e => {
-         if (e.data && e.data.size > 0) chunks.push(e.data);
-       };
-
+       recorder.ondataavailable = e => { if (e.data && e.data.size > 0) chunks.push(e.data); };
        recorder.onstop = () => {
          URL.revokeObjectURL(url);
          const compressedBlob = new Blob(chunks, { type: 'video/webm' });
-         const compressedFile = new File([compressedBlob], videoFile.name.replace(/\.[^/.]+$/, "") + ".webm", {
-           type: 'video/webm'
-         });
-         resolve(compressedFile);
+         resolve(new File([compressedBlob], videoFile.name.replace(/\.[^/.]+$/, "") + ".webm", { type: 'video/webm' }));
        };
 
        recorder.start(100);
@@ -2164,24 +2123,13 @@ window.S = S;
        function drawFrame() {
          if (video.paused || video.ended) return;
          ctx.drawImage(video, 0, 0, width, height);
-
          if (video.duration && onProgress) {
-           const percent = Math.min(99, Math.round((video.currentTime / video.duration) * 100));
-           onProgress(percent);
+           onProgress(Math.min(99, Math.round((video.currentTime / video.duration) * 100)));
          }
-
-         if ('requestVideoFrameCallback' in video) {
-           video.requestVideoFrameCallback(drawFrame);
-         } else {
-           requestAnimationFrame(drawFrame);
-         }
+         requestAnimationFrame(drawFrame);
        }
-
        drawFrame();
-
-       video.onended = () => {
-         recorder.stop();
-       };
+       video.onended = () => recorder.stop();
      };
    });
  }
@@ -2279,11 +2227,9 @@ window.S = S;
  window.addEventListener("load", () => {
    setTimeout(checkUnreadAdminReplies, 2500);
  });
- setInterval(checkUnreadAdminReplies, 60000);
+ setInterval(checkUnreadAdminReplies, 45000);
 
- // -------------------------------------------------------------
- // FORM SUBMISSION WITH COMPRESSION & PROGRESS XHR
- // -------------------------------------------------------------
+ // Reliable Fetch Submission (Fixes Apps Script 302 CORS XHR aborts)
  document.getElementById("standaloneChatForm").onsubmit = async function(e) {
    e.preventDefault();
    const inp = document.getElementById("standaloneChatInput");
@@ -2301,13 +2247,12 @@ window.S = S;
    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
    let fileToUpload = selectedFile;
-   let localPreviewUrl = "";
 
    if (selectedFile && selectedFile.type.startsWith("video/")) {
-     updateUploadProgressUI("Compressing video...", 0);
+     updateUploadProgressUI("Compressing video...", 15);
      try {
        fileToUpload = await compressVideoFile(selectedFile, percent => {
-         updateUploadProgressUI("Compressing video...", percent);
+         updateUploadProgressUI("Compressing video...", Math.round(15 + (percent * 0.35)));
        });
        selectedFileName = fileToUpload.name;
        selectedFileMime = fileToUpload.type;
@@ -2317,19 +2262,19 @@ window.S = S;
    }
 
    if (fileToUpload) {
-     updateUploadProgressUI("Preparing upload...", 10);
-     localPreviewUrl = await new Promise(res => {
+     updateUploadProgressUI("Preparing file...", 55);
+     selectedFileBase64 = await new Promise(res => {
        const r = new FileReader();
        r.onload = () => res(r.result);
        r.readAsDataURL(fileToUpload);
      });
-     selectedFileBase64 = localPreviewUrl;
    }
 
+   // Local chat update
    const box = document.getElementById("chatMessagesContainer");
-   renderChatBubble(box, { sender: "clinician", message: msg, timestamp: timestamp, mediaUrl: localPreviewUrl });
+   renderChatBubble(box, { sender: "clinician", message: msg, timestamp: timestamp, mediaUrl: selectedFileBase64 });
    box.scrollTop = box.scrollHeight;
-   saveLocalChat(msg, timestamp, localPreviewUrl);
+   saveLocalChat(msg, timestamp, selectedFileBase64);
 
    const payload = {
      type: "feedback",
@@ -2344,6 +2289,7 @@ window.S = S;
      fileMime: selectedFileMime
    };
 
+   // Clear input fields immediately
    inp.value = "";
    selectedFile = null;
    selectedFileBase64 = "";
@@ -2352,43 +2298,24 @@ window.S = S;
    mediaInput.value = "";
    previewBar.classList.add("hidden");
 
-   isUploadingNow = true;
-   activeUploadXhr = new XMLHttpRequest();
+   updateUploadProgressUI("Sending to DocStat...", 80);
 
-   activeUploadXhr.upload.onprogress = function(event) {
-     if (event.lengthComputable) {
-       const percent = Math.round((event.loaded / event.total) * 100);
-       updateUploadProgressUI("Uploading to Drive...", percent);
-     }
-   };
+   try {
+     await fetch(window.GOOGLE_SHEET_WEBHOOK_URL, {
+       method: "POST",
+       headers: { "Content-Type": "text/plain;charset=utf-8" },
+       body: JSON.stringify(payload)
+     });
 
-   activeUploadXhr.onload = function() {
-     isUploadingNow = false;
-     activeUploadXhr = null;
-     sendBtn.disabled = false;
-     updateUploadProgressUI("Done!", 100);
-     setTimeout(resetUploadProgressUI, 1200);
-   };
-
-   activeUploadXhr.onerror = function() {
-     isUploadingNow = false;
-     activeUploadXhr = null;
-     sendBtn.disabled = false;
+     updateUploadProgressUI("Sent!", 100);
+     setTimeout(resetUploadProgressUI, 1000);
+   } catch (err) {
+     console.error("Upload error:", err);
      resetUploadProgressUI();
      showInterruptedAlert();
-   };
-
-   activeUploadXhr.onabort = function() {
-     isUploadingNow = false;
-     activeUploadXhr = null;
+   } finally {
      sendBtn.disabled = false;
-     resetUploadProgressUI();
-     showInterruptedAlert();
-   };
-
-   activeUploadXhr.open("POST", window.GOOGLE_SHEET_WEBHOOK_URL, true);
-   activeUploadXhr.setRequestHeader("Content-Type", "text/plain;charset=utf-8");
-   activeUploadXhr.send(JSON.stringify(payload));
+   }
  };
 })();
 </script>
