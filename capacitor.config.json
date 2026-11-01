@@ -2,6 +2,10 @@
   "appId": "com.docstat.app",
   "appName": "DocStat",
   "webDir": "www",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  },
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 0,
