@@ -797,11 +797,23 @@
         ]
       },
       calc: function (v) {
-        if (v.mCat === "M1") return { value: "Stage IV (M1 / CY1)", matchId: "gasIV", eq: "Metastatic gastric cancer (or positive peritoneal cytology). Molecular testing: HER2, MMR/MSI, Claudin 18.2." };
-        if (v.nCat === "N3b" || (v.tCat === "T4b" && v.nCat.startsWith("N"))) return { value: "Stage IIIC", matchId: "gasIII", eq: "High nodal burden (≥16 nodes) or adjacent organ infiltration." };
-        if (v.tCat === "T4a" || v.nCat === "N2" || v.nCat === "N3a") return { value: "Stage III (IIIA / IIIB)", matchId: "gasIII", eq: "Locally advanced gastric cancer. Perioperative FLOT protocol." };
-        if (v.tCat === "T2" || v.tCat === "T3" || v.nCat === "N1") return { value: "Stage IB / II", matchId: "gasIB_II", eq: "Intermediate resectable gastric carcinoma." };
-        return { value: "Stage IA (T1 N0 M0)", matchId: "gasIA", eq: "Early gastric cancer; suitable for endoscopic or surgical curative resection." };
+        if (v.mCat === "M1") return { value: "Stage IV (M1 / CY1)", matchId: "gasIV", eq: "Metastatic gastric cancer (or positive peritoneal cytology CY1)." };
+        if (v.nCat === "N3b" || (v.tCat === "T4b" && (v.nCat === "N2" || v.nCat === "N3a"))) {
+        return { value: "Stage IIIC", matchId: "gasIII", eq: "High nodal burden (≥16 nodes) or T4b with extensive nodes." };
+        }
+        if (v.tCat === "T4b" || v.nCat === "N3a" || (v.tCat === "T4a" && v.nCat === "N2") || (v.tCat === "T3" && v.nCat === "N2")) {
+        return { value: "Stage IIIB", matchId: "gasIII", eq: "Locally advanced gastric cancer." };
+        }
+        if (v.tCat === "T4a" || v.nCat === "N2" || (v.tCat === "T3" && v.nCat === "N1") || (v.tCat === "T2" && v.nCat === "N2")) {
+        return { value: "Stage IIIA", matchId: "gasIII", eq: "Locally advanced; candidate for perioperative FLOT." };
+        }
+        if (v.tCat === "T3" || (v.tCat === "T2" && v.nCat === "N1") || (v.tCat === "T1b" && v.nCat === "N2")) {
+        return { value: "Stage IIB", matchId: "gasIB_II", eq: "Intermediate resectable gastric carcinoma." };
+        }
+        if (v.tCat === "T2" || (v.tCat === "T1b" && v.nCat === "N1") || (v.tCat === "T1a" && v.nCat === "N1")) {
+        return { value: "Stage IB", matchId: "gasIB_II", eq: "Early resectable gastric carcinoma." };
+        }
+        return { value: "Stage IA (T1 N0 M0)", matchId: "gasIA", eq: "Early superficial tumor; candidate for ESD or upfront gastrectomy." };
       }
     },
     {
@@ -2397,7 +2409,7 @@
         if (v.tCat === "T1") return { value: "Stage I", matchId: "scI", eq: "Low-risk localized cutaneous carcinoma." };
         return { value: "Stage 0", matchId: "sc0", eq: "In situ carcinoma (Bowen disease)." };
       }
-    }],
+    },
     // ==============================================================
     // 1. BREAST CARCINOMA
     // ==============================================================
@@ -2423,7 +2435,7 @@
           { text: "NCCN Clinical Practice Guidelines in Oncology ↗", url: "https://www.nccn.org/guidelines/category_1" },
           { text: "AJCC Breast Protocol Resources ↗", url: "https://www.facs.org/quality-programs/cancer-programs/american-joint-committee-on-cancer/" }
         ]
-      },
+      }],
       fields: [
         makeS("tCat", "Primary Tumor (T)", "T1", [
           ["Tis", "Tis — Carcinoma in situ (DCIS)"],
@@ -3001,11 +3013,10 @@
         var p = +v.psa, g = +v.gg, t = v.tCat;
         if (t === "cT4") return { value: "Prognostic Stage IIIC (cT4)", matchId: "prIIIA_C", eq: "Locally ultra-advanced tumor invading pelvic organs." };
         if (g === 5) return { value: "Prognostic Stage IIIC (Grade Group 5)", matchId: "prIIIA_C", eq: "Very high-grade disease." };
-        if (t === "cT3" || g === 3 || g === 4) {
-          if (t === "cT3" || g === 4) return { value: "Prognostic Stage IIIB", matchId: "prIIIA_C", eq: "High risk disease." };
-        }
+        if (t === "cT4" || g === 5) return { value: "Prognostic Stage IIIC", matchId: "prIIIA_C", eq: "Very high-grade disease or adjacent organ invasion." };
+        if (t === "cT3" || g === 4) return { value: "Prognostic Stage IIIB", matchId: "prIIIA_C", eq: "High risk: extraprostatic extension or Grade Group 4." };
         if (p >= 20) return { value: "Prognostic Stage IIIA (PSA ≥ 20)", matchId: "prIIIA_C", eq: "High risk by biochemical marker." };
-        if (g === 3 || g === 4) return { value: "Prognostic Stage IIC (GG 3–4)", matchId: "prIIC", eq: "Intermediate-to-high risk." };
+        if (g === 3) return { value: "Prognostic Stage IIC (GG 3)", matchId: "prIIC", eq: "Intermediate-to-high risk." };
         if (g === 2) return { value: "Prognostic Stage IIB (GG 2)", matchId: "prIIB", eq: "Favourable intermediate risk." };
         if (p >= 10 || t === "cT2b_c") return { value: "Prognostic Stage IIA", matchId: "prIIA", eq: "Intermediate risk." };
         return { value: "Prognostic Stage I", matchId: "prI", eq: "Low risk disease candidate for active surveillance." };
