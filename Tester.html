@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="logo.png">
 
 <style>
-/* CSS VARIABLES FOR THEMES & SOFT BLUE HIGHLIGHTS */
+/* CSS VARIABLES FOR THEMES & LIGHT ORANGE-PINK HIGHLIGHTS */
 :root {
  --bg-body: #f3f6fa;
  --bg-card: #ffffff;
@@ -62,10 +62,10 @@
  --tnm-notice-border: #fecaca;
  --tnm-notice-text: #991b1b;
  --tnm-heading-color: #dc2626;
- /* Soft Blue Blur Highlight Palette */
- --highlight-bg: #eff6ff;
- --highlight-border: #3b82f6;
- --highlight-text: #1e40af;
+ /* Light Orange-Pink Highlight Palette */
+ --highlight-bg: #fff1eb;
+ --highlight-border: #fbcfe8;
+ --highlight-text: #be123c;
  /* Chat Theme Variables */
  --wa-bg-light: #ffffff;
  --wa-bg-dark: #0b141a;
@@ -127,10 +127,10 @@
  --tnm-notice-border: #4c1d24;
  --tnm-notice-text: #fca5a5;
  --tnm-heading-color: #ef4444;
- /* Soft Blue Blur Highlight Dark */
- --highlight-bg: #1e3a8a;
- --highlight-border: #3b82f6;
- --highlight-text: #93c5fd;
+ /* Light Orange-Pink Highlight Dark */
+ --highlight-bg: #381b22;
+ --highlight-border: #f43f5e;
+ --highlight-text: #fda4af;
 }
 
 * { box-sizing: border-box; }
@@ -457,22 +457,23 @@ h2 { font-size: 21px; margin: 8px 0; }
 .badge-calc { background: var(--badge-calc-bg); color: var(--badge-calc-text); border: 1px solid var(--badge-calc-border); }
 .badge-class { background: var(--badge-class-bg); color: var(--badge-class-text); border: 1px solid var(--badge-class-border); }
 
-/* SPECIALTY BADGES - EXACT REQUESTED COLORS */
+/* EXACT USER-SPECIFIED BADGE COLOR PALETTE */
 .badge-spec { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
-.badge-spec-surg { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }        /* Surgery: yellowish */
-.badge-spec-obgy { background: #ffe4e6; color: #be123c; border: 1px solid #fda4af; }        /* Gyn: orangy pink */
-.badge-spec-peds { background: #fce7f3; color: #db2777; border: 1px solid #fbcfe8; }        /* Peds: pink */
-.badge-spec-cardio { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }      /* Cardio: reddish */
-.badge-spec-neuro { background: #e0f2fe; color: #0284c7; border: 1px solid #7dd3fc; }       /* Neuro: blueish */
-.badge-spec-resp { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }        /* Respi: greenish */
-.badge-spec-emgicu { background: #7f1d1d; color: #ffffff; border: 1px solid #991b1b; }      /* Emergency: dark red */
-.badge-spec-tnm, .badge-spec-onco { background: #ffedd5; color: #c2410c; border: 1px solid #fdba74; } /* TNM: orange */
-.badge-spec-ortho { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
-.badge-spec-endo { background: #ccfbf1; color: #0d9488; border: 1px solid #99f6e4; }
-.badge-spec-renal { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
-.badge-spec-rheum { background: #f3e8ff; color: #7c3aed; border: 1px solid #e9d5ff; }
+.badge-spec-surg { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }              /* Surgery: yellowish */
+.badge-spec-obgy { background: #ffe4e6; color: #be123c; border: 1px solid #fda4af; }              /* Obgyn: Orangy Pinkish */
+.badge-spec-cardio { background: #fdf4ff; color: #a21caf; border: 1px solid #f0abfc; }           /* Cardio: magenta like */
+.badge-spec-endo { background: #fdf4ff; color: #a21caf; border: 1px solid #f0abfc; }             /* Endo: same colour */
+.badge-spec-neuro { background: #e0f2fe; color: #0284c7; border: 1px solid #7dd3fc; }            /* Neuro: Sky blue */
+.badge-spec-emgicu { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }          /* Icu/emergency: reddish */
+.badge-spec-renal { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }           /* Renal: Line greenish */
+.badge-spec-ortho { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }           /* Ortho: Greyish/whitish */
+.badge-spec-resp { background: #ffedd5; color: #c2410c; border: 1px solid #fdba74; }             /* Respi: orangy */
+.badge-spec-rheum { background: #ffedd5; color: #9a3412; border: 1px solid #fed7aa; }            /* Rheumat: Skin colour (warm peach) */
+.badge-spec-tnm, .badge-spec-onco { background: #fef3c7; color: #78350f; border: 1px solid #fde68a; } /* Onco: Light brown */
+.badge-spec-peds { background: #fce7f3; color: #db2777; border: 1px solid #fbcfe8; }
 
-/* CALCULATOR INTERFACE & ACCORDION CARD STYLING (MATCHING IMAGE 1) */
+[data-theme="dark"] .badge-spec-ortho { background: #1e293b; color: #cbd5e1; border: 1px solid #334155; }
+
 .panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; }
 .desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 5px 0 14px; }
 
@@ -481,13 +482,13 @@ h2 { font-size: 21px; margin: 8px 0; }
 .contra-box { background: var(--contra-bg); border: 1px solid var(--contra-border); color: var(--contra-text); }
 .info-title { font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
 
-/* CUSTOM ACCORDION SELECTOR CARD (IMAGE 1 STYLE) */
-.fields { display: flex; flex-direction: column; gap: 12px; }
+/* VERTICAL STACKED ACCORDION SELECTOR CARD (IMAGE 1 FIX) */
+.fields { display: flex; flex-direction: column; gap: 14px; }
 .custom-select-card {
  background: var(--bg-card);
  border: 1px solid var(--border-color);
  border-radius: 12px;
- padding: 12px 14px;
+ padding: 14px;
  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
  cursor: pointer;
  transition: all 0.2s ease;
@@ -495,74 +496,76 @@ h2 { font-size: 21px; margin: 8px 0; }
 }
 .custom-select-card.active {
  border-color: var(--highlight-border);
- background: var(--highlight-bg);
- box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+ background: var(--bg-card);
+ box-shadow: 0 0 0 2px rgba(244, 63, 94, 0.12);
 }
 .csc-header {
  display: flex;
- align-items: center;
- justify-content: space-between;
- gap: 10px;
+ flex-direction: column;
+ gap: 8px;
+ width: 100%;
 }
 .csc-title {
  font-size: 13.5px;
- font-weight: 750;
+ font-weight: 800;
  color: var(--text-main);
  line-height: 1.35;
 }
-.csc-selected-badge {
+.csc-selected-box {
  background: var(--highlight-bg);
  color: var(--highlight-text);
  border: 1px solid var(--highlight-border);
- padding: 4px 10px;
- border-radius: 6px;
- font-size: 12px;
+ padding: 10px 12px;
+ border-radius: 8px;
+ font-size: 13px;
  font-weight: 650;
- display: inline-flex;
+ display: flex;
  align-items: center;
- gap: 5px;
- max-width: 55%;
- white-space: nowrap;
- overflow: hidden;
- text-overflow: ellipsis;
+ justify-content: space-between;
+ width: 100%;
+ word-break: break-word;
+ line-height: 1.4;
 }
 .csc-arrow {
  font-size: 12px;
- color: var(--text-muted);
+ color: var(--highlight-text);
  transition: transform 0.2s ease;
+ flex-shrink: 0;
+ margin-left: 8px;
 }
 .custom-select-card.active .csc-arrow {
  transform: rotate(180deg);
- color: var(--highlight-text);
 }
 .csc-options-list {
- margin-top: 10px;
+ margin-top: 12px;
  border-top: 1px solid var(--border-color);
  padding-top: 8px;
  display: flex;
  flex-direction: column;
- gap: 4px;
- max-height: 240px;
+ gap: 6px;
+ max-height: 280px;
  overflow-y: auto;
 }
 .csc-option-item {
  display: flex;
- align-items: center;
+ align-items: flex-start;
  justify-content: space-between;
- padding: 8px 10px;
+ padding: 10px 12px;
  border-radius: 8px;
  font-size: 13px;
  color: var(--text-main);
  background: transparent;
  transition: background 0.15s;
+ gap: 10px;
+ line-height: 1.45;
 }
 .csc-option-item:hover {
- background: rgba(59, 130, 246, 0.06);
+ background: rgba(244, 63, 94, 0.05);
 }
 .csc-option-item.selected {
  background: var(--highlight-bg);
  color: var(--highlight-text);
- font-weight: 650;
+ font-weight: 700;
 }
 .csc-radio-circle {
  width: 16px;
@@ -573,6 +576,7 @@ h2 { font-size: 21px; margin: 8px 0; }
  align-items: center;
  justify-content: center;
  flex-shrink: 0;
+ margin-top: 2px;
 }
 .csc-option-item.selected .csc-radio-circle {
  border-color: var(--highlight-border);
@@ -600,7 +604,7 @@ h2 { font-size: 21px; margin: 8px 0; }
 }
 .fields > .standard-field-wrap:focus-within {
  border-color: var(--highlight-border);
- box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+ box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.12);
  background: var(--highlight-bg);
 }
 .full-width { grid-column: 1 / -1; }
@@ -626,8 +630,8 @@ button { cursor: pointer; font: inherit; }
 .notes-btn { background: #ffffff; color: #17324e; border: 1px solid var(--border-color); width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.15s ease; }
 .notes-btn:hover { background: var(--tab-bg); }
 
-/* COMPLIANT OUTPUT CONTAINER WITH SOFT BLUE HIGHLIGHT */
-.result { display: none; margin-top: 20px; padding: 16px; border-radius: 12px; background: var(--highlight-bg); border: 1px solid var(--highlight-border); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08); }
+/* COMPLIANT OUTPUT CONTAINER WITH LIGHT ORANGE-PINK HIGHLIGHT */
+.result { display: none; margin-top: 20px; padding: 16px; border-radius: 12px; background: var(--highlight-bg); border: 1px solid var(--highlight-border); box-shadow: 0 4px 12px rgba(244, 63, 94, 0.08); }
 .result.show { display: block; }
 .caption { font-size: 11px; color: var(--highlight-text); font-weight: 750; letter-spacing: 0.5px; text-transform: uppercase; }
 .value { font-size: 24px; font-weight: 800; color: var(--highlight-text); margin: 4px 0 10px; overflow-wrap: anywhere; }
@@ -646,9 +650,34 @@ table.ref-table tr:last-child td { border-bottom: none; }
 table.ref-table tr.active-grade { background: var(--active-grade-bg); font-weight: 600; }
 table.ref-table tr.active-grade td { border-top: 2px solid #38a169; border-bottom: 2px solid #38a169; color: var(--active-grade-text); }
 
+/* ACADEMIC REFERENCES CLEAN VERTICAL LIST (FIX FOR CLUMPED LINKS) */
 .academic-refs { margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 18px; }
 .ref-card-item { background: var(--ref-card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
-.ref-card-citation { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+.ref-card-citation { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.45; }
+.ref-card-links {
+ display: flex;
+ flex-direction: column;
+ gap: 6px;
+ margin-top: 8px;
+}
+.ref-btn-link {
+ display: inline-flex;
+ align-items: center;
+ gap: 6px;
+ font-size: 12.5px;
+ font-weight: 650;
+ color: #2563eb;
+ text-decoration: none;
+ padding: 6px 10px;
+ background: var(--tab-bg);
+ border-radius: 6px;
+ width: fit-content;
+ transition: background 0.15s ease;
+}
+.ref-btn-link:hover {
+ background: var(--border-color);
+ text-decoration: underline;
+}
 
 .modal-overlay {
  position: fixed;
@@ -1753,16 +1782,16 @@ window.S = S;
    const c = (catName || "").toLowerCase().trim();
    if (c.includes("surg") || c.includes("surgery") || c.includes("surgical")) return "badge-spec-surg";
    if (c.includes("obgy") || c.includes("obstetrics") || c.includes("gynecology") || c.includes("gyn")) return "badge-spec-obgy";
-   if (c.includes("ped") || c.includes("pediatric") || c.includes("paediatric")) return "badge-spec-peds";
    if (c.includes("cardio") || c.includes("cardiology")) return "badge-spec-cardio";
-   if (c.includes("neuro") || c.includes("neurology")) return "badge-spec-neuro";
-   if (c.includes("resp") || c.includes("pulm") || c.includes("pulmonology")) return "badge-spec-resp";
-   if (c.includes("emgicu") || c.includes("icu") || c.includes("emergency") || c.includes("critical")) return "badge-spec-emgicu";
-   if (c.includes("onco") || c.includes("tnm") || c.includes("staging")) return "badge-spec-tnm";
-   if (c.includes("ortho") || c.includes("orthopaedics")) return "badge-spec-ortho";
    if (c.includes("endo") || c.includes("endocrine") || c.includes("endocrinology")) return "badge-spec-endo";
+   if (c.includes("neuro") || c.includes("neurology")) return "badge-spec-neuro";
+   if (c.includes("emgicu") || c.includes("icu") || c.includes("emergency") || c.includes("critical")) return "badge-spec-emgicu";
    if (c.includes("renal") || c.includes("nephro") || c.includes("nephrology")) return "badge-spec-renal";
+   if (c.includes("ortho") || c.includes("orthopaedics")) return "badge-spec-ortho";
+   if (c.includes("resp") || c.includes("pulm") || c.includes("pulmonology")) return "badge-spec-resp";
    if (c.includes("rheum") || c.includes("rheumatology") || c.includes("immuno")) return "badge-spec-rheum";
+   if (c.includes("onco") || c.includes("tnm") || c.includes("staging")) return "badge-spec-onco";
+   if (c.includes("ped") || c.includes("pediatric") || c.includes("paediatric")) return "badge-spec-peds";
    return "badge-spec";
  }
 
@@ -1773,14 +1802,19 @@ window.S = S;
    const badgeClass = t.type === "class" ? "badge-class" : "badge-calc";
    
    let specName = t.cat ? t.cat.toUpperCase() : "GENERAL";
-   if (t.cat === "onco" || t.cat === "onco_hn_gi" || t.cat === "tnm") specName = "ONCO";
-   else if (t.cat === "surg") specName = "SURGERY";
-   else if (t.cat === "obgy") specName = "OBGYN";
-   else if (t.cat === "peds") specName = "PEDS";
-   else if (t.cat === "cardio") specName = "CARDIO";
-   else if (t.cat === "neuro") specName = "NEURO";
-   else if (t.cat === "respi") specName = "RESP";
-   else if (t.cat === "emgicu") specName = "EMERGENCY";
+   const catLow = (t.cat || "").toLowerCase();
+   if (catLow === "onco" || catLow === "onco_hn_gi" || catLow === "tnm") specName = "ONCO";
+   else if (catLow === "surg") specName = "SURGERY";
+   else if (catLow === "obgy") specName = "OBGYN";
+   else if (catLow === "peds") specName = "PEDS";
+   else if (catLow === "cardio") specName = "CARDIO";
+   else if (catLow === "neuro") specName = "NEURO";
+   else if (catLow === "respi") specName = "RESP";
+   else if (catLow === "emgicu") specName = "EMERGENCY";
+   else if (catLow === "rheum") specName = "RHEUMAT";
+   else if (catLow === "renal") specName = "RENAL";
+   else if (catLow === "ortho") specName = "ORTHO";
+   else if (catLow === "endo") specName = "ENDO";
 
    const specClass = getSpecialtyBadgeClass(t.cat);
    const isPinned = getPinnedTools().includes(t.id);
@@ -1879,7 +1913,7 @@ window.S = S;
  function isStrictTnmTool(t) {
    if (!t) return false;
    const cat = (t.cat || "").toLowerCase();
-   // Strictly match tools originating from tnm.js (cat: "onco" or "onco_hn_gi")
+   // STRICTLY TOOLS FROM tnm.js (cat: "onco" or "onco_hn_gi")
    return cat === "onco" || cat === "onco_hn_gi";
  }
 
@@ -1887,7 +1921,6 @@ window.S = S;
    if (!q) return true;
    q = q.toLowerCase();
    
-   // Handle natural language synonym queries like "neck oncology", "head and neck", etc.
    if (q.includes("neck") || q.includes("head") || q.includes("oral") || q.includes("larynx")) {
      const txt = (t.name + " " + (t.desc || "") + " " + (t.subject || "") + " " + (t.organ || "")).toLowerCase();
      if (/oral|lip|tongue|oropharynx|hypopharynx|nasopharynx|larynx|salivary|cervical|neck|head/i.test(txt)) return true;
@@ -1912,7 +1945,7 @@ window.S = S;
    let toolsToDisplay = [];
 
    if (!q) {
-     // DEFAULT VIEW: Show ALL strict tnm.js tools (all 35+ onco/tnm tools)
+     // DEFAULT VIEW: Show STRICTLY tnm.js tools (all 35+ onco/tnm tools) and NO non-onco tools
      toolsToDisplay = (window.tools || []).filter(isStrictTnmTool);
    } else {
      // SEARCH VIEW: Search across all tools, but prioritize STRICT TNM tools on top
@@ -2027,7 +2060,7 @@ window.S = S;
    $("searchResultsSection").classList.add("hidden");
  };
 
- /* BUILD INTERACTIVE ACCORDION-CARD SELECTOR (IMAGE 1 STYLE) */
+ /* BUILD INTERACTIVE ACCORDION-CARD SELECTOR (FIXED VERTICAL STACK FOR IMAGE 1) */
  function openToolView(tool, skipHistory) {
    currentTool = tool;
    trackRecentTool(tool);
@@ -2079,7 +2112,7 @@ window.S = S;
    
    (tool.fields || []).forEach((f, idx) => {
      if (f.type === "select") {
-       // Custom Accordion Select Card (Image 1 Style)
+       // Custom Accordion Select Card (Stacked Layout: Heading above, Selected Value Box below)
        const card = document.createElement("div");
        card.className = "custom-select-card";
        card.id = "csc_card_" + f.id;
@@ -2091,26 +2124,16 @@ window.S = S;
        titleEl.className = "csc-title";
        titleEl.textContent = `${idx + 1}. ${f.label}`;
 
-       const rightGroup = document.createElement("div");
-       rightGroup.style.cssText = "display:flex; align-items:center; gap:8px;";
-
-       const selectedBadge = document.createElement("div");
-       selectedBadge.className = "csc-selected-badge";
-       selectedBadge.id = "csc_badge_" + f.id;
-       
-       // Find default or first option label
        const defaultOpt = (f.options || []).find(opt => Array.isArray(opt) ? opt[0] === f.value : opt.value === f.value) || (f.options || [])[0];
        const defaultText = defaultOpt ? (Array.isArray(defaultOpt) ? defaultOpt[1] : defaultOpt.label) : "-- Select --";
-       selectedBadge.innerHTML = `<span>${defaultText}</span> ✓`;
 
-       const arrow = document.createElement("div");
-       arrow.className = "csc-arrow";
-       arrow.textContent = "▼";
+       const selectedBox = document.createElement("div");
+       selectedBox.className = "csc-selected-box";
+       selectedBox.id = "csc_badge_" + f.id;
+       selectedBox.innerHTML = `<span>${defaultText}</span> <span class="csc-arrow">▼</span>`;
 
-       rightGroup.appendChild(selectedBadge);
-       rightGroup.appendChild(arrow);
        header.appendChild(titleEl);
-       header.appendChild(rightGroup);
+       header.appendChild(selectedBox);
        card.appendChild(header);
 
        // Options container (initially hidden)
@@ -2139,15 +2162,13 @@ window.S = S;
          item.onclick = (e) => {
            e.stopPropagation();
            currentSelectedVal = val;
-           selectedBadge.innerHTML = `<span>${lbl}</span> ✓`;
+           selectedBox.innerHTML = `<span>${lbl}</span> <span class="csc-arrow">▼</span>`;
            optionsList.classList.add("hidden");
            card.classList.remove("active");
 
-           // Update all items in this list
            optionsList.querySelectorAll(".csc-option-item").forEach(el => el.classList.remove("selected"));
            item.classList.add("selected");
 
-           // Store value in dataset for calculator retrieval
            card.dataset.selectedValue = val;
          };
 
@@ -2157,10 +2178,8 @@ window.S = S;
        card.dataset.selectedValue = currentSelectedVal;
        card.appendChild(optionsList);
 
-       // Toggle accordion list on header click
        header.onclick = () => {
          const isOpen = !optionsList.classList.contains("hidden");
-         // Close all other open lists first
          document.querySelectorAll(".csc-options-list").forEach(l => l.classList.add("hidden"));
          document.querySelectorAll(".custom-select-card").forEach(c => c.classList.remove("active"));
 
@@ -2220,7 +2239,7 @@ window.S = S;
        refItem.className = "ref-card-item";
        let linksHtml = "";
        if (lit.links && lit.links.length) {
-         linksHtml = `<div class="ref-card-links">${lit.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer" class="ref-btn-link ${l.secondary ? "secondary" : ""}">${l.text}</a>`).join("")}</div>`;
+         linksHtml = `<div class="ref-card-links">${lit.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer" class="ref-btn-link ${l.secondary ? "secondary" : ""}">${l.text} ↗</a>`).join("")}</div>`;
        }
        refItem.innerHTML = `<div style="font-weight:700;margin-bottom:4px;">${lit.icon || "📄"} ${lit.title || ""}</div><div class="ref-card-citation">${lit.citation || ""}</div>${linksHtml}`;
        refsList.appendChild(refItem);
