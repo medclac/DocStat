@@ -56,7 +56,7 @@
  --tag-text: #475569;
  --splash-bg: #ffffff;
  --modal-overlay: rgba(0, 0, 0, 0.45);
- /* Chat Theme Variables (Clean Pure White Background) */
+ /* Chat Theme Variables */
  --wa-bg-light: #ffffff;
  --wa-bg-dark: #0b141a;
  --wa-bubble-out-light: #d9fdd3;
@@ -122,9 +122,7 @@ body {
  transition: background 0.2s ease, color 0.2s ease;
 }
 
-/* ============================================================== */
-/* ANIMATED SPLASH SCREEN */
-/* ============================================================== */
+/* ANIMATED DOCSTAT SPLASH SCREEN */
 #splash {
  position: fixed;
  inset: 0;
@@ -193,10 +191,7 @@ body {
 }
 
 @keyframes letterReveal {
- to {
- opacity: 1;
- transform: scale(1);
- }
+ to { opacity: 1; transform: scale(1); }
 }
 
 .eartip {
@@ -228,10 +223,7 @@ body {
 .splash-brand span { color: #2563eb; }
 
 @keyframes textSlideUp {
- to {
- opacity: 1;
- transform: translateY(0);
- }
+ to { opacity: 1; transform: translateY(0); }
 }
 
 .pulse-lockup {
@@ -299,7 +291,6 @@ main { max-width: 760px; margin: auto; padding: 16px; }
 }
 .icon-btn:hover { background: rgba(255,255,255,0.22); }
 
-/* Feedback Button Container and Unread Number Badge */
 .feedback-btn-wrap {
  position: relative;
  display: inline-flex;
@@ -401,7 +392,7 @@ h2 { font-size: 21px; margin: 8px 0; }
 .badge-calc { background: var(--badge-calc-bg); color: var(--badge-calc-text); border: 1px solid var(--badge-calc-border); }
 .badge-class { background: var(--badge-class-bg); color: var(--badge-class-text); border: 1px solid var(--badge-class-border); }
 
-/* DISTINCT SPECIALTY BADGES */
+/* SPECIALTY BADGES */
 .badge-spec { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
 .badge-spec-obgy { background: #fce7f3; color: #db2777; border: 1px solid #fbcfe8; }
 .badge-spec-ortho { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
@@ -447,6 +438,7 @@ button { cursor: pointer; font: inherit; }
 .notes-btn { background: #ffffff; color: #17324e; border: 1px solid var(--border-color); width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.15s ease; }
 .notes-btn:hover { background: var(--tab-bg); }
 
+/* COMPLIANT OUTPUT CONTAINER */
 .result { display: none; margin-top: 20px; padding: 16px; border-radius: 12px; background: var(--result-bg); border: 1px solid var(--result-border); }
 .result.show { display: block; }
 .caption { font-size: 11px; color: var(--result-text); font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
@@ -518,7 +510,6 @@ table.ref-table tr.active-grade td { border-top: 2px solid #38a169; border-botto
 footer { text-align: center; font-size: 11px; color: var(--text-muted); padding: 24px 0; }
 @media (max-width: 480px) { .fields { grid-template-columns: 1fr; } .card { padding: 11px; } }
 
-/* FIXED CHAT PAGE LAYOUT & CENTERING */
 #chatPage {
   background-color: var(--bg-body) !important;
   width: 100%;
@@ -615,7 +606,7 @@ C 100 110, 100 128, 100 144
  <div class="header-profile-area">
  <div id="headerAvatar" class="header-avatar">🧑🏻‍⚕️</div>
  <div>
- <small id="clinicianHeaderSub">Clinical tools · prototype</small>
+ <small id="clinicianHeaderSub">Clinical tools · reference</small>
  <div id="headerHospitalDisplay" style="font-size: 11px; opacity: 0.85; color: var(--header-sub);"></div>
  </div>
  </div>
@@ -626,7 +617,7 @@ C 100 110, 100 128, 100 144
 </header>
 
 <main>
- <div class="notice"><b>Clinical safety:</b> Verify formulas, tables, and criteria independently before clinical use.</div>
+ <div class="notice"><b>Educational Notice:</b> Mathematical calculations and published scoring criteria are provided for reference only. Verify independently against official clinical literature.</div>
 
  <!-- HOME VIEW -->
  <div id="home">
@@ -678,17 +669,17 @@ C 100 110, 100 128, 100 144
  </div>
  <p class="desc" id="desc"></p>
  <div class="info-box guidance-box" id="guidanceBox">
- <div class="info-title">📋 Clinical Guidance</div>
+ <div class="info-title">📋 Clinical Reference Context</div>
  <div id="guidanceText"></div>
  </div>
  <div class="info-box contra-box" id="contraBox">
- <div class="info-title">⚠️ Limitations & Caveats</div>
+ <div class="info-title">⚠️ Limitations & Published Caveats</div>
  <div id="contraText"></div>
  </div>
  <form id="form">
  <div class="fields" id="fields"></div>
  <div class="actions">
- <button class="primary" type="submit">Calculate / Stage</button>
+ <button class="primary" type="submit">Calculate Score</button>
  <button class="secondary" type="button" id="reset">Reset</button>
  <div class="full-width" style="margin-top: 4px;">
  <button type="button" id="notesBtn" class="notes-btn">📋 Notes / Info</button>
@@ -697,9 +688,9 @@ C 100 110, 100 128, 100 144
  </form>
  <div class="result" id="result" aria-live="polite">
  <button class="copy" id="copy" type="button">Copy</button>
- <div class="caption">ASSESSMENT & CLASSIFICATION</div>
+ <div class="caption">CALCULATOR / CRITERIA OUTPUT</div>
  <div class="value" id="value"></div>
- <div class="res-subhead">Interpretation & Management</div>
+ <div class="res-subhead">Literature & Scoring Guide</div>
  <div class="equation" id="equation"></div>
  </div>
  <div class="reference-card hidden" id="referenceCard">
@@ -720,10 +711,10 @@ C 100 110, 100 128, 100 144
  </section>
  </div>
 
- <footer>DocStat · Educational purpose app · Verify before realtime clinical use</footer>
+ <footer>DocStat · Clinical calculation & classification reference for healthcare professionals</footer>
 </main>
 
-<!-- STANDALONE SEPARATE PAGE VIEW FOR INFO / NOTES -->
+<!-- STANDALONE VIEW FOR INFO / NOTES -->
 <div id="sourcePage" class="hidden" style="position: fixed; inset: 0; background: var(--bg-body); z-index: 2000; display: flex; flex-direction: column; overflow-y: auto;">
  <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--bg-header); color: var(--header-text); position: sticky; top: 0; z-index: 10;">
  <h3 id="sourcePageTitle" style="margin: 0; font-size: 18px;">Clinical Notes & Reference</h3>
@@ -734,10 +725,9 @@ C 100 110, 100 128, 100 144
  </div>
 </div>
 
-<!-- STANDALONE WHATSAPP CHAT & FEEDBACK VIEW -->
+<!-- STANDALONE CHAT & FEEDBACK VIEW -->
 <div id="chatPage" class="hidden" style="position: fixed; inset: 0; background: var(--bg-body); z-index: 2000;">
     <div id="whatsappDesktopWrapper">
-        <!-- WhatsApp Chat Header -->
         <header class="flex-none text-white px-4 py-3 flex items-center justify-between z-10 shadow-sm" style="background: var(--bg-header); color: var(--header-text); border-bottom: 1px solid var(--border-color);">
             <div class="flex items-center space-x-3" style="display: flex; align-items: center; gap: 12px;">
                 <div id="chatHeaderAvatar" class="w-10 h-10 rounded-full bg-white text-indigo-900 flex items-center justify-center font-bold overflow-hidden border-2 border-white/40" style="width: 36px; height: 36px; border-radius: 50%; background: #fff; color: #0f2744; display: flex; align-items: center; justify-content: center; font-size: 16px;">
@@ -751,16 +741,13 @@ C 100 110, 100 128, 100 144
             <button type="button" class="icon-btn" onclick="window.closeChatView()" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; font-weight: 700;">✕ Close</button>
         </header>
 
-        <!-- Interruption Alert Banner -->
         <div id="chatInterruptedBanner" class="hidden" style="background: #fee2e2; border-bottom: 1px solid #f87171; color: #991b1b; padding: 8px 16px; font-size: 12px; font-weight: 600; text-align: center;">
             ⚠️ Upload was interrupted or failed. Please check your internet connection and try again.
         </div>
 
-        <!-- WhatsApp Messages Container (Clean White Background) -->
         <main id="chatMessagesContainer" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-3" style="flex: 1; overflow-y: auto; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; background-color: #ffffff;">
         </main>
 
-        <!-- Dynamic Upload Progress Bar -->
         <div id="chatUploadProgressWrap" class="hidden" style="padding: 10px 16px; background: #f8fafc; border-top: 1px solid #e2e8f0;">
             <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; margin-bottom: 4px; color: #334155;">
                 <span id="chatProgressStatusLabel">Uploading...</span>
@@ -771,13 +758,11 @@ C 100 110, 100 128, 100 144
             </div>
         </div>
 
-        <!-- Attachment Preview Bar -->
         <div id="chatAttachmentPreviewBar" class="hidden" style="padding: 6px 16px; background: #e2e8f0; font-size: 12px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #cbd5e1;">
             <div id="chatAttachmentName" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%; font-weight: 600; color: #1e293b;"></div>
             <button type="button" id="removeAttachmentBtn" style="border: none; background: transparent; color: #ef4444; font-weight: bold; cursor: pointer;">✕ Cancel</button>
         </div>
 
-        <!-- WhatsApp Input Footer -->
         <footer class="flex-none p-3 z-10" style="background: #f0f2f5; border-top: 1px solid #e2e8f0; display: flex; align-items: center;">
             <form id="standaloneChatForm" class="w-full mx-auto flex items-center space-x-2" style="display: flex; gap: 8px; align-items: center; width: 100%;">
                 <input type="file" id="chatMediaInput" accept="image/*,video/*" style="display: none;">
@@ -833,11 +818,19 @@ C 100 110, 100 128, 100 144
  <button type="button" id="editProfileBtn" style="width:100%;padding:10px;background:var(--btn-back-bg);color:var(--btn-back-text);border:1px solid var(--border-color);border-radius:8px;font-weight:600;margin-bottom:10px;">Edit Profile Details</button>
  <button type="button" id="deleteAccountBtn" style="width:100%;padding:10px;background:var(--contra-bg);color:var(--contra-text);border:1px solid var(--contra-border);border-radius:8px;font-weight:600;">Delete Account & Reset</button>
  </div>
+
+ <div style="border-top:1px solid var(--border-color);margin-top:16px;padding-top:16px;">
+ <label style="font-size:13px;font-weight:700">Legal & Privacy Disclosures</label>
+ <p class="muted" style="font-size:12px;margin:4px 0 10px;">Review our data protection and usage disclosures:</p>
+ <a href="https://yourusername.github.io/docstat/privacy.html" target="_blank" style="display:block; text-align:center; padding:10px; background:var(--btn-back-bg); color:var(--btn-back-text); border:1px solid var(--border-color); border-radius:8px; font-weight:600; text-decoration:none; font-size:13px;">
+   📄 View Privacy Policy
+ </a>
+ </div>
  </div>
  </div>
 </div>
 
-<!-- EMAIL OTP VERIFICATION & PROFILE SETUP LOGIN MODAL -->
+<!-- EMAIL OTP LOGIN MODAL -->
 <div id="loginModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
  <div class="modal" style="max-width: 400px; text-align: left;">
  <div style="font-size: 32px; margin-bottom: 8px;">🧑🏻‍⚕️</div>
@@ -898,6 +891,22 @@ C 100 110, 100 128, 100 144
  </div>
 </div>
 
+<!-- FIRST LAUNCH CLINICAL REFERENCE DISCLAIMER MODAL -->
+<div id="disclaimerModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+  <div class="modal" style="max-width: 420px; text-align: center;">
+    <div style="font-size: 32px; margin-bottom: 8px;">⚖️</div>
+    <h3 style="margin: 0 0 8px; font-size: 18px;">Educational Reference Notice</h3>
+    <p class="muted" style="font-size: 12.5px; line-height: 1.5; text-align: left; margin: 0 0 16px;">
+      DocStat is an educational clinical calculation and classification reference designed solely for licensed healthcare providers and medical students. 
+      <br><br>
+      This application <b>does not provide medical diagnoses</b>, patient evaluations, or individualized treatment plans. All calculations and scoring criteria must be independently confirmed with peer-reviewed literature before clinical use.
+    </p>
+    <button type="button" class="primary" style="width: 100%; padding: 12px;" onclick="acceptAppDisclaimer()">
+      I Understand & Agree
+    </button>
+  </div>
+</div>
+
 <!-- ============================================================== -->
 <!-- 1. CORE DATA REGISTRY & GLOBAL HELPERS -->
 <!-- ============================================================== -->
@@ -932,6 +941,7 @@ window.S = S;
 <script src="Subjects/renal.js"></script>
 <script src="Subjects/rheum.js"></script>
 <script src="Subjects/surg.js"></script>
+<script src="Subjects/peds.js"></script>
 
 <!-- ============================================================== -->
 <!-- 3. APPLICATION ENGINE, OFFLINE SYNC & CONTROLLER -->
@@ -941,10 +951,24 @@ window.S = S;
  "use strict";
  const $ = id => document.getElementById(id);
 
- // Primary Webhook URL:
- const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyIcYUMlVYIEizyu4ypsG0zLz5vcoRDRsmTKpHd5sG3rcRWXCFkvuHyS6y4KAkjaPNL/exec";
+ const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzYMVqgUULDBBOF-Mzs2MDbn7HZkM2_mznJ8FVMbYfZ13UGN4aci92ok0s59f5C3Sba/exec";
  const OFFLINE_QUEUE_KEY = "doccalc_offline_sync_queue";
  let isSyncingQueue = false;
+
+ function checkAppDisclaimer() {
+   if (!localStorage.getItem("doccalc_disclaimer_accepted")) {
+     const modal = $("disclaimerModal");
+     if (modal) modal.classList.remove("hidden");
+   }
+ }
+
+ window.acceptAppDisclaimer = function() {
+   localStorage.setItem("doccalc_disclaimer_accepted", "true");
+   const modal = $("disclaimerModal");
+   if (modal) modal.classList.add("hidden");
+ };
+
+ window.addEventListener("load", checkAppDisclaimer);
 
  function enqueueOfflinePayload(payload) {
    try {
@@ -1411,7 +1435,7 @@ window.S = S;
  }
  window.showView = showView;
 
- // --- BULLETPROOF HASH & HARDWARE ROUTER ---
+ // --- ROUTER ---
  let isHandlingHash = false;
  window.addEventListener("hashchange", async function () {
    if (isHandlingHash) {
@@ -1895,16 +1919,94 @@ window.S = S;
 <!-- STANDALONE CHAT ENGINE & WIRING SCRIPT -->
 <script>
 (function() {
- const settingsBtn = document.getElementById("openSettingsBtn");
- let unreadDot = null;
- 
- // Attachment & Upload States
+ function playClientChime() {
+   try {
+     const AudioContext = window.AudioContext || window.webkitAudioContext;
+     if (!AudioContext) return;
+     const ctx = new AudioContext();
+     if (ctx.state === "suspended") ctx.resume();
+
+     const now = ctx.currentTime;
+     const osc = ctx.createOscillator();
+     const gain = ctx.createGain();
+
+     osc.type = "sine";
+     osc.frequency.setValueAtTime(750, now);
+     osc.frequency.exponentialRampToValueAtTime(1050, now + 0.12);
+
+     gain.gain.setValueAtTime(0.18, now);
+     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+
+     osc.connect(gain);
+     gain.connect(ctx.destination);
+
+     osc.start(now);
+     osc.stop(now + 0.38);
+   } catch (e) {
+     console.warn("Audio chime playback blocked or unsupported:", e);
+   }
+ }
+
+ function triggerClientVibration() {
+   if ("vibrate" in navigator) {
+     try {
+       navigator.vibrate([200, 100, 200]);
+     } catch (err) {}
+   }
+ }
+
+ window.addEventListener("pointerdown", function unlockAudio() {
+   try {
+     const AudioContext = window.AudioContext || window.webkitAudioContext;
+     if (AudioContext) {
+       const dummyCtx = new AudioContext();
+       dummyCtx.resume().then(() => dummyCtx.close());
+     }
+   } catch (e) {}
+   window.removeEventListener("pointerdown", unlockAudio);
+ }, { once: true });
+
  let selectedFile = null;
  let selectedFileBase64 = "";
  let selectedFileName = "";
  let selectedFileMime = "";
  let isUploadingNow = false;
 
+ function getOrCreateBadgeElement() {
+   let badge = document.getElementById("feedbackUnreadBadge");
+   if (badge) return badge;
+
+   const actualChatBtn = document.getElementById("actualFeedbackBtn");
+   if (actualChatBtn && actualChatBtn.parentNode) {
+     badge = document.createElement("span");
+     badge.className = "unread-badge";
+     badge.id = "feedbackUnreadBadge";
+     actualChatBtn.parentNode.appendChild(badge);
+     return badge;
+   }
+   return null;
+ }
+
+ function showUnreadBadge(count) {
+   const badge = getOrCreateBadgeElement();
+   if (badge) {
+     badge.textContent = count > 9 ? "9+" : count.toString();
+     badge.classList.add("active");
+     badge.style.display = "inline-block";
+   }
+ }
+
+ function clearUnreadBadge() {
+   const badge = getOrCreateBadgeElement();
+   if (badge) {
+     badge.textContent = "";
+     badge.classList.remove("active");
+     badge.style.display = "none";
+   }
+   localStorage.setItem("doccalc_last_read_feedback_time", Date.now().toString());
+ }
+
+ const settingsBtn = document.getElementById("openSettingsBtn");
  if (settingsBtn && settingsBtn.parentNode) {
    const wrap = document.createElement("div");
    wrap.style.display = "flex";
@@ -1913,17 +2015,20 @@ window.S = S;
 
    const btnContainer = document.createElement("div");
    btnContainer.className = "feedback-btn-wrap";
+   btnContainer.style.position = "relative";
+   btnContainer.style.display = "inline-flex";
 
    const actualChatBtn = document.createElement("button");
    actualChatBtn.type = "button";
    actualChatBtn.className = "icon-btn";
+   actualChatBtn.id = "actualFeedbackBtn";
    actualChatBtn.innerHTML = "💬 Feedback";
    actualChatBtn.onclick = () => {
      clearUnreadBadge();
      location.hash = "chat";
    };
 
-   unreadDot = document.createElement("span");
+   const unreadDot = document.createElement("span");
    unreadDot.className = "unread-badge";
    unreadDot.id = "feedbackUnreadBadge";
 
@@ -1932,29 +2037,6 @@ window.S = S;
 
    wrap.appendChild(btnContainer);
    wrap.appendChild(settingsBtn);
- }
-
- function showUnreadBadge(count) {
-   if (unreadDot) {
-     unreadDot.textContent = count > 9 ? "9+" : count.toString();
-     unreadDot.classList.add("active");
-   }
- }
-
- function clearUnreadBadge() {
-   if (unreadDot) {
-     unreadDot.textContent = "";
-     unreadDot.classList.remove("active");
-   }
-   localStorage.setItem("doccalc_last_read_feedback_time", Date.now().toString());
- }
-
- function triggerNotificationVibration() {
-   if ("vibrate" in navigator) {
-     try {
-       navigator.vibrate([200, 100, 200]);
-     } catch (err) {}
-   }
  }
 
  window.closeChatView = function() {
@@ -1986,7 +2068,6 @@ window.S = S;
    }
  }
 
- // Safe local chat save: Never stores multi-megabyte base64 strings in localStorage
  function saveLocalChat(msg, timestamp, mediaUrl) {
    try {
      const chats = getSavedLocalChats();
@@ -1994,7 +2075,6 @@ window.S = S;
      chats.push({ sender: "clinician", message: msg, timestamp: timestamp, mediaUrl: safeMedia });
      localStorage.setItem("doccalc_saved_chat_history", JSON.stringify(chats.slice(-40)));
    } catch(e) {
-     console.warn("Storage quota warning, cleared old history.");
      localStorage.removeItem("doccalc_saved_chat_history");
    }
  }
@@ -2058,7 +2138,6 @@ window.S = S;
 
  window.loadClinicianMessages = loadClinicianMessages;
 
- // Video compression engine
  async function compressVideoFile(videoFile, onProgress) {
    return new Promise((resolve) => {
      if (!window.MediaRecorder) return resolve(videoFile);
@@ -2134,7 +2213,6 @@ window.S = S;
    });
  }
 
- // UI Progress Helpers
  const progressWrap = document.getElementById("chatUploadProgressWrap");
  const progressStatusLabel = document.getElementById("chatProgressStatusLabel");
  const progressPercentLabel = document.getElementById("chatProgressPercentLabel");
@@ -2152,7 +2230,6 @@ window.S = S;
    if (progressBarFill) progressBarFill.style.width = "0%";
  }
 
- // File picker & preview bar wiring
  const attachBtn = document.getElementById("attachMediaBtn");
  const mediaInput = document.getElementById("chatMediaInput");
  const previewBar = document.getElementById("chatAttachmentPreviewBar");
@@ -2185,13 +2262,16 @@ window.S = S;
    };
  }
 
- // Polling for team replies with vibration
  let lastObservedUnreadCount = 0;
 
  async function checkUnreadAdminReplies() {
    if (!navigator.onLine || !window.GOOGLE_SHEET_WEBHOOK_URL) return;
+   
    const chatPage = document.getElementById("chatPage");
-   if (chatPage && !chatPage.classList.contains("hidden")) return;
+   if (chatPage && !chatPage.classList.contains("hidden")) {
+     clearUnreadBadge();
+     return;
+   }
 
    const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
    if (!email) return;
@@ -2213,7 +2293,8 @@ window.S = S;
          showUnreadBadge(unreadCount);
 
          if (unreadCount > lastObservedUnreadCount) {
-           triggerNotificationVibration();
+           playClientChime();
+           triggerClientVibration();
          }
          lastObservedUnreadCount = unreadCount;
        } else {
@@ -2225,11 +2306,10 @@ window.S = S;
  }
 
  window.addEventListener("load", () => {
-   setTimeout(checkUnreadAdminReplies, 2500);
+   setTimeout(checkUnreadAdminReplies, 1500);
  });
- setInterval(checkUnreadAdminReplies, 45000);
+ setInterval(checkUnreadAdminReplies, 15000);
 
- // Reliable Fetch Submission (Fixes Apps Script 302 CORS XHR aborts)
  document.getElementById("standaloneChatForm").onsubmit = async function(e) {
    e.preventDefault();
    const inp = document.getElementById("standaloneChatInput");
@@ -2270,7 +2350,6 @@ window.S = S;
      });
    }
 
-   // Local chat update
    const box = document.getElementById("chatMessagesContainer");
    renderChatBubble(box, { sender: "clinician", message: msg, timestamp: timestamp, mediaUrl: selectedFileBase64 });
    box.scrollTop = box.scrollHeight;
@@ -2289,7 +2368,6 @@ window.S = S;
      fileMime: selectedFileMime
    };
 
-   // Clear input fields immediately
    inp.value = "";
    selectedFile = null;
    selectedFileBase64 = "";
