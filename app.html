@@ -406,6 +406,7 @@ h2 { font-size: 21px; margin: 8px 0; }
 .badge-spec-onco { background: #fae8ff; color: #c026d3; border: 1px solid #f5d0fe; }
 .badge-spec-peds { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
 .badge-spec-surg { background: #ffe4e6; color: #e11d48; border: 1px solid #fecdd3; }
+.badge-spec-tnm { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
 
 .panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; }
 .desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 5px 0 14px; }
@@ -941,9 +942,8 @@ window.S = S;
 <script src="Subjects/renal.js"></script>
 <script src="Subjects/rheum.js"></script>
 <script src="Subjects/surg.js"></script>
-<script src="Subjects/ peds.js"></script>
-<script src="Subjects/ tnm.js"></script>
-
+<script src="Subjects/peds.js"></script>
+<script src="Subjects/tnm.js"></script>
 
 <!-- ============================================================== -->
 <!-- 3. APPLICATION ENGINE, OFFLINE SYNC & CONTROLLER -->
@@ -1543,6 +1543,7 @@ window.S = S;
    if (c.includes("onco") || c.includes("oncology")) return "badge-spec-onco";
    if (c.includes("ped") || c.includes("pediatric") || c.includes("paediatric")) return "badge-spec-peds";
    if (c.includes("surg") || c.includes("surgery") || c.includes("surgical")) return "badge-spec-surg";
+   if (c.includes("tnm") || c.includes("staging")) return "badge-spec-tnm";
    return "badge-spec";
  }
 
