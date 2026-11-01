@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="logo.png">
 
 <style>
-/* CSS VARIABLES FOR THEMES */
+/* CSS VARIABLES FOR THEMES & SOFT BLUE HIGHLIGHTS */
 :root {
  --bg-body: #f3f6fa;
  --bg-card: #ffffff;
@@ -62,6 +62,10 @@
  --tnm-notice-border: #fecaca;
  --tnm-notice-text: #991b1b;
  --tnm-heading-color: #dc2626;
+ /* Soft Blue Blur Highlight Palette */
+ --highlight-bg: #eff6ff;
+ --highlight-border: #93c5fd;
+ --highlight-text: #1e40af;
  /* Chat Theme Variables */
  --wa-bg-light: #ffffff;
  --wa-bg-dark: #0b141a;
@@ -123,6 +127,10 @@
  --tnm-notice-border: #4c1d24;
  --tnm-notice-text: #fca5a5;
  --tnm-heading-color: #ef4444;
+ /* Soft Blue Blur Highlight Dark */
+ --highlight-bg: #1e3a8a;
+ --highlight-border: #3b82f6;
+ --highlight-text: #93c5fd;
 }
 
 * { box-sizing: border-box; }
@@ -251,7 +259,7 @@ body {
  100% { transform: scale(1); }
 }
 
-/* FIXED / ANCHORED NAVY BLUE HEADER */
+/* FIXED / PERSISTENT TOP HEADER */
 header {
  background: var(--bg-header);
  color: var(--header-text);
@@ -464,6 +472,7 @@ h2 { font-size: 21px; margin: 8px 0; }
 .badge-spec-renal { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
 .badge-spec-rheum { background: #f3e8ff; color: #7c3aed; border: 1px solid #e9d5ff; }
 
+/* CALCULATOR INTERFACE CARD STYLING (MATCHING REFERENCE SCREENSHOT) */
 .panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; }
 .desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 5px 0 14px; }
 
@@ -472,37 +481,57 @@ h2 { font-size: 21px; margin: 8px 0; }
 .contra-box { background: var(--contra-bg); border: 1px solid var(--contra-border); color: var(--contra-text); }
 .info-title { font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
 
-.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+/* FIELD CARDS STYLING WITH SOFT BLUE BLUR HIGHLIGHT */
+.fields { display: flex; flex-direction: column; gap: 12px; }
+.fields > div {
+ background: var(--bg-card);
+ border: 1px solid var(--border-color);
+ border-radius: 12px;
+ padding: 12px 14px;
+ box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+ transition: all 0.2s ease;
+}
+.fields > div:focus-within {
+ border-color: var(--highlight-border);
+ box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+ background: var(--highlight-bg);
+}
 .full-width { grid-column: 1 / -1; }
-label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; color: var(--text-muted); }
+label { display: block; font-size: 13px; font-weight: 750; margin-bottom: 6px; color: var(--text-main); }
 input, select {
  width: 100%;
- padding: 11px;
+ padding: 10px 12px;
  border: 1px solid var(--input-border);
- border-radius: 9px;
- font-size: 15px;
+ border-radius: 8px;
+ font-size: 14.5px;
  background: var(--input-bg);
  color: var(--text-main);
  outline: none;
+ font-weight: 500;
 }
-input:focus, select:focus { border-color: #2463eb; }
+select option {
+ background: var(--bg-card);
+ color: var(--text-main);
+ padding: 8px;
+}
+input:focus, select:focus { border-color: var(--highlight-border); background: var(--bg-card); color: var(--highlight-text); }
 
 .actions { display: flex; gap: 9px; margin-top: 16px; flex-wrap: wrap; }
 button { cursor: pointer; font: inherit; }
 .primary, .secondary, .notes-btn { padding: 13px; border: 0; border-radius: 10px; font-weight: 750; }
-.primary { background: #2463eb; color: white; flex: 1; min-width: 140px; }
+.primary { background: #2463eb; color: white; flex: 1; min-width: 140px; box-shadow: 0 2px 6px rgba(36,99,235,0.25); }
 .secondary { background: var(--btn-back-bg); color: var(--btn-back-text); flex: 1; min-width: 100px; }
 .notes-btn { background: #ffffff; color: #17324e; border: 1px solid var(--border-color); width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.15s ease; }
 .notes-btn:hover { background: var(--tab-bg); }
 
-/* COMPLIANT OUTPUT CONTAINER */
-.result { display: none; margin-top: 20px; padding: 16px; border-radius: 12px; background: var(--result-bg); border: 1px solid var(--result-border); }
+/* COMPLIANT OUTPUT CONTAINER WITH SOFT BLUE HIGHLIGHT */
+.result { display: none; margin-top: 20px; padding: 16px; border-radius: 12px; background: var(--highlight-bg); border: 1px solid var(--highlight-border); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08); }
 .result.show { display: block; }
-.caption { font-size: 11px; color: var(--result-text); font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
-.value { font-size: 24px; font-weight: 800; color: var(--result-val); margin: 4px 0 10px; overflow-wrap: anywhere; }
-.res-subhead { font-size: 11.5px; font-weight: 750; color: var(--result-text); text-transform: uppercase; margin: 12px 0 4px; letter-spacing: 0.4px; }
-.equation { font-size: 12.5px; line-height: 1.6; color: var(--result-text); white-space: pre-line; }
-.copy { float: right; padding: 6px 11px; border: 1px solid var(--result-border); border-radius: 7px; background: #ffffff; font-weight: 600; color: #075c42; }
+.caption { font-size: 11px; color: var(--highlight-text); font-weight: 750; letter-spacing: 0.5px; text-transform: uppercase; }
+.value { font-size: 24px; font-weight: 800; color: var(--highlight-text); margin: 4px 0 10px; overflow-wrap: anywhere; }
+.res-subhead { font-size: 11.5px; font-weight: 750; color: var(--highlight-text); text-transform: uppercase; margin: 12px 0 4px; letter-spacing: 0.4px; }
+.equation { font-size: 12.5px; line-height: 1.6; color: var(--text-main); white-space: pre-line; }
+.copy { float: right; padding: 6px 11px; border: 1px solid var(--highlight-border); border-radius: 7px; background: #ffffff; font-weight: 600; color: var(--highlight-text); }
 
 .reference-card { margin-top: 22px; border-top: 1px solid var(--border-color); padding-top: 16px; }
 .ref-heading { font-size: 14px; font-weight: 750; color: var(--text-main); margin: 0 0 6px; display: flex; align-items: center; gap: 6px; }
@@ -675,9 +704,9 @@ C 100 110, 100 128, 100 144
 </header>
 
 <main>
- <!-- HOME VIEW (HORIZONTAL SLIDER BELOW THE HEADER) -->
+ <!-- HOME VIEW (HORIZONTAL SLIDER BELOW THE FIXED HEADER) -->
  <div id="home">
-   <!-- SWIPE TRACK (LEFT <-> RIGHT SLIDER) -->
+   <!-- SWIPE TRACK (LEFT <-> RIGHT SLIDER WITHOUT VISIBLE BUTTONS) -->
    <div class="swipe-carousel-track" id="homeSwipeTrack">
      
      <!-- SLIDE 1: SPECIALTIES & GENERAL SEARCH -->
@@ -685,7 +714,7 @@ C 100 110, 100 128, 100 144
        <div class="notice"><b>Educational Notice:</b> Mathematical calculations and published scoring criteria are provided for reference only. Verify independently against official clinical literature.</div>
 
        <div class="search-wrapper">
-         <input class="search" id="search" placeholder="Search by name, organ, or abbreviation..." aria-label="Search tools">
+         <input class="search" id="search" type="search" enterkeyhint="search" placeholder="Search by name, organ, or abbreviation..." aria-label="Search tools">
        </div>
        <div id="homeDefaultContent">
          <h2>Browse by specialty</h2>
@@ -706,7 +735,7 @@ C 100 110, 100 128, 100 144
        </div>
      </div>
 
-     <!-- SLIDE 2: DEDICATED TNM & ONCOLOGY SECTION (VERY LIGHT RED TINCH) -->
+     <!-- SLIDE 2: DEDICATED TNM SECTION (VERY VERY LIGHT RED TINCH) -->
      <div class="swipe-carousel-slide slide-tnm-theme" id="slideTNM">
        <!-- REDDISH NOTICE -->
        <div class="tnm-notice-box">
@@ -718,7 +747,7 @@ C 100 110, 100 128, 100 144
        <p class="muted" style="margin:0 0 14px; line-height: 1.45;">Staging criteria, organ staging, TNM classifications, and surgical oncology reference</p>
        
        <div class="search-wrapper" style="margin-bottom: 12px;">
-         <input class="search" id="tnmSearchInput" placeholder="Search TNM staging, organ, or any tool..." aria-label="Search TNMs">
+         <input class="search" id="tnmSearchInput" type="search" enterkeyhint="search" placeholder="Search TNM staging, organ, or any tool..." aria-label="Search TNMs">
        </div>
 
        <div class="filter-tabs" id="tnmTypeFilters">
@@ -1641,7 +1670,6 @@ window.S = S;
    const badgeLabel = t.type === "class" ? "Classification" : "Calculator";
    const badgeClass = t.type === "class" ? "badge-class" : "badge-calc";
    
-   // Set badge name to ONCO for oncology / staging tools
    let specName = t.cat ? t.cat.toUpperCase() : "GENERAL";
    if (t.cat === "onco" || t.cat === "onco_hn_gi" || t.cat === "tnm") specName = "ONCO";
    else if (t.cat === "surg") specName = "SURGERY";
@@ -1674,7 +1702,7 @@ window.S = S;
    if (!catContainer) return;
 
    const catMap = new Map();
-   // HIDE categories: onco, onco_hn_gi, tnm/figo from main screen categories grid
+   // HIDE categories: onco, onco_hn_gi, tnm from main screen categories grid
    (window.categories || []).forEach(c => {
      if (c && c.id) {
        const cid = c.id.toLowerCase();
@@ -1744,7 +1772,7 @@ window.S = S;
  window.renderQuick = renderHome;
 
  // -------------------------------------------------------------
- // 4. DEDICATED TNM & ONCOLOGY SLIDE LOGIC
+ // 4. DEDICATED TNM & ONCOLOGY SLIDE LOGIC (ALL TNM.JS TOOLS)
  // -------------------------------------------------------------
  let activeTnmFilter = "all";
 
@@ -1773,10 +1801,10 @@ window.S = S;
    let toolsToDisplay = [];
 
    if (!q) {
-     // DEFAULT VIEW: Show ONLY TNM / Oncology section tools
+     // DEFAULT VIEW: Show ALL tools from tnm.js (oncology / TNM / staging)
      toolsToDisplay = (window.tools || []).filter(isTnmOrOncoTool);
    } else {
-     // SEARCH VIEW: Can show across ALL categories, but TNM ones on top!
+     // SEARCH VIEW: Searches across all tools, but puts TNM matches FIRST on top
      const allMatching = (window.tools || []).filter(t => matchesToolSearch(t, q));
      
      const tnmMatches = [];
@@ -1790,7 +1818,6 @@ window.S = S;
        }
      });
 
-     // Put TNM matches first, then other matching tools
      toolsToDisplay = [...tnmMatches, ...otherMatches];
    }
 
@@ -1810,6 +1837,21 @@ window.S = S;
  const tnmSearchInp = $("tnmSearchInput");
  if (tnmSearchInp) {
    tnmSearchInp.oninput = () => renderTNMPage();
+   // Auto-minimize keyboard when search/enter is pressed on mobile
+   tnmSearchInp.addEventListener("keydown", (e) => {
+     if (e.key === "Enter") {
+       tnmSearchInp.blur();
+     }
+   });
+ }
+
+ const mainSearchInp = $("search");
+ if (mainSearchInp) {
+   mainSearchInp.addEventListener("keydown", (e) => {
+     if (e.key === "Enter") {
+       mainSearchInp.blur();
+     }
+   });
  }
 
  document.querySelectorAll("[data-tnm-filter]").forEach(btn => {
