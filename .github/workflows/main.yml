@@ -15,33 +15,31 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
 
       - name: Install dependencies
-        run: |
-          npm install
-          npm install -D @capacitor/assets
+        run: npm install
 
-      # Automatically packages your folders into www/ on the fly during cloud build
+      # Package folders into www/ on the fly
       - name: Prepare Web Assets for Capacitor
         run: |
           mkdir -p www/Subjects
           mkdir -p www/InfoHTMLs
           
-          # Copy main HTML file
+          # Copy main HTML
           cp app.html www/index.html 2>/dev/null || cp index.html www/index.html
           
-          # Copy files into their respective subfolders inside www
+          # Copy subfolders
           cp Subjects/*.js www/Subjects/ 2>/dev/null || true
           cp InfoHTMLs/*.html www/InfoHTMLs/ 2>/dev/null || true
           
-          # Copy root assets (images, icons, etc.)
+          # Copy root assets
           cp *.png www/ 2>/dev/null || true
           cp *.jpg www/ 2>/dev/null || true
           cp *.svg www/ 2>/dev/null || true
 
       - name: Set up Java
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17
@@ -52,39 +50,56 @@ jobs:
             npx cap add android
           fi
 
-      # Generate Android App Launcher Icons from edge-to-edge icon.png
+      # Inject required Android permissions and cleartext traffic into AndroidManifest.xml
+      - name: Configure AndroidManifest Permissions
+        run: |
+          MANIFEST="android/app/src/main/AndroidManifest.xml"
+          if [ -f "$MANIFEST" ]; then
+            # Add permissions if not already present
+            sed -i '/<manifest/a \    <uses-permission android:name="android.permission.INTERNET" />\n    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />\n    <uses-permission android:name="android.permission.VIBRATE" />\n    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />\n    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />\n    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />' "$MANIFEST"
+
+            # Allow cleartext traffic for webhooks
+            sed -i 's/<application/<application android:usesCleartextTraffic="true"/g' "$MANIFEST"
+          fi
+
+      # Generate Android App Launcher Icons safely
       - name: Generate App Icons
         run: |
-          mkdir -p assets
-          cp icon.png assets/icon.png
-          npx @capacitor/assets generate --android --assetPath assets
+          if [ -f "icon.png" ]; then
+            mkdir -p assets
+            cp icon.png assets/icon.png
+            cp icon.png assets/icon-only.png 2>/dev/null || cp icon.png assets/icon-foreground.png 2>/dev/null || true
+            npx @capacitor/assets generate --android --assetPath assets || true
+          fi
 
       - name: Sync Capacitor Android
-        run: |
-          npx cap sync android
+        run: npx cap sync android
 
-      # Update App Name in Strings.xml
-      - name: Update App Name in Strings.xml
+      - name: Update App Name in strings.xml
         run: |
           STRINGS_PATH="android/app/src/main/res/values/strings.xml"
           if [ -f "$STRINGS_PATH" ]; then
             sed -i 's/<string name="app_name">.*<\/string>/<string name="app_name">DocStat<\/string>/g' "$STRINGS_PATH"
           fi
 
-      # Restore keystore from GitHub Secret and verify existence
+      # Restore keystore from GitHub Secret
       - name: Restore Keystore from Secret
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "ERROR: KEYSTORE_BASE64 secret is not set!"
+            exit 1
+          fi
           echo "$KEYSTORE_BASE64" | base64 --decode > "$GITHUB_WORKSPACE/android/app/release.jks"
           ls -lh "$GITHUB_WORKSPACE/android/app/release.jks"
 
-      # Auto-increment versionCode so updates are accepted by Android
+      # Auto-increment versionCode
       - name: Auto-Increment Version Code
         run: |
           sed -i 's/versionCode 1/versionCode ${{ github.run_number }}/g' android/app/build.gradle || true
 
-      # Sign and build release APK using your GitHub Secrets
+      # Sign and build release APK
       - name: Sign and Build Android Release APK
         working-directory: android
         env:
@@ -99,13 +114,18 @@ jobs:
             -Pandroid.injected.signing.key.password="$KEYSTORE_PASSWORD" \
             --no-daemon
 
-      # Rename built APK for a clean custom filename
+      # Locate and rename APK
       - name: Rename APK
         run: |
           mkdir -p final-apk
-          cp android/app/build/outputs/apk/release/app-release.apk final-apk/DocStat-v${{ github.run_number }}.apk || cp android/app/build/outputs/apk/release/release.apk final-apk/DocStat-v${{ github.run_number }}.apk
+          APK_PATH=$(find android/app/build/outputs/apk/release/ -name "*.apk" | head -n 1)
+          if [ -f "$APK_PATH" ]; then
+            cp "$APK_PATH" final-apk/DocStat-v${{ github.run_number }}.apk
+          else
+            echo "Error: Release APK not found!"
+            exit 1
+          fi
 
-      # Upload the renamed signed APK artifact
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
