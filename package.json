@@ -4,7 +4,7 @@
   "private": true,
   "description": "Offline-first clinical calculators and classifications",
   "scripts": {
-    "build": ""
+    "build": "echo 'Assets bundled dynamically by CI workflow'"
   },
   "dependencies": {
     "@capacitor/android": "6.2.1",
@@ -12,6 +12,7 @@
     "@capacitor/core": "6.2.1"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "6.2.1"
   }
 }
