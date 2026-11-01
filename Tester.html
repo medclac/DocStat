@@ -56,6 +56,12 @@
  --tag-text: #475569;
  --splash-bg: #ffffff;
  --modal-overlay: rgba(0, 0, 0, 0.45);
+ /* Slide 2 TNM Page Palette */
+ --tnm-page-bg: #fff5f5;
+ --tnm-notice-bg: #fef2f2;
+ --tnm-notice-border: #fecaca;
+ --tnm-notice-text: #991b1b;
+ --tnm-heading-color: #dc2626;
  /* Chat Theme Variables */
  --wa-bg-light: #ffffff;
  --wa-bg-dark: #0b141a;
@@ -111,6 +117,12 @@
  --tag-text: #94a3b8;
  --splash-bg: #ffffff;
  --modal-overlay: rgba(0, 0, 0, 0.7);
+ /* Slide 2 TNM Page Dark */
+ --tnm-page-bg: #1c1214;
+ --tnm-notice-bg: #2d1719;
+ --tnm-notice-border: #4c1d24;
+ --tnm-notice-text: #fca5a5;
+ --tnm-heading-color: #ef4444;
 }
 
 * { box-sizing: border-box; }
@@ -239,12 +251,16 @@ body {
  100% { transform: scale(1); }
 }
 
+/* FIXED / ANCHORED NAVY BLUE HEADER */
 header {
  background: var(--bg-header);
  color: var(--header-text);
- padding: 22px 18px;
+ padding: 22px 18px 18px;
  border-radius: 0 0 22px 22px;
- position: relative;
+ position: sticky;
+ top: 0;
+ z-index: 50;
+ box-shadow: 0 3px 12px rgba(0,0,0,0.14);
 }
 .header-top {
  display: flex;
@@ -274,7 +290,7 @@ header {
 header small { letter-spacing: 0.5px; text-transform: uppercase; color: var(--header-sub); font-size: 11px; }
 h1 { margin: 5px 0; font-size: 28px; display: flex; align-items: center; gap: 8px; }
 header p { margin: 0; color: var(--header-sub); font-size: 14px; }
-main { max-width: 760px; margin: auto; padding: 16px; }
+main { max-width: 760px; margin: auto; padding: 12px 12px 24px; }
 
 .icon-btn {
  background: rgba(255,255,255,0.12);
@@ -333,38 +349,7 @@ main { max-width: 760px; margin: auto; padding: 16px; }
  margin-bottom: 16px;
 }
 
-/* TOP SWIPE PAGER BAR */
-.pager-switch-wrap {
- display: flex;
- gap: 8px;
- background: var(--tab-bg);
- padding: 5px;
- border-radius: 12px;
- margin-bottom: 16px;
-}
-.pager-tab-btn {
- flex: 1;
- padding: 10px 12px;
- font-size: 13px;
- font-weight: 700;
- border: 0;
- border-radius: 9px;
- background: transparent;
- color: var(--text-muted);
- cursor: pointer;
- transition: all 0.2s ease;
- display: flex;
- align-items: center;
- justify-content: center;
- gap: 6px;
-}
-.pager-tab-btn.active {
- background: var(--bg-card);
- color: #2463eb;
- box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-}
-
-/* HORIZONTAL SWIPE CAROUSEL CONTAINER */
+/* HORIZONTAL FULL-PAGE SWIPE CAROUSEL (JUST BELOW NAVY HEADER) */
 .swipe-carousel-track {
  display: flex;
  width: 100%;
@@ -382,6 +367,26 @@ main { max-width: 760px; margin: auto; padding: 16px; }
  width: 100%;
  scroll-snap-align: start;
  box-sizing: border-box;
+ transition: background 0.25s ease;
+}
+
+/* SLIDE 2: VERY VERY LIGHT REDDISH TINT FOR TNM SECTION */
+.slide-tnm-theme {
+ background: var(--tnm-page-bg);
+ padding: 14px 12px 24px;
+ border-radius: 16px;
+ border: 1px solid rgba(239, 68, 68, 0.15);
+ min-height: 85vh;
+}
+.tnm-notice-box {
+ background: var(--tnm-notice-bg);
+ border: 1px solid var(--tnm-notice-border);
+ color: var(--tnm-notice-text);
+ padding: 12px;
+ border-radius: 10px;
+ font-size: 12px;
+ line-height: 1.5;
+ margin-bottom: 14px;
 }
 
 .search-wrapper { position: relative; margin-bottom: 16px; }
@@ -440,24 +445,24 @@ h2 { font-size: 21px; margin: 8px 0; }
 .tool-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .tool strong { font-size: 14px; }
 .badge-group { display: flex; gap: 6px; align-items: center; }
-.badge { display: inline-block; padding: 2px 7px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+.badge { display: inline-block; padding: 2.5px 7px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
 .badge-calc { background: var(--badge-calc-bg); color: var(--badge-calc-text); border: 1px solid var(--badge-calc-border); }
 .badge-class { background: var(--badge-class-bg); color: var(--badge-class-text); border: 1px solid var(--badge-class-border); }
 
-/* SPECIALTY BADGES */
+/* SPECIALTY BADGES - EXACT REQUESTED COLORS */
 .badge-spec { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
-.badge-spec-obgy { background: #fce7f3; color: #db2777; border: 1px solid #fbcfe8; }
+.badge-spec-surg { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }        /* Surgery: yellowish */
+.badge-spec-obgy { background: #ffe4e6; color: #be123c; border: 1px solid #fda4af; }        /* Gyn: orangy pink */
+.badge-spec-peds { background: #fce7f3; color: #db2777; border: 1px solid #fbcfe8; }        /* Peds: pink */
+.badge-spec-cardio { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }      /* Cardio: reddish */
+.badge-spec-neuro { background: #e0f2fe; color: #0284c7; border: 1px solid #7dd3fc; }       /* Neuro: blueish */
+.badge-spec-resp { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }        /* Respi: greenish */
+.badge-spec-emgicu { background: #7f1d1d; color: #ffffff; border: 1px solid #991b1b; }      /* Emergency: dark red */
+.badge-spec-tnm, .badge-spec-onco { background: #ffedd5; color: #c2410c; border: 1px solid #fdba74; } /* TNM: orange */
 .badge-spec-ortho { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
-.badge-spec-emgicu { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
-.badge-spec-neuro { background: #ede9fe; color: #7c3aed; border: 1px solid #ddd6fe; }
-.badge-spec-cardio { background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
 .badge-spec-endo { background: #ccfbf1; color: #0d9488; border: 1px solid #99f6e4; }
-.badge-spec-renal { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
-.badge-spec-resp { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; }
+.badge-spec-renal { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
 .badge-spec-rheum { background: #f3e8ff; color: #7c3aed; border: 1px solid #e9d5ff; }
-.badge-spec-peds { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
-.badge-spec-surg { background: #ffe4e6; color: #e11d48; border: 1px solid #fecdd3; }
-.badge-spec-tnm { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
 
 .panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; }
 .desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 5px 0 14px; }
@@ -653,6 +658,7 @@ C 100 110, 100 128, 100 144
  </div>
 </div>
 
+<!-- FIXED / PERSISTENT TOP HEADER -->
 <header>
  <div class="header-top">
  <div class="header-profile-area">
@@ -669,21 +675,15 @@ C 100 110, 100 128, 100 144
 </header>
 
 <main>
- <div class="notice"><b>Educational Notice:</b> Mathematical calculations and published scoring criteria are provided for reference only. Verify independently against official clinical literature.</div>
-
- <!-- HOME VIEW -->
+ <!-- HOME VIEW (HORIZONTAL SLIDER BELOW THE HEADER) -->
  <div id="home">
-   <!-- TOP PAGER BAR: SWITCH BETWEEN SPECIALTIES & TNM/ONCOLOGY -->
-   <div class="pager-switch-wrap">
-     <button type="button" class="pager-tab-btn active" id="pagerBtnSpecialties">📁 Browse Specialties</button>
-     <button type="button" class="pager-tab-btn" id="pagerBtnTNM">🎗️ TNM & Oncology</button>
-   </div>
-
    <!-- SWIPE TRACK (LEFT <-> RIGHT SLIDER) -->
    <div class="swipe-carousel-track" id="homeSwipeTrack">
      
-     <!-- SLIDE 1: SPECIALTIES & GENERAL SEARCH (Picture 1) -->
-     <div class="swipe-carousel-slide" id="slideSpecialties">
+     <!-- SLIDE 1: SPECIALTIES & GENERAL SEARCH -->
+     <div class="swipe-carousel-slide" id="slideSpecialties" style="padding: 4px;">
+       <div class="notice"><b>Educational Notice:</b> Mathematical calculations and published scoring criteria are provided for reference only. Verify independently against official clinical literature.</div>
+
        <div class="search-wrapper">
          <input class="search" id="search" placeholder="Search by name, organ, or abbreviation..." aria-label="Search tools">
        </div>
@@ -706,13 +706,19 @@ C 100 110, 100 128, 100 144
        </div>
      </div>
 
-     <!-- SLIDE 2: DEDICATED TNM & SURGICAL ONCOLOGY (Picture 2) -->
-     <div class="swipe-carousel-slide" id="slideTNM" style="padding: 2px 4px;">
-       <h2 style="font-size:24px; font-weight:800; margin:4px 0 2px;">General & Oncologic Surgery</h2>
-       <p class="muted" style="margin:0 0 14px; line-height: 1.45;">Surgical criteria, acute abdomen calculators, pancreatitis criteria, oncology TNM, and organ staging classifications</p>
+     <!-- SLIDE 2: DEDICATED TNM & ONCOLOGY SECTION (VERY LIGHT RED TINCH) -->
+     <div class="swipe-carousel-slide slide-tnm-theme" id="slideTNM">
+       <!-- REDDISH NOTICE -->
+       <div class="tnm-notice-box">
+         <b>TNM Reference Notice:</b> Anatomical staging rules, TNM 8th/9th editions, and FIGO classifications for clinical and surgical decision support.
+       </div>
+
+       <!-- RED HEADING -->
+       <h2 style="font-size:24px; font-weight:800; margin:2px 0 4px; color: var(--tnm-heading-color);">TNM Section</h2>
+       <p class="muted" style="margin:0 0 14px; line-height: 1.45;">Staging criteria, organ staging, TNM classifications, and surgical oncology reference</p>
        
        <div class="search-wrapper" style="margin-bottom: 12px;">
-         <input class="search" id="tnmSearchInput" placeholder="Search TNM staging, organ, or tumor type..." aria-label="Search TNMs">
+         <input class="search" id="tnmSearchInput" placeholder="Search TNM staging, organ, or any tool..." aria-label="Search TNMs">
        </div>
 
        <div class="filter-tabs" id="tnmTypeFilters">
@@ -1614,18 +1620,18 @@ window.S = S;
 
  function getSpecialtyBadgeClass(catName) {
    const c = (catName || "").toLowerCase().trim();
-   if (c.includes("obgy") || c.includes("obstetrics") || c.includes("gynecology")) return "badge-spec-obgy";
-   if (c.includes("ortho") || c.includes("orthopaedics")) return "badge-spec-ortho";
-   if (c.includes("emgicu") || c.includes("icu") || c.includes("emergency") || c.includes("critical")) return "badge-spec-emgicu";
-   if (c.includes("neuro") || c.includes("neurology")) return "badge-spec-neuro";
+   if (c.includes("surg") || c.includes("surgery") || c.includes("surgical")) return "badge-spec-surg";
+   if (c.includes("obgy") || c.includes("obstetrics") || c.includes("gynecology") || c.includes("gyn")) return "badge-spec-obgy";
+   if (c.includes("ped") || c.includes("pediatric") || c.includes("paediatric")) return "badge-spec-peds";
    if (c.includes("cardio") || c.includes("cardiology")) return "badge-spec-cardio";
+   if (c.includes("neuro") || c.includes("neurology")) return "badge-spec-neuro";
+   if (c.includes("resp") || c.includes("pulm") || c.includes("pulmonology")) return "badge-spec-resp";
+   if (c.includes("emgicu") || c.includes("icu") || c.includes("emergency") || c.includes("critical")) return "badge-spec-emgicu";
+   if (c.includes("onco") || c.includes("tnm") || c.includes("staging")) return "badge-spec-tnm";
+   if (c.includes("ortho") || c.includes("orthopaedics")) return "badge-spec-ortho";
    if (c.includes("endo") || c.includes("endocrine") || c.includes("endocrinology")) return "badge-spec-endo";
    if (c.includes("renal") || c.includes("nephro") || c.includes("nephrology")) return "badge-spec-renal";
-   if (c.includes("resp") || c.includes("pulm") || c.includes("pulmonology")) return "badge-spec-resp";
    if (c.includes("rheum") || c.includes("rheumatology") || c.includes("immuno")) return "badge-spec-rheum";
-   if (c.includes("ped") || c.includes("pediatric") || c.includes("paediatric")) return "badge-spec-peds";
-   if (c.includes("surg") || c.includes("surgery") || c.includes("surgical")) return "badge-spec-surg";
-   if (c.includes("onco") || c.includes("tnm") || c.includes("staging")) return "badge-spec-tnm";
    return "badge-spec";
  }
 
@@ -1635,9 +1641,17 @@ window.S = S;
    const badgeLabel = t.type === "class" ? "Classification" : "Calculator";
    const badgeClass = t.type === "class" ? "badge-class" : "badge-calc";
    
+   // Set badge name to ONCO for oncology / staging tools
    let specName = t.cat ? t.cat.toUpperCase() : "GENERAL";
-   if (t.cat === "onco" || t.cat === "onco_hn_gi") specName = "SURGICAL ONCOLOGY";
-   
+   if (t.cat === "onco" || t.cat === "onco_hn_gi" || t.cat === "tnm") specName = "ONCO";
+   else if (t.cat === "surg") specName = "SURGERY";
+   else if (t.cat === "obgy") specName = "OBGYN";
+   else if (t.cat === "peds") specName = "PEDS";
+   else if (t.cat === "cardio") specName = "CARDIO";
+   else if (t.cat === "neuro") specName = "NEURO";
+   else if (t.cat === "respi") specName = "RESP";
+   else if (t.cat === "emgicu") specName = "EMERGENCY";
+
    const specClass = getSpecialtyBadgeClass(t.cat);
    const isPinned = getPinnedTools().includes(t.id);
 
@@ -1660,19 +1674,28 @@ window.S = S;
    if (!catContainer) return;
 
    const catMap = new Map();
+   // HIDE categories: onco, onco_hn_gi, tnm/figo from main screen categories grid
    (window.categories || []).forEach(c => {
-     if (c && c.id) catMap.set(c.id, c);
+     if (c && c.id) {
+       const cid = c.id.toLowerCase();
+       if (cid !== "onco" && cid !== "onco_hn_gi" && !cid.includes("tnm")) {
+         catMap.set(c.id, c);
+       }
+     }
    });
 
    (window.tools || []).forEach(t => {
      if (t.cat && !catMap.has(t.cat)) {
-       const prettyName = t.cat.charAt(0).toUpperCase() + t.cat.slice(1);
-       catMap.set(t.cat, {
-         id: t.cat,
-         name: prettyName,
-         icon: "📁",
-         desc: `${prettyName} clinical tools & calculators`
-       });
+       const cid = t.cat.toLowerCase();
+       if (cid !== "onco" && cid !== "onco_hn_gi" && !cid.includes("tnm")) {
+         const prettyName = t.cat.charAt(0).toUpperCase() + t.cat.slice(1);
+         catMap.set(t.cat, {
+           id: t.cat,
+           name: prettyName,
+           icon: "📁",
+           desc: `${prettyName} clinical tools & calculators`
+         });
+       }
      }
 
      if (!t.type) {
@@ -1712,7 +1735,7 @@ window.S = S;
      }
    }
 
-   // ALSO REFRESH THE DEDICATED TNM PAGE LIST
+   // REFRESH THE DEDICATED TNM PAGE LIST
    renderTNMPage();
  }
 
@@ -1721,7 +1744,7 @@ window.S = S;
  window.renderQuick = renderHome;
 
  // -------------------------------------------------------------
- // 4. DEDICATED TNM & ONCOLOGY SLIDE LOGIC (Picture 2)
+ // 4. DEDICATED TNM & ONCOLOGY SLIDE LOGIC
  // -------------------------------------------------------------
  let activeTnmFilter = "all";
 
@@ -1733,27 +1756,50 @@ window.S = S;
    return /tnm|staging|ajcc|figo|carcinoma|sarcoma|melanoma|glioma|lymphoma|inrgss|cog/i.test(txt);
  }
 
+ function matchesToolSearch(t, q) {
+   if (!q) return true;
+   return (t.name && t.name.toLowerCase().includes(q)) ||
+          (t.desc && t.desc.toLowerCase().includes(q)) ||
+          (t.organ && t.organ.toLowerCase().includes(q)) ||
+          (t.subject && t.subject.toLowerCase().includes(q)) ||
+          (t.keywords && t.keywords.some(k => k.toLowerCase().includes(q)));
+ }
+
  function renderTNMPage() {
    const container = $("tnmToolsListContainer");
    if (!container) return;
 
    const q = ($("tnmSearchInput") ? $("tnmSearchInput").value : "").trim().toLowerCase();
-   const tnmTools = (window.tools || []).filter(isTnmOrOncoTool);
+   let toolsToDisplay = [];
 
-   const filtered = tnmTools.filter(t => {
-     const matchesType = (activeTnmFilter === "all" || t.type === activeTnmFilter);
-     if (!matchesType) return false;
-     if (!q) return true;
-     return (t.name && t.name.toLowerCase().includes(q)) ||
-            (t.desc && t.desc.toLowerCase().includes(q)) ||
-            (t.organ && t.organ.toLowerCase().includes(q)) ||
-            (t.subject && t.subject.toLowerCase().includes(q)) ||
-            (t.keywords && t.keywords.some(k => k.toLowerCase().includes(q)));
-   });
+   if (!q) {
+     // DEFAULT VIEW: Show ONLY TNM / Oncology section tools
+     toolsToDisplay = (window.tools || []).filter(isTnmOrOncoTool);
+   } else {
+     // SEARCH VIEW: Can show across ALL categories, but TNM ones on top!
+     const allMatching = (window.tools || []).filter(t => matchesToolSearch(t, q));
+     
+     const tnmMatches = [];
+     const otherMatches = [];
+
+     allMatching.forEach(t => {
+       if (isTnmOrOncoTool(t)) {
+         tnmMatches.push(t);
+       } else {
+         otherMatches.push(t);
+       }
+     });
+
+     // Put TNM matches first, then other matching tools
+     toolsToDisplay = [...tnmMatches, ...otherMatches];
+   }
+
+   // Apply Sub-filter: All / Calculators / Classifications
+   const filtered = toolsToDisplay.filter(t => (activeTnmFilter === "all" || t.type === activeTnmFilter));
 
    container.innerHTML = "";
    if (filtered.length === 0) {
-     container.innerHTML = `<p class="muted" style="text-align:center; padding:30px 0;">No TNM staging tools matched your filter.</p>`;
+     container.innerHTML = `<p class="muted" style="text-align:center; padding:30px 0;">No tools matched your criteria.</p>`;
      return;
    }
    filtered.forEach(t => container.appendChild(createToolItem(t)));
@@ -1774,37 +1820,6 @@ window.S = S;
      renderTNMPage();
    };
  });
-
- // -------------------------------------------------------------
- // 5. TOUCH-SWIPE SLIDER & TOP PAGER CONTROLLER
- // -------------------------------------------------------------
- const homeTrack = $("homeSwipeTrack");
- const btnSpecialties = $("pagerBtnSpecialties");
- const btnTNM = $("pagerBtnTNM");
-
- function switchSlide(index) {
-   if (!homeTrack) return;
-   const targetSlide = index === 0 ? $("slideSpecialties") : $("slideTNM");
-   if (targetSlide) {
-     targetSlide.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
-   }
-   btnSpecialties.classList.toggle("active", index === 0);
-   btnTNM.classList.toggle("active", index === 1);
- }
-
- if (btnSpecialties) btnSpecialties.onclick = () => switchSlide(0);
- if (btnTNM) btnTNM.onclick = () => switchSlide(1);
-
- if (homeTrack) {
-   // Update pager buttons on scroll snap end
-   homeTrack.addEventListener("scroll", () => {
-     const scrollLeft = homeTrack.scrollLeft;
-     const width = homeTrack.clientWidth || 1;
-     const slideIndex = Math.round(scrollLeft / width);
-     btnSpecialties.classList.toggle("active", slideIndex === 0);
-     btnTNM.classList.toggle("active", slideIndex === 1);
-   }, { passive: true });
- }
 
  function renderCategoryTools() {
    let cat = (window.categories || []).find(c => c.id === currentCatId);
@@ -1843,14 +1858,7 @@ window.S = S;
    }
    $("homeDefaultContent").classList.add("hidden");
    $("searchResultsSection").classList.remove("hidden");
-   const matches = (window.tools || []).filter(t => {
-     return (t.name && t.name.toLowerCase().includes(q)) ||
-       (t.desc && t.desc.toLowerCase().includes(q)) ||
-       (t.guidance && t.guidance.toLowerCase().includes(q)) ||
-       (t.cat && t.cat.toLowerCase().includes(q)) ||
-       (t.keywords && t.keywords.some(k => k.toLowerCase().includes(q))) ||
-       (t.organ && t.organ.toLowerCase().includes(q));
-   });
+   const matches = (window.tools || []).filter(t => matchesToolSearch(t, q));
    $("searchResultSubheading").textContent = `Found ${matches.length} tool(s) matching "${searchInput.value}"`;
    const searchList = $("searchToolList");
    searchList.innerHTML = "";
@@ -1884,7 +1892,15 @@ window.S = S;
 
    const specBadge = $("toolSpecBadge");
    let specName = tool.cat ? tool.cat.toUpperCase() : "GENERAL";
-   if (tool.cat === "onco" || tool.cat === "onco_hn_gi") specName = "SURGICAL ONCOLOGY";
+   if (tool.cat === "onco" || tool.cat === "onco_hn_gi" || tool.cat === "tnm") specName = "ONCO";
+   else if (tool.cat === "surg") specName = "SURGERY";
+   else if (tool.cat === "obgy") specName = "OBGYN";
+   else if (tool.cat === "peds") specName = "PEDS";
+   else if (tool.cat === "cardio") specName = "CARDIO";
+   else if (tool.cat === "neuro") specName = "NEURO";
+   else if (tool.cat === "respi") specName = "RESP";
+   else if (tool.cat === "emgicu") specName = "EMERGENCY";
+
    specBadge.textContent = specName;
    specBadge.className = `badge ${getSpecialtyBadgeClass(tool.cat)}`;
 
