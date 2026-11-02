@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="logo.png">
 
 <style>
-/* CSS VARIABLES FOR THEMES */
+/* CSS VARIABLES FOR THEMES & LIGHT ORANGE-PINK HIGHLIGHTS */
 :root {
  --bg-body: #f3f6fa;
  --bg-card: #ffffff;
@@ -56,6 +56,16 @@
  --tag-text: #475569;
  --splash-bg: #ffffff;
  --modal-overlay: rgba(0, 0, 0, 0.45);
+ /* Slide 2 TNM Page Palette */
+ --tnm-page-bg: #fff5f5;
+ --tnm-notice-bg: #fef2f2;
+ --tnm-notice-border: #fecaca;
+ --tnm-notice-text: #991b1b;
+ --tnm-heading-color: #dc2626;
+ /* Light Orange-Pink Highlight Palette */
+ --highlight-bg: #fff1eb;
+ --highlight-border: #fbcfe8;
+ --highlight-text: #be123c;
  /* Chat Theme Variables */
  --wa-bg-light: #ffffff;
  --wa-bg-dark: #0b141a;
@@ -111,6 +121,16 @@
  --tag-text: #94a3b8;
  --splash-bg: #ffffff;
  --modal-overlay: rgba(0, 0, 0, 0.7);
+ /* Slide 2 TNM Page Dark */
+ --tnm-page-bg: #1c1214;
+ --tnm-notice-bg: #2d1719;
+ --tnm-notice-border: #4c1d24;
+ --tnm-notice-text: #fca5a5;
+ --tnm-heading-color: #ef4444;
+ /* Light Orange-Pink Highlight Dark */
+ --highlight-bg: #381b22;
+ --highlight-border: #f43f5e;
+ --highlight-text: #fda4af;
 }
 
 * { box-sizing: border-box; }
@@ -120,6 +140,7 @@ body {
  color: var(--text-main);
  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
  transition: background 0.2s ease, color 0.2s ease;
+ overflow-x: hidden;
 }
 
 /* ANIMATED DOCSTAT SPLASH SCREEN */
@@ -238,12 +259,16 @@ body {
  100% { transform: scale(1); }
 }
 
+/* FIXED / PERSISTENT TOP HEADER */
 header {
  background: var(--bg-header);
  color: var(--header-text);
- padding: 22px 18px;
+ padding: 22px 18px 18px;
  border-radius: 0 0 22px 22px;
- position: relative;
+ position: sticky;
+ top: 0;
+ z-index: 50;
+ box-shadow: 0 3px 12px rgba(0,0,0,0.14);
 }
 .header-top {
  display: flex;
@@ -273,7 +298,7 @@ header {
 header small { letter-spacing: 0.5px; text-transform: uppercase; color: var(--header-sub); font-size: 11px; }
 h1 { margin: 5px 0; font-size: 28px; display: flex; align-items: center; gap: 8px; }
 header p { margin: 0; color: var(--header-sub); font-size: 14px; }
-main { max-width: 760px; margin: auto; padding: 16px; }
+main { max-width: 760px; margin: auto; padding: 12px 12px 24px; }
 
 .icon-btn {
  background: rgba(255,255,255,0.12);
@@ -332,6 +357,46 @@ main { max-width: 760px; margin: auto; padding: 16px; }
  margin-bottom: 16px;
 }
 
+/* HORIZONTAL FULL-PAGE SWIPE CAROUSEL (JUST BELOW NAVY HEADER) */
+.swipe-carousel-track {
+ display: flex;
+ width: 100%;
+ overflow-x: auto;
+ scroll-snap-type: x mandatory;
+ -webkit-overflow-scrolling: touch;
+ scrollbar-width: none;
+ scroll-behavior: smooth;
+}
+.swipe-carousel-track::-webkit-scrollbar {
+ display: none;
+}
+.swipe-carousel-slide {
+ flex: 0 0 100%;
+ width: 100%;
+ scroll-snap-align: start;
+ box-sizing: border-box;
+ transition: background 0.25s ease;
+}
+
+/* SLIDE 2: VERY VERY LIGHT REDDISH TINT FOR TNM SECTION */
+.slide-tnm-theme {
+ background: var(--tnm-page-bg);
+ padding: 14px 12px 24px;
+ border-radius: 16px;
+ border: 1px solid rgba(239, 68, 68, 0.15);
+ min-height: 85vh;
+}
+.tnm-notice-box {
+ background: var(--tnm-notice-bg);
+ border: 1px solid var(--tnm-notice-border);
+ color: var(--tnm-notice-text);
+ padding: 12px;
+ border-radius: 10px;
+ font-size: 12px;
+ line-height: 1.5;
+ margin-bottom: 14px;
+}
+
 .search-wrapper { position: relative; margin-bottom: 16px; }
 .search {
  width: 100%;
@@ -388,25 +453,26 @@ h2 { font-size: 21px; margin: 8px 0; }
 .tool-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .tool strong { font-size: 14px; }
 .badge-group { display: flex; gap: 6px; align-items: center; }
-.badge { display: inline-block; padding: 2px 7px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+.badge { display: inline-block; padding: 2.5px 7px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
 .badge-calc { background: var(--badge-calc-bg); color: var(--badge-calc-text); border: 1px solid var(--badge-calc-border); }
 .badge-class { background: var(--badge-class-bg); color: var(--badge-class-text); border: 1px solid var(--badge-class-border); }
 
-/* SPECIALTY BADGES */
+/* EXACT USER-SPECIFIED BADGE COLOR PALETTE */
 .badge-spec { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
-.badge-spec-obgy { background: #fce7f3; color: #db2777; border: 1px solid #fbcfe8; }
-.badge-spec-ortho { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
-.badge-spec-emgicu { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
-.badge-spec-neuro { background: #ede9fe; color: #7c3aed; border: 1px solid #ddd6fe; }
-.badge-spec-cardio { background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
-.badge-spec-endo { background: #ccfbf1; color: #0d9488; border: 1px solid #99f6e4; }
-.badge-spec-renal { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
-.badge-spec-resp { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; }
-.badge-spec-rheum { background: #f3e8ff; color: #7c3aed; border: 1px solid #e9d5ff; }
-.badge-spec-onco { background: #fae8ff; color: #c026d3; border: 1px solid #f5d0fe; }
-.badge-spec-peds { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
-.badge-spec-surg { background: #ffe4e6; color: #e11d48; border: 1px solid #fecdd3; }
-.badge-spec-tnm { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+.badge-spec-surg { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }              /* Surgery: yellowish */
+.badge-spec-obgy { background: #ffe4e6; color: #be123c; border: 1px solid #fda4af; }              /* Obgyn: Orangy Pinkish */
+.badge-spec-cardio { background: #fdf4ff; color: #a21caf; border: 1px solid #f0abfc; }           /* Cardio: magenta like */
+.badge-spec-endo { background: #fdf4ff; color: #a21caf; border: 1px solid #f0abfc; }             /* Endo: same colour */
+.badge-spec-neuro { background: #e0f2fe; color: #0284c7; border: 1px solid #7dd3fc; }            /* Neuro: Sky blue */
+.badge-spec-emgicu { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }          /* Icu/emergency: reddish */
+.badge-spec-renal { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }           /* Renal: Line greenish */
+.badge-spec-ortho { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }           /* Ortho: Greyish/whitish */
+.badge-spec-resp { background: #ffedd5; color: #c2410c; border: 1px solid #fdba74; }             /* Respi: orangy */
+.badge-spec-rheum { background: #fef3c7; color: #9a3412; border: 1px solid #fed7aa; }            /* Rheumat: Skin colour */
+.badge-spec-tnm, .badge-spec-onco { background: #fef3c7; color: #78350f; border: 1px solid #fde68a; } /* Onco: Light brown */
+.badge-spec-peds { background: #fce7f3; color: #db2777; border: 1px solid #fbcfe8; }             /* Peds: pink */
+
+[data-theme="dark"] .badge-spec-ortho { background: #1e293b; color: #cbd5e1; border: 1px solid #334155; }
 
 .panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; }
 .desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 5px 0 14px; }
@@ -416,37 +482,163 @@ h2 { font-size: 21px; margin: 8px 0; }
 .contra-box { background: var(--contra-bg); border: 1px solid var(--contra-border); color: var(--contra-text); }
 .info-title { font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
 
-.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
-.full-width { grid-column: 1 / -1; }
-label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; color: var(--text-muted); }
-input, select {
+/* VERTICAL STACKED ACCORDION SELECTOR CARD (FIXED FOR FULL TEXT PARAGRAPH DISPLAY) */
+.fields { display: flex; flex-direction: column; gap: 14px; }
+.custom-select-card {
+ background: var(--bg-card);
+ border: 1px solid var(--border-color);
+ border-radius: 12px;
+ padding: 14px;
+ box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+ cursor: pointer;
+ transition: all 0.2s ease;
+ user-select: none;
+}
+.custom-select-card.active {
+ border-color: var(--highlight-border);
+ background: var(--bg-card);
+ box-shadow: 0 0 0 2px rgba(244, 63, 94, 0.12);
+}
+.csc-header {
+ display: flex;
+ flex-direction: column;
+ gap: 8px;
  width: 100%;
- padding: 11px;
+}
+.csc-title {
+ font-size: 13.5px;
+ font-weight: 800;
+ color: var(--text-main);
+ line-height: 1.35;
+}
+.csc-selected-box {
+ background: var(--highlight-bg);
+ color: var(--highlight-text);
+ border: 1px solid var(--highlight-border);
+ padding: 10px 12px;
+ border-radius: 8px;
+ font-size: 13px;
+ font-weight: 650;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ width: 100%;
+ word-break: break-word;
+ white-space: normal;
+ line-height: 1.4;
+}
+.csc-arrow {
+ font-size: 12px;
+ color: var(--highlight-text);
+ transition: transform 0.2s ease;
+ flex-shrink: 0;
+ margin-left: 8px;
+}
+.custom-select-card.active .csc-arrow {
+ transform: rotate(180deg);
+}
+.csc-options-list {
+ margin-top: 12px;
+ border-top: 1px solid var(--border-color);
+ padding-top: 8px;
+ display: flex;
+ flex-direction: column;
+ gap: 6px;
+ max-height: 280px;
+ overflow-y: auto;
+}
+.csc-option-item {
+ display: flex;
+ align-items: flex-start;
+ justify-content: space-between;
+ padding: 10px 12px;
+ border-radius: 8px;
+ font-size: 13px;
+ color: var(--text-main);
+ background: transparent;
+ transition: background 0.15s;
+ gap: 10px;
+ line-height: 1.45;
+}
+.csc-option-item:hover {
+ background: rgba(244, 63, 94, 0.05);
+}
+.csc-option-item.selected {
+ background: var(--highlight-bg);
+ color: var(--highlight-text);
+ font-weight: 700;
+}
+.csc-radio-circle {
+ width: 16px;
+ height: 16px;
+ border: 2px solid var(--border-color);
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ flex-shrink: 0;
+ margin-top: 2px;
+}
+.csc-option-item.selected .csc-radio-circle {
+ border-color: var(--highlight-border);
+ background: var(--highlight-border);
+}
+.csc-radio-circle::after {
+ content: "";
+ width: 6px;
+ height: 6px;
+ background: #fff;
+ border-radius: 50%;
+ display: none;
+}
+.csc-option-item.selected .csc-radio-circle::after {
+ display: block;
+}
+
+/* STANDARD INPUT FIELD CONTAINER */
+.fields > .standard-field-wrap {
+ background: var(--bg-card);
+ border: 1px solid var(--border-color);
+ border-radius: 12px;
+ padding: 12px 14px;
+ box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+.fields > .standard-field-wrap:focus-within {
+ border-color: var(--highlight-border);
+ box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.12);
+ background: var(--highlight-bg);
+}
+.full-width { grid-column: 1 / -1; }
+label { display: block; font-size: 13px; font-weight: 750; margin-bottom: 6px; color: var(--text-main); }
+input {
+ width: 100%;
+ padding: 10px 12px;
  border: 1px solid var(--input-border);
- border-radius: 9px;
- font-size: 15px;
+ border-radius: 8px;
+ font-size: 14.5px;
  background: var(--input-bg);
  color: var(--text-main);
  outline: none;
+ font-weight: 500;
 }
-input:focus, select:focus { border-color: #2463eb; }
+input:focus { border-color: var(--highlight-border); background: var(--bg-card); color: var(--highlight-text); }
 
 .actions { display: flex; gap: 9px; margin-top: 16px; flex-wrap: wrap; }
 button { cursor: pointer; font: inherit; }
 .primary, .secondary, .notes-btn { padding: 13px; border: 0; border-radius: 10px; font-weight: 750; }
-.primary { background: #2463eb; color: white; flex: 1; min-width: 140px; }
+.primary { background: #2463eb; color: white; flex: 1; min-width: 140px; box-shadow: 0 2px 6px rgba(36,99,235,0.25); }
 .secondary { background: var(--btn-back-bg); color: var(--btn-back-text); flex: 1; min-width: 100px; }
 .notes-btn { background: #ffffff; color: #17324e; border: 1px solid var(--border-color); width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.15s ease; }
 .notes-btn:hover { background: var(--tab-bg); }
 
-/* COMPLIANT OUTPUT CONTAINER */
-.result { display: none; margin-top: 20px; padding: 16px; border-radius: 12px; background: var(--result-bg); border: 1px solid var(--result-border); }
+/* COMPLIANT OUTPUT CONTAINER WITH LIGHT ORANGE-PINK HIGHLIGHT */
+.result { display: none; margin-top: 20px; padding: 16px; border-radius: 12px; background: var(--highlight-bg); border: 1px solid var(--highlight-border); box-shadow: 0 4px 12px rgba(244, 63, 94, 0.08); }
 .result.show { display: block; }
-.caption { font-size: 11px; color: var(--result-text); font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
-.value { font-size: 24px; font-weight: 800; color: var(--result-val); margin: 4px 0 10px; overflow-wrap: anywhere; }
-.res-subhead { font-size: 11.5px; font-weight: 750; color: var(--result-text); text-transform: uppercase; margin: 12px 0 4px; letter-spacing: 0.4px; }
-.equation { font-size: 12.5px; line-height: 1.6; color: var(--result-text); white-space: pre-line; }
-.copy { float: right; padding: 6px 11px; border: 1px solid var(--result-border); border-radius: 7px; background: #ffffff; font-weight: 600; color: #075c42; }
+.caption { font-size: 11px; color: var(--highlight-text); font-weight: 750; letter-spacing: 0.5px; text-transform: uppercase; }
+.value { font-size: 24px; font-weight: 800; color: var(--highlight-text); margin: 4px 0 10px; overflow-wrap: anywhere; }
+.res-subhead { font-size: 11.5px; font-weight: 750; color: var(--highlight-text); text-transform: uppercase; margin: 12px 0 4px; letter-spacing: 0.4px; }
+.equation { font-size: 12.5px; line-height: 1.6; color: var(--text-main); white-space: pre-line; }
+.copy { float: right; padding: 6px 11px; border: 1px solid var(--highlight-border); border-radius: 7px; background: #ffffff; font-weight: 600; color: var(--highlight-text); }
 
 .reference-card { margin-top: 22px; border-top: 1px solid var(--border-color); padding-top: 16px; }
 .ref-heading { font-size: 14px; font-weight: 750; color: var(--text-main); margin: 0 0 6px; display: flex; align-items: center; gap: 6px; }
@@ -459,9 +651,34 @@ table.ref-table tr:last-child td { border-bottom: none; }
 table.ref-table tr.active-grade { background: var(--active-grade-bg); font-weight: 600; }
 table.ref-table tr.active-grade td { border-top: 2px solid #38a169; border-bottom: 2px solid #38a169; color: var(--active-grade-text); }
 
+/* ACADEMIC REFERENCES CLEAN VERTICAL LIST (FIX FOR CLUMPED LINKS) */
 .academic-refs { margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 18px; }
 .ref-card-item { background: var(--ref-card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
-.ref-card-citation { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+.ref-card-citation { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.45; }
+.ref-card-links {
+ display: flex;
+ flex-direction: column;
+ gap: 6px;
+ margin-top: 8px;
+}
+.ref-btn-link {
+ display: inline-flex;
+ align-items: center;
+ gap: 6px;
+ font-size: 12.5px;
+ font-weight: 650;
+ color: #2563eb;
+ text-decoration: none;
+ padding: 6px 10px;
+ background: var(--tab-bg);
+ border-radius: 6px;
+ width: fit-content;
+ transition: background 0.15s ease;
+}
+.ref-btn-link:hover {
+ background: var(--border-color);
+ text-decoration: underline;
+}
 
 .modal-overlay {
  position: fixed;
@@ -602,6 +819,7 @@ C 100 110, 100 128, 100 144
  </div>
 </div>
 
+<!-- FIXED / PERSISTENT TOP HEADER -->
 <header>
  <div class="header-top">
  <div class="header-profile-area">
@@ -618,30 +836,62 @@ C 100 110, 100 128, 100 144
 </header>
 
 <main>
- <div class="notice"><b>Educational Notice:</b> Mathematical calculations and published scoring criteria are provided for reference only. Verify independently against official clinical literature.</div>
-
- <!-- HOME VIEW -->
+ <!-- HOME VIEW (HORIZONTAL SLIDER BELOW THE FIXED HEADER) -->
  <div id="home">
- <div class="search-wrapper">
- <input class="search" id="search" placeholder="Search by name, organ, or abbreviation..." aria-label="Search tools">
- </div>
- <div id="homeDefaultContent">
- <h2>Browse by specialty</h2>
- <p class="muted">Select a category to view its clinical tools.</p>
- <div class="grid" id="categories"></div>
- <div class="section">
- <h2>Quick Access (Pinned & Recent)</h2>
- <div id="quick"></div>
- </div>
- </div>
- <div id="searchResultsSection" class="hidden">
- <div class="row" style="justify-content:space-between">
- <h2 id="searchResultHeading" style="margin:0">Search Results</h2>
- <button style="border:0;border-radius:9px;background:var(--btn-back-bg);color:var(--btn-back-text);padding:10px 14px;font-weight:700;cursor:pointer;" id="clearSearchBtn" type="button">Clear</button>
- </div>
- <p class="muted" id="searchResultSubheading"></p>
- <div id="searchToolList"></div>
- </div>
+   <!-- SWIPE TRACK (LEFT <-> RIGHT SLIDER WITHOUT VISIBLE BUTTONS) -->
+   <div class="swipe-carousel-track" id="homeSwipeTrack">
+     
+     <!-- SLIDE 1: SPECIALTIES & GENERAL SEARCH -->
+     <div class="swipe-carousel-slide" id="slideSpecialties" style="padding: 4px;">
+       <div class="notice"><b>Educational Notice:</b> Mathematical calculations and published scoring criteria are provided for reference only. Verify independently against official clinical literature.</div>
+
+       <div class="search-wrapper">
+         <input class="search" id="search" type="search" enterkeyhint="search" placeholder="Search by name, organ, or abbreviation..." aria-label="Search tools">
+       </div>
+       <div id="homeDefaultContent">
+         <h2>Browse by specialty</h2>
+         <p class="muted">Select a category to view its clinical tools.</p>
+         <div class="grid" id="categories"></div>
+         <div class="section">
+           <h2>Quick Access (Pinned & Recent)</h2>
+           <div id="quick"></div>
+         </div>
+       </div>
+       <div id="searchResultsSection" class="hidden">
+         <div class="row" style="justify-content:space-between">
+           <h2 id="searchResultHeading" style="margin:0">Search Results</h2>
+           <button style="border:0;border-radius:9px;background:var(--btn-back-bg);color:var(--btn-back-text);padding:10px 14px;font-weight:700;cursor:pointer;" id="clearSearchBtn" type="button">Clear</button>
+         </div>
+         <p class="muted" id="searchResultSubheading"></p>
+         <div id="searchToolList"></div>
+       </div>
+     </div>
+
+     <!-- SLIDE 2: DEDICATED TNM SECTION (STRICTLY TNM.JS TOOLS ONLY) -->
+     <div class="swipe-carousel-slide slide-tnm-theme" id="slideTNM">
+       <!-- REDDISH NOTICE -->
+       <div class="tnm-notice-box">
+         <b>TNM Reference Notice:</b> Anatomical staging rules, TNM 8th/9th editions, and FIGO classifications for clinical and surgical decision support.
+       </div>
+
+       <!-- RED HEADING -->
+       <h2 style="font-size:24px; font-weight:800; margin:2px 0 4px; color: var(--tnm-heading-color);">TNM Section</h2>
+       <p class="muted" style="margin:0 0 14px; line-height: 1.45;">Staging criteria, organ staging, TNM classifications, and surgical oncology reference</p>
+       
+       <div class="search-wrapper" style="margin-bottom: 12px;">
+         <input class="search" id="tnmSearchInput" type="search" enterkeyhint="search" placeholder="Search TNM staging, organ, or any tool..." aria-label="Search TNMs">
+       </div>
+
+       <div class="filter-tabs" id="tnmTypeFilters">
+         <button type="button" class="tab-btn active" data-tnm-filter="all">All Tools</button>
+         <button type="button" class="tab-btn" data-tnm-filter="calc">Calculators</button>
+         <button type="button" class="tab-btn" data-tnm-filter="class">Classifications</button>
+       </div>
+
+       <div id="tnmToolsListContainer"></div>
+     </div>
+
+   </div>
  </div>
 
  <!-- CATEGORY VIEW -->
@@ -1531,20 +1781,57 @@ window.S = S;
 
  function getSpecialtyBadgeClass(catName) {
    const c = (catName || "").toLowerCase().trim();
-   if (c.includes("obgy") || c.includes("obstetrics") || c.includes("gynecology")) return "badge-spec-obgy";
-   if (c.includes("ortho") || c.includes("orthopaedics")) return "badge-spec-ortho";
-   if (c.includes("emgicu") || c.includes("icu") || c.includes("emergency") || c.includes("critical")) return "badge-spec-emgicu";
-   if (c.includes("neuro") || c.includes("neurology")) return "badge-spec-neuro";
+   if (c.includes("surg") || c.includes("surgery") || c.includes("surgical")) return "badge-spec-surg";
+   if (c.includes("obgy") || c.includes("obstetrics") || c.includes("gynecology") || c.includes("gyn")) return "badge-spec-obgy";
    if (c.includes("cardio") || c.includes("cardiology")) return "badge-spec-cardio";
    if (c.includes("endo") || c.includes("endocrine") || c.includes("endocrinology")) return "badge-spec-endo";
+   if (c.includes("neuro") || c.includes("neurology")) return "badge-spec-neuro";
+   if (c.includes("emgicu") || c.includes("icu") || c.includes("emergency") || c.includes("critical")) return "badge-spec-emgicu";
    if (c.includes("renal") || c.includes("nephro") || c.includes("nephrology")) return "badge-spec-renal";
+   if (c.includes("ortho") || c.includes("orthopaedics")) return "badge-spec-ortho";
    if (c.includes("resp") || c.includes("pulm") || c.includes("pulmonology")) return "badge-spec-resp";
    if (c.includes("rheum") || c.includes("rheumatology") || c.includes("immuno")) return "badge-spec-rheum";
-   if (c.includes("onco") || c.includes("oncology")) return "badge-spec-onco";
+   if (c.includes("onco") || c.includes("tnm") || c.includes("staging")) return "badge-spec-onco";
    if (c.includes("ped") || c.includes("pediatric") || c.includes("paediatric")) return "badge-spec-peds";
-   if (c.includes("surg") || c.includes("surgery") || c.includes("surgical")) return "badge-spec-surg";
-   if (c.includes("onco") || c.includes("tnm") || c.includes("staging")) return "badge-spec-tnm";
    return "badge-spec";
+ }
+
+ function createToolItem(t) {
+   const div = document.createElement("div");
+   div.className = "tool";
+   const badgeLabel = t.type === "class" ? "Classification" : "Calculator";
+   const badgeClass = t.type === "class" ? "badge-class" : "badge-calc";
+   
+   let specName = t.cat ? t.cat.toUpperCase() : "GENERAL";
+   const catLow = (t.cat || "").toLowerCase();
+   if (catLow === "onco" || catLow === "onco_hn_gi" || catLow === "tnm") specName = "ONCO";
+   else if (catLow === "surg") specName = "SURGERY";
+   else if (catLow === "obgy") specName = "OBGYN";
+   else if (catLow === "peds") specName = "PEDS";
+   else if (catLow === "cardio") specName = "CARDIO";
+   else if (catLow === "neuro") specName = "NEURO";
+   else if (catLow === "respi") specName = "RESP";
+   else if (catLow === "emgicu") specName = "EMERGENCY";
+   else if (catLow === "rheum") specName = "RHEUMAT";
+   else if (catLow === "renal") specName = "RENAL";
+   else if (catLow === "ortho") specName = "ORTHO";
+   else if (catLow === "endo") specName = "ENDO";
+
+   const specClass = getSpecialtyBadgeClass(t.cat);
+   const isPinned = getPinnedTools().includes(t.id);
+
+   div.innerHTML = `
+     <div class="tool-header">
+       <strong>${isPinned ? "📌 " : ""}${t.name}</strong>
+       <div class="badge-group">
+         <span class="badge ${specClass}">${specName}</span>
+         <span class="badge ${badgeClass}">${badgeLabel}</span>
+       </div>
+     </div>
+     <small>${t.desc || ""}</small>
+   `;
+   div.onclick = () => { location.hash = "tool=" + encodeURIComponent(t.id); };
+   return div;
  }
 
  function renderHome() {
@@ -1553,18 +1840,26 @@ window.S = S;
 
    const catMap = new Map();
    (window.categories || []).forEach(c => {
-     if (c && c.id) catMap.set(c.id, c);
+     if (c && c.id) {
+       const cid = c.id.toLowerCase();
+       if (cid !== "onco" && cid !== "onco_hn_gi" && !cid.includes("tnm")) {
+         catMap.set(c.id, c);
+       }
+     }
    });
 
    (window.tools || []).forEach(t => {
      if (t.cat && !catMap.has(t.cat)) {
-       const prettyName = t.cat.charAt(0).toUpperCase() + t.cat.slice(1);
-       catMap.set(t.cat, {
-         id: t.cat,
-         name: prettyName,
-         icon: "📁",
-         desc: `${prettyName} clinical tools & calculators`
-       });
+       const cid = t.cat.toLowerCase();
+       if (cid !== "onco" && cid !== "onco_hn_gi" && !cid.includes("tnm")) {
+         const prettyName = t.cat.charAt(0).toUpperCase() + t.cat.slice(1);
+         catMap.set(t.cat, {
+           id: t.cat,
+           name: prettyName,
+           icon: "📁",
+           desc: `${prettyName} clinical tools & calculators`
+         });
+       }
      }
 
      if (!t.type) {
@@ -1603,34 +1898,114 @@ window.S = S;
        quickTools.forEach(t => quickContainer.appendChild(createToolItem(t)));
      }
    }
+
+   renderTNMPage();
  }
 
  window.renderHome = renderHome;
  window.renderCategories = renderHome;
  window.renderQuick = renderHome;
 
- function createToolItem(t) {
-   const div = document.createElement("div");
-   div.className = "tool";
-   const badgeLabel = t.type === "class" ? "Classification" : "Calculator";
-   const badgeClass = t.type === "class" ? "badge-class" : "badge-calc";
-   const specName = t.cat ? t.cat.toUpperCase() : "GENERAL";
-   const specClass = getSpecialtyBadgeClass(t.cat);
-   const isPinned = getPinnedTools().includes(t.id);
+ // -------------------------------------------------------------
+ // 4. DEDICATED TNM & ONCOLOGY SLIDE LOGIC (STRICT TNM.JS TOOLS ONLY)
+ // -------------------------------------------------------------
+ let activeTnmFilter = "all";
 
-   div.innerHTML = `
-     <div class="tool-header">
-       <strong>${isPinned ? "📌 " : ""}${t.name}</strong>
-       <div class="badge-group">
-         <span class="badge ${specClass}">${specName}</span>
-         <span class="badge ${badgeClass}">${badgeLabel}</span>
-       </div>
-     </div>
-     <small>${t.desc || ""}</small>
-   `;
-   div.onclick = () => { location.hash = "tool=" + encodeURIComponent(t.id); };
-   return div;
+ function isStrictTnmTool(t) {
+   if (!t) return false;
+   const cat = (t.cat || "").toLowerCase();
+   // STRICTLY TOOLS FROM tnm.js (cat: "onco" or "onco_hn_gi")
+   return cat === "onco" || cat === "onco_hn_gi";
  }
+
+ function matchesToolSearch(t, q) {
+   if (!q) return true;
+   q = q.toLowerCase();
+   
+   if (q.includes("neck") || q.includes("head") || q.includes("oral") || q.includes("larynx")) {
+     const txt = (t.name + " " + (t.desc || "") + " " + (t.subject || "") + " " + (t.organ || "")).toLowerCase();
+     if (/oral|lip|tongue|oropharynx|hypopharynx|nasopharynx|larynx|salivary|cervical|neck|head/i.test(txt)) return true;
+   }
+   if (q.includes("breast") || q.includes("lung") || q.includes("stomach") || q.includes("colon") || q.includes("skin") || q.includes("thyroid")) {
+     const txt = (t.name + " " + (t.desc || "") + " " + (t.subject || "") + " " + (t.organ || "")).toLowerCase();
+     if (txt.includes(q)) return true;
+   }
+
+   return (t.name && t.name.toLowerCase().includes(q)) ||
+          (t.desc && t.desc.toLowerCase().includes(q)) ||
+          (t.organ && t.organ.toLowerCase().includes(q)) ||
+          (t.subject && t.subject.toLowerCase().includes(q)) ||
+          (t.keywords && t.keywords.some(k => k.toLowerCase().includes(q)));
+ }
+
+ function renderTNMPage() {
+   const container = $("tnmToolsListContainer");
+   if (!container) return;
+
+   const q = ($("tnmSearchInput") ? $("tnmSearchInput").value : "").trim().toLowerCase();
+   let toolsToDisplay = [];
+
+   if (!q) {
+     // DEFAULT VIEW: Show STRICTLY tnm.js tools (all 35+ onco/tnm tools) and NO non-onco tools
+     toolsToDisplay = (window.tools || []).filter(isStrictTnmTool);
+   } else {
+     // SEARCH VIEW: Search across all tools, but prioritize STRICT TNM tools on top
+     const allMatching = (window.tools || []).filter(t => matchesToolSearch(t, q));
+     
+     const tnmMatches = [];
+     const otherMatches = [];
+
+     allMatching.forEach(t => {
+       if (isStrictTnmTool(t)) {
+         tnmMatches.push(t);
+       } else {
+         otherMatches.push(t);
+       }
+     });
+
+     toolsToDisplay = [...tnmMatches, ...otherMatches];
+   }
+
+   // Apply Sub-filter: All / Calculators / Classifications
+   const filtered = toolsToDisplay.filter(t => (activeTnmFilter === "all" || t.type === activeTnmFilter));
+
+   container.innerHTML = "";
+   if (filtered.length === 0) {
+     container.innerHTML = `<p class="muted" style="text-align:center; padding:30px 0;">No tools matched your criteria.</p>`;
+     return;
+   }
+   filtered.forEach(t => container.appendChild(createToolItem(t)));
+ }
+
+ window.renderTNMPage = renderTNMPage;
+
+ const tnmSearchInp = $("tnmSearchInput");
+ if (tnmSearchInp) {
+   tnmSearchInp.oninput = () => renderTNMPage();
+   tnmSearchInp.addEventListener("keydown", (e) => {
+     if (e.key === "Enter") {
+       tnmSearchInp.blur();
+     }
+   });
+ }
+
+ const mainSearchInp = $("search");
+ if (mainSearchInp) {
+   mainSearchInp.addEventListener("keydown", (e) => {
+     if (e.key === "Enter") {
+       mainSearchInp.blur();
+     }
+   });
+ }
+
+ document.querySelectorAll("[data-tnm-filter]").forEach(btn => {
+   btn.onclick = () => {
+     document.querySelectorAll("[data-tnm-filter]").forEach(b => b.classList.remove("active"));
+     btn.classList.add("active");
+     activeTnmFilter = btn.dataset.tnmFilter;
+     renderTNMPage();
+   };
+ });
 
  function renderCategoryTools() {
    let cat = (window.categories || []).find(c => c.id === currentCatId);
@@ -1650,9 +2025,9 @@ window.S = S;
    filtered.forEach(t => list.appendChild(createToolItem(t)));
  }
 
- document.querySelectorAll(".tab-btn").forEach(btn => {
+ document.querySelectorAll(".tab-btn:not([data-tnm-filter])").forEach(btn => {
    btn.onclick = () => {
-     document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+     document.querySelectorAll(".tab-btn:not([data-tnm-filter])").forEach(b => b.classList.remove("active"));
      btn.classList.add("active");
      activeFilter = btn.dataset.filter;
      renderCategoryTools();
@@ -1669,14 +2044,7 @@ window.S = S;
    }
    $("homeDefaultContent").classList.add("hidden");
    $("searchResultsSection").classList.remove("hidden");
-   const matches = (window.tools || []).filter(t => {
-     return (t.name && t.name.toLowerCase().includes(q)) ||
-       (t.desc && t.desc.toLowerCase().includes(q)) ||
-       (t.guidance && t.guidance.toLowerCase().includes(q)) ||
-       (t.cat && t.cat.toLowerCase().includes(q)) ||
-       (t.keywords && t.keywords.some(k => k.toLowerCase().includes(q))) ||
-       (t.organ && t.organ.toLowerCase().includes(q));
-   });
+   const matches = (window.tools || []).filter(t => matchesToolSearch(t, q));
    $("searchResultSubheading").textContent = `Found ${matches.length} tool(s) matching "${searchInput.value}"`;
    const searchList = $("searchToolList");
    searchList.innerHTML = "";
@@ -1693,6 +2061,7 @@ window.S = S;
    $("searchResultsSection").classList.add("hidden");
  };
 
+ /* BUILD INTERACTIVE ACCORDION-CARD SELECTOR (FIXED VERTICAL STACK FOR IMAGE 1) */
  function openToolView(tool, skipHistory) {
    currentTool = tool;
    trackRecentTool(tool);
@@ -1709,7 +2078,17 @@ window.S = S;
    typeBadge.className = `badge ${tool.type === "class" ? "badge-class" : "badge-calc"}`;
 
    const specBadge = $("toolSpecBadge");
-   specBadge.textContent = tool.cat ? tool.cat.toUpperCase() : "GENERAL";
+   let specName = tool.cat ? tool.cat.toUpperCase() : "GENERAL";
+   if (tool.cat === "onco" || tool.cat === "onco_hn_gi" || tool.cat === "tnm") specName = "ONCO";
+   else if (tool.cat === "surg") specName = "SURGERY";
+   else if (tool.cat === "obgy") specName = "OBGYN";
+   else if (tool.cat === "peds") specName = "PEDS";
+   else if (tool.cat === "cardio") specName = "CARDIO";
+   else if (tool.cat === "neuro") specName = "NEURO";
+   else if (tool.cat === "respi") specName = "RESP";
+   else if (tool.cat === "emgicu") specName = "EMERGENCY";
+
+   specBadge.textContent = specName;
    specBadge.className = `badge ${getSpecialtyBadgeClass(tool.cat)}`;
 
    updatePinButtonState(tool.id);
@@ -1731,51 +2110,109 @@ window.S = S;
 
    const fieldsContainer = $("fields");
    fieldsContainer.innerHTML = "";
-   (tool.fields || []).forEach(f => {
-     const wrap = document.createElement("div");
-     if (f.type === "select" || f.fullWidth) wrap.className = "full-width";
-
-     const lbl = document.createElement("label");
-     lbl.setAttribute("for", "field_" + f.id);
-     lbl.textContent = f.label;
-     wrap.appendChild(lbl);
-
+   
+   (tool.fields || []).forEach((f, idx) => {
      if (f.type === "select") {
-       const sel = document.createElement("select");
-       sel.id = "field_" + f.id;
-       sel.name = f.id;
-       
-       const defaultOpt = document.createElement("option");
-       defaultOpt.value = "";
-       defaultOpt.textContent = "-- Select --";
-       defaultOpt.selected = true;
-       defaultOpt.disabled = true;
-       sel.appendChild(defaultOpt);
+       // Custom Accordion Select Card (Stacked Layout: Heading above, Selected Value Box below)
+       const card = document.createElement("div");
+       card.className = "custom-select-card";
+       card.id = "csc_card_" + f.id;
+
+       const header = document.createElement("div");
+       header.className = "csc-header";
+
+       const titleEl = document.createElement("div");
+       titleEl.className = "csc-title";
+       titleEl.textContent = `${idx + 1}. ${f.label}`;
+
+       const defaultOpt = (f.options || []).find(opt => Array.isArray(opt) ? opt[0] === f.value : opt.value === f.value) || (f.options || [])[0];
+       const defaultText = defaultOpt ? (Array.isArray(defaultOpt) ? defaultOpt[1] : defaultOpt.label) : "-- Select --";
+
+       const selectedBox = document.createElement("div");
+       selectedBox.className = "csc-selected-box";
+       selectedBox.id = "csc_badge_" + f.id;
+       selectedBox.innerHTML = `<span>${defaultText}</span> <span class="csc-arrow">▼</span>`;
+
+       header.appendChild(titleEl);
+       header.appendChild(selectedBox);
+       card.appendChild(header);
+
+       // Options container (initially hidden)
+       const optionsList = document.createElement("div");
+       optionsList.className = "csc-options-list hidden";
+       optionsList.id = "csc_list_" + f.id;
+
+       let currentSelectedVal = f.value || (Array.isArray(defaultOpt) ? defaultOpt[0] : defaultOpt?.value);
 
        (f.options || []).forEach(opt => {
-         const optEl = document.createElement("option");
-         if (Array.isArray(opt)) {
-           optEl.value = opt[0];
-           optEl.textContent = opt[1];
-         } else {
-           optEl.value = opt.value;
-           optEl.textContent = opt.label;
-         }
-         sel.appendChild(optEl);
+         const val = Array.isArray(opt) ? opt[0] : opt.value;
+         const lbl = Array.isArray(opt) ? opt[1] : opt.label;
+
+         const item = document.createElement("div");
+         item.className = "csc-option-item" + (val === currentSelectedVal ? " selected" : "");
+         
+         const textSpan = document.createElement("span");
+         textSpan.textContent = lbl;
+
+         const radioCircle = document.createElement("div");
+         radioCircle.className = "csc-radio-circle";
+
+         item.appendChild(textSpan);
+         item.appendChild(radioCircle);
+
+         item.onclick = (e) => {
+           e.stopPropagation();
+           currentSelectedVal = val;
+           selectedBox.innerHTML = `<span>${lbl}</span> <span class="csc-arrow">▼</span>`;
+           optionsList.classList.add("hidden");
+           card.classList.remove("active");
+
+           optionsList.querySelectorAll(".csc-option-item").forEach(el => el.classList.remove("selected"));
+           item.classList.add("selected");
+
+           card.dataset.selectedValue = val;
+         };
+
+         optionsList.appendChild(item);
        });
-       wrap.appendChild(sel);
+
+       card.dataset.selectedValue = currentSelectedVal;
+       card.appendChild(optionsList);
+
+       header.onclick = () => {
+         const isOpen = !optionsList.classList.contains("hidden");
+         document.querySelectorAll(".csc-options-list").forEach(l => l.classList.add("hidden"));
+         document.querySelectorAll(".custom-select-card").forEach(c => c.classList.remove("active"));
+
+         if (!isOpen) {
+           optionsList.classList.remove("hidden");
+           card.classList.add("active");
+         }
+       };
+
+       fieldsContainer.appendChild(card);
      } else {
+       // Standard Number Input Field
+       const wrap = document.createElement("div");
+       wrap.className = "standard-field-wrap" + (f.fullWidth ? " full-width" : "");
+
+       const lbl = document.createElement("label");
+       lbl.setAttribute("for", "field_" + f.id);
+       lbl.textContent = f.label;
+       wrap.appendChild(lbl);
+
        const inp = document.createElement("input");
        inp.type = "number";
        inp.id = "field_" + f.id;
        inp.name = f.id;
-       inp.value = "";
+       inp.value = f.value !== undefined ? f.value : "";
        if (f.min !== undefined) inp.min = f.min;
        if (f.max !== undefined) inp.max = f.max;
        if (f.step !== undefined) inp.step = f.step;
        wrap.appendChild(inp);
+
+       fieldsContainer.appendChild(wrap);
      }
-     fieldsContainer.appendChild(wrap);
    });
 
    const refCard = $("referenceCard");
@@ -1803,7 +2240,7 @@ window.S = S;
        refItem.className = "ref-card-item";
        let linksHtml = "";
        if (lit.links && lit.links.length) {
-         linksHtml = `<div class="ref-card-links">${lit.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer" class="ref-btn-link ${l.secondary ? "secondary" : ""}">${l.text}</a>`).join("")}</div>`;
+         linksHtml = `<div class="ref-card-links">${lit.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer" class="ref-btn-link ${l.secondary ? "secondary" : ""}">${l.text} ↗</a>`).join("")}</div>`;
        }
        refItem.innerHTML = `<div style="font-weight:700;margin-bottom:4px;">${lit.icon || "📄"} ${lit.title || ""}</div><div class="ref-card-citation">${lit.citation || ""}</div>${linksHtml}`;
        refsList.appendChild(refItem);
@@ -1825,9 +2262,15 @@ window.S = S;
  function calculate() {
    if (!currentTool || typeof currentTool.calc !== "function") return;
    const vals = {};
+   
    (currentTool.fields || []).forEach(f => {
-     const el = $("field_" + f.id);
-     if (el) vals[f.id] = el.value;
+     if (f.type === "select") {
+       const card = $("csc_card_" + f.id);
+       if (card) vals[f.id] = card.dataset.selectedValue || "";
+     } else {
+       const el = $("field_" + f.id);
+       if (el) vals[f.id] = el.value;
+     }
    });
 
    try {
@@ -2379,7 +2822,9 @@ window.S = S;
    mediaInput.value = "";
    previewBar.classList.add("hidden");
 
-   updateUploadProgressUI("Sending to DocStat...", 80);
+   if (fileToUpload) {
+     updateUploadProgressUI("Sending to DocStat...", 80);
+   }
 
    try {
      await fetch(window.GOOGLE_SHEET_WEBHOOK_URL, {
@@ -2388,8 +2833,10 @@ window.S = S;
        body: JSON.stringify(payload)
      });
 
-     updateUploadProgressUI("Sent!", 100);
-     setTimeout(resetUploadProgressUI, 1000);
+     if (fileToUpload) {
+       updateUploadProgressUI("Sent!", 100);
+       setTimeout(resetUploadProgressUI, 1000);
+     }
    } catch (err) {
      console.error("Upload error:", err);
      resetUploadProgressUI();
