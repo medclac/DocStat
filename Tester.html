@@ -9,11 +9,11 @@
 <link rel="apple-touch-icon" href="logo.png">
 
 <style>
-/* CSS VARIABLES FOR THEMES & LIGHT ORANGE-PINK HIGHLIGHTS */
+/* CSS VARIABLES FOR THEMES & PEACH HIGHLIGHTS */
 :root {
- --bg-body: #f3f6fa;
+ --bg-body: #fffaf7; /* Very very light peach background */
  --bg-card: #ffffff;
- --bg-header: #0f2744;
+ --bg-header: #0f2744; /* DocStat header color kept as requested */
  --header-text: #ffffff;
  --header-sub: #c4d8ea;
  --text-main: #172b4d;
@@ -35,15 +35,15 @@
  --contra-bg: #fdf2f2;
  --contra-border: #f9d2d2;
  --contra-text: #781c1c;
- --result-bg: #eaf8f1;
- --result-border: #b5e4cf;
- --result-val: #075c42;
- --result-text: #294d3a;
+ --result-bg: #fff1eb;
+ --result-border: #fbcfe8;
+ --result-val: #9a3412;
+ --result-text: #7c2d12;
  --table-head: #f8fafc;
  --table-border: #edf2f7;
  --table-row-text: #334155;
- --active-grade-bg: #effbf4;
- --active-grade-text: #0b5133;
+ --active-grade-bg: #fff7ed;
+ --active-grade-text: #9a3412;
  --ref-card-bg: #f8fafc;
  --ref-badge: #475569;
  --badge-calc-bg: #e8f2ff;
@@ -56,16 +56,16 @@
  --tag-text: #475569;
  --splash-bg: #ffffff;
  --modal-overlay: rgba(0, 0, 0, 0.45);
- /* Slide 2 TNM Page Palette */
- --tnm-page-bg: #fff5f5;
- --tnm-notice-bg: #fef2f2;
- --tnm-notice-border: #fecaca;
- --tnm-notice-text: #991b1b;
- --tnm-heading-color: #dc2626;
- /* Light Orange-Pink Highlight Palette */
- --highlight-bg: #fff1eb;
- --highlight-border: #fbcfe8;
- --highlight-text: #be123c;
+ /* Slide 2 TNM Page Palette - Light Peach Theme */
+ --tnm-page-bg: #fff5eb;
+ --tnm-notice-bg: #ffedd5;
+ --tnm-notice-border: #fed7aa;
+ --tnm-notice-text: #9a3412;
+ --tnm-heading-color: #c2410c;
+ /* Peach T/N/M Selection Highlight Palette (Frame peach light, Highlight text highlighted white, Highlight bg slightly darker peach) */
+ --highlight-bg: #fed7aa;
+ --highlight-border: #fdba74;
+ --highlight-text: #ffffff;
  /* Chat Theme Variables */
  --wa-bg-light: #ffffff;
  --wa-bg-dark: #0b141a;
@@ -76,21 +76,21 @@
 }
 
 [data-theme="dark"] {
- --bg-body: #0d1520;
- --bg-card: #152233;
+ --bg-body: #1c1410;
+ --bg-card: #261b16;
  --bg-header: #0b1523;
  --header-text: #e2e8f0;
  --header-sub: #8ba2b9;
  --text-main: #e2e8f0;
  --text-muted: #8ba2b9;
- --border-color: #24354a;
- --border-hover: #3d5473;
- --input-bg: #1a2a3e;
- --input-border: #2a3e56;
- --tab-bg: #1c2b3d;
- --btn-back-bg: #1c2c40;
- --btn-back-text: #c2d6ec;
- --btn-back-hover: #273d57;
+ --border-color: #3d2b22;
+ --border-hover: #593e32;
+ --input-bg: #30221c;
+ --input-border: #4a352b;
+ --tab-bg: #33231d;
+ --btn-back-bg: #33231d;
+ --btn-back-text: #fed7aa;
+ --btn-back-hover: #4a352b;
  --notice-bg: #2d2613;
  --notice-border: #4d3d14;
  --notice-text: #ffdf85;
@@ -100,37 +100,37 @@
  --contra-bg: #2d1818;
  --contra-border: #4e2222;
  --contra-text: #ffadad;
- --result-bg: #112d21;
- --result-border: #1e523c;
- --result-val: #6ee7b7;
- --result-text: #a7f3d0;
- --table-head: #18283c;
- --table-border: #24354a;
+ --result-bg: #332015;
+ --result-border: #593622;
+ --result-val: #fdba74;
+ --result-text: #ffedd5;
+ --table-head: #33231d;
+ --table-border: #3d2b22;
  --table-row-text: #cbd5e1;
- --active-grade-bg: #133a28;
- --active-grade-text: #a7f3d0;
- --ref-card-bg: #18283c;
+ --active-grade-bg: #3d2518;
+ --active-grade-text: #fed7aa;
+ --ref-card-bg: #33231d;
  --ref-badge: #94a3b8;
- --badge-calc-bg: #162a45;
- --badge-calc-text: #7bb5ff;
- --badge-calc-border: #22426d;
- --badge-class-bg: #281e3d;
- --badge-class-text: #d3abff;
- --badge-class-border: #442a6c;
- --tag-bg: #1e2e42;
+ --badge-calc-bg: #1b263b;
+ --badge-calc-text: #93c5fd;
+ --badge-calc-border: #2e436e;
+ --badge-class-bg: #321d3f;
+ --badge-class-text: #e9d5ff;
+ --badge-class-border: #523166;
+ --tag-bg: #33231d;
  --tag-text: #94a3b8;
  --splash-bg: #ffffff;
  --modal-overlay: rgba(0, 0, 0, 0.7);
  /* Slide 2 TNM Page Dark */
- --tnm-page-bg: #1c1214;
- --tnm-notice-bg: #2d1719;
- --tnm-notice-border: #4c1d24;
- --tnm-notice-text: #fca5a5;
- --tnm-heading-color: #ef4444;
- /* Light Orange-Pink Highlight Dark */
- --highlight-bg: #381b22;
- --highlight-border: #f43f5e;
- --highlight-text: #fda4af;
+ --tnm-page-bg: #241711;
+ --tnm-notice-bg: #382218;
+ --tnm-notice-border: #593524;
+ --tnm-notice-text: #fed7aa;
+ --tnm-heading-color: #fb923c;
+ /* Peach Highlight Dark */
+ --highlight-bg: #4c2d1b;
+ --highlight-border: #c2410c;
+ --highlight-text: #ffffff;
 }
 
 * { box-sizing: border-box; }
@@ -357,7 +357,7 @@ main { max-width: 760px; margin: auto; padding: 12px 12px 24px; }
  margin-bottom: 16px;
 }
 
-/* HORIZONTAL FULL-PAGE SWIPE CAROUSEL (JUST BELOW NAVY HEADER) */
+/* HORIZONTAL FULL-PAGE SWIPE CAROUSEL */
 .swipe-carousel-track {
  display: flex;
  width: 100%;
@@ -378,12 +378,12 @@ main { max-width: 760px; margin: auto; padding: 12px 12px 24px; }
  transition: background 0.25s ease;
 }
 
-/* SLIDE 2: VERY VERY LIGHT REDDISH TINT FOR TNM SECTION */
+/* SLIDE 2: TNM SECTION WITH LIGHT PEACH THEME */
 .slide-tnm-theme {
  background: var(--tnm-page-bg);
  padding: 14px 12px 24px;
  border-radius: 16px;
- border: 1px solid rgba(239, 68, 68, 0.15);
+ border: 1px solid rgba(194, 65, 12, 0.2);
  min-height: 85vh;
 }
 .tnm-notice-box {
@@ -408,10 +408,11 @@ main { max-width: 760px; margin: auto; padding: 12px 12px 24px; }
  font-size: 15px;
  outline: none;
 }
-.search:focus { border-color: #2463eb; box-shadow: 0 0 0 3px rgba(36,99,235,0.15); }
+.search:focus { border-color: #c2410c; box-shadow: 0 0 0 3px rgba(194,65,12,0.15); }
 h2 { font-size: 21px; margin: 8px 0; }
 .muted { color: var(--text-muted); font-size: 13px; line-height: 1.5; }
 
+/* DRAGGABLE CATEGORIES GRID */
 .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .card {
  background: var(--bg-card);
@@ -421,11 +422,21 @@ h2 { font-size: 21px; margin: 8px 0; }
  text-align: left;
  color: var(--text-main);
  min-height: 110px;
- cursor: pointer;
- transition: border-color 0.15s;
+ cursor: grab;
+ transition: border-color 0.15s, transform 0.2s ease, box-shadow 0.2s ease;
+ user-select: none;
+ position: relative;
+}
+.card:active { cursor: grabbing; }
+.card.dragging {
+ opacity: 0.5;
+ transform: scale(1.03);
+ box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+ z-index: 100;
+ background: var(--tab-bg);
 }
 .card:hover { border-color: var(--border-hover); }
-.card .ico { font-size: 24px; display: block; margin-bottom: 8px; }
+.card .ico { font-size: 24px; display: block; margin-bottom: 8px; cursor: grab; }
 .card strong { display: block; font-size: 14px; }
 .card small { display: block; color: var(--text-muted); line-height: 1.4; margin-top: 5px; }
 
@@ -457,22 +468,22 @@ h2 { font-size: 21px; margin: 8px 0; }
 .badge-calc { background: var(--badge-calc-bg); color: var(--badge-calc-text); border: 1px solid var(--badge-calc-border); }
 .badge-class { background: var(--badge-class-bg); color: var(--badge-class-text); border: 1px solid var(--badge-class-border); }
 
-/* EXACT USER-SPECIFIED BADGE COLOR PALETTE */
-.badge-spec { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
-.badge-spec-surg { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }              /* Surgery: yellowish */
-.badge-spec-obgy { background: #ffe4e6; color: #be123c; border: 1px solid #fda4af; }              /* Obgyn: Orangy Pinkish */
-.badge-spec-cardio { background: #fdf4ff; color: #a21caf; border: 1px solid #f0abfc; }           /* Cardio: magenta like */
-.badge-spec-endo { background: #fdf4ff; color: #a21caf; border: 1px solid #f0abfc; }             /* Endo: same colour */
-.badge-spec-neuro { background: #e0f2fe; color: #0284c7; border: 1px solid #7dd3fc; }            /* Neuro: Sky blue */
-.badge-spec-emgicu { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }          /* Icu/emergency: reddish */
-.badge-spec-renal { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }           /* Renal: Line greenish */
-.badge-spec-ortho { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }           /* Ortho: Greyish/whitish */
-.badge-spec-resp { background: #ffedd5; color: #c2410c; border: 1px solid #fdba74; }             /* Respi: orangy */
-.badge-spec-rheum { background: #ffedd5; color: #9a3412; border: 1px solid #fed7aa; }            /* Rheumat: Skin colour (warm peach) */
-.badge-spec-tnm, .badge-spec-onco { background: #fef3c7; color: #78350f; border: 1px solid #fde68a; } /* Onco: Light brown */
-.badge-spec-peds { background: #fce7f3; color: #db2777; border: 1px solid #fbcfe8; }
+/* SPECIALTY BADGE COLOR PALETTE AS REQUESTED */
+.badge-spec { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+.badge-spec-surg { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }              /* Surgery: yellowish brown */
+.badge-spec-obgy { background: #e0f2fe; color: #1e3a8a; border: 1px solid #bae6fd; }              /* Obgyn: Light Navy Blue */
+.badge-spec-cardio { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }          /* Cardio: Reddish */
+.badge-spec-endo { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }             /* Endo: Parrot / Bright Mint Green */
+.badge-spec-neuro { background: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }            /* Neuro: Soft Purple */
+.badge-spec-emgicu { background: #ffedd5; color: #9a3412; border: 1px solid #fed7aa; }          /* ICU/Emergency: Soft Amber */
+.badge-spec-renal { background: #ccfbf1; color: #115e59; border: 1px solid #99f6e4; }           /* Renal: Soft Teal */
+.badge-spec-ortho { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }           /* Ortho: Slate Grey */
+.badge-spec-resp { background: #faeafa; color: #701a75; border: 1px solid #f5d0fe; }             /* Respi: Plum */
+.badge-spec-rheum { background: #ffedea; color: #9a3412; border: 1px solid #fed7aa; }            /* Rheumat: Peach */
+.badge-spec-tnm, .badge-spec-onco { background: #fdf4ff; color: #a21caf; border: 1px solid #f0abfc; } /* ONCO: Soft Magenta */
+.badge-spec-peds { background: #ccfbef; color: #134e4a; border: 1px solid #99f6e4; }             /* Peds: Aqua */
 
-[data-theme="dark"] .badge-spec-ortho { background: #1e293b; color: #cbd5e1; border: 1px solid #334155; }
+[data-theme="dark"] .badge-spec-ortho { background: #1f2937; color: #d1d5db; border: 1px solid #374151; }
 
 .panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; }
 .desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 5px 0 14px; }
@@ -482,11 +493,11 @@ h2 { font-size: 21px; margin: 8px 0; }
 .contra-box { background: var(--contra-bg); border: 1px solid var(--contra-border); color: var(--contra-text); }
 .info-title { font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
 
-/* VERTICAL STACKED ACCORDION SELECTOR CARD (IMAGE 1 FIX) */
+/* VERTICAL STACKED ACCORDION SELECTOR CARD (T/N/M PEACH FRAME & HIGHLIGHTED WHITE TEXT WITH DARKER PEACH BG) */
 .fields { display: flex; flex-direction: column; gap: 14px; }
 .custom-select-card {
  background: var(--bg-card);
- border: 1px solid var(--border-color);
+ border: 1px solid #fed7aa; /* Peach light frame */
  border-radius: 12px;
  padding: 14px;
  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
@@ -495,9 +506,9 @@ h2 { font-size: 21px; margin: 8px 0; }
  user-select: none;
 }
 .custom-select-card.active {
- border-color: var(--highlight-border);
+ border-color: #f97316;
  background: var(--bg-card);
- box-shadow: 0 0 0 2px rgba(244, 63, 94, 0.12);
+ box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.15);
 }
 .csc-header {
  display: flex;
@@ -512,8 +523,8 @@ h2 { font-size: 21px; margin: 8px 0; }
  line-height: 1.35;
 }
 .csc-selected-box {
- background: var(--highlight-bg);
- color: var(--highlight-text);
+ background: var(--highlight-bg); /* Highlight colour slightly darker than frame */
+ color: var(--highlight-text);   /* Highlighted white text */
  border: 1px solid var(--highlight-border);
  padding: 10px 12px;
  border-radius: 8px;
@@ -528,7 +539,7 @@ h2 { font-size: 21px; margin: 8px 0; }
 }
 .csc-arrow {
  font-size: 12px;
- color: var(--highlight-text);
+ color: inherit;
  transition: transform 0.2s ease;
  flex-shrink: 0;
  margin-left: 8px;
@@ -560,7 +571,7 @@ h2 { font-size: 21px; margin: 8px 0; }
  line-height: 1.45;
 }
 .csc-option-item:hover {
- background: rgba(244, 63, 94, 0.05);
+ background: rgba(249, 115, 22, 0.08);
 }
 .csc-option-item.selected {
  background: var(--highlight-bg);
@@ -579,14 +590,14 @@ h2 { font-size: 21px; margin: 8px 0; }
  margin-top: 2px;
 }
 .csc-option-item.selected .csc-radio-circle {
- border-color: var(--highlight-border);
- background: var(--highlight-border);
+ border-color: #ffffff;
+ background: #ffffff;
 }
 .csc-radio-circle::after {
  content: "";
  width: 6px;
  height: 6px;
- background: #fff;
+ background: #c2410c;
  border-radius: 50%;
  display: none;
 }
@@ -603,9 +614,9 @@ h2 { font-size: 21px; margin: 8px 0; }
  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
 }
 .fields > .standard-field-wrap:focus-within {
- border-color: var(--highlight-border);
- box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.12);
- background: var(--highlight-bg);
+ border-color: #f97316;
+ box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+ background: #ffedd5;
 }
 .full-width { grid-column: 1 / -1; }
 label { display: block; font-size: 13px; font-weight: 750; margin-bottom: 6px; color: var(--text-main); }
@@ -620,24 +631,28 @@ input {
  outline: none;
  font-weight: 500;
 }
-input:focus { border-color: var(--highlight-border); background: var(--bg-card); color: var(--highlight-text); }
+input:focus { border-color: #f97316; background: var(--bg-card); color: #c2410c; }
 
 .actions { display: flex; gap: 9px; margin-top: 16px; flex-wrap: wrap; }
 button { cursor: pointer; font: inherit; }
 .primary, .secondary, .notes-btn { padding: 13px; border: 0; border-radius: 10px; font-weight: 750; }
-.primary { background: #2463eb; color: white; flex: 1; min-width: 140px; box-shadow: 0 2px 6px rgba(36,99,235,0.25); }
+.primary { background: #c2410c; color: white; flex: 1; min-width: 140px; box-shadow: 0 2px 6px rgba(194,65,12,0.25); }
 .secondary { background: var(--btn-back-bg); color: var(--btn-back-text); flex: 1; min-width: 100px; }
 .notes-btn { background: #ffffff; color: #17324e; border: 1px solid var(--border-color); width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.15s ease; }
 .notes-btn:hover { background: var(--tab-bg); }
 
-/* COMPLIANT OUTPUT CONTAINER WITH LIGHT ORANGE-PINK HIGHLIGHT */
-.result { display: none; margin-top: 20px; padding: 16px; border-radius: 12px; background: var(--highlight-bg); border: 1px solid var(--highlight-border); box-shadow: 0 4px 12px rgba(244, 63, 94, 0.08); }
+/* COMPLIANT OUTPUT CONTAINER WITH PEACH HIGHLIGHT */
+.result { display: none; margin-top: 20px; padding: 16px; border-radius: 12px; background: #ffedd5; border: 1px solid #fed7aa; box-shadow: 0 4px 12px rgba(194, 65, 12, 0.08); }
+[data-theme="dark"] .result { background: #382218; border-color: #593524; }
 .result.show { display: block; }
-.caption { font-size: 11px; color: var(--highlight-text); font-weight: 750; letter-spacing: 0.5px; text-transform: uppercase; }
-.value { font-size: 24px; font-weight: 800; color: var(--highlight-text); margin: 4px 0 10px; overflow-wrap: anywhere; }
-.res-subhead { font-size: 11.5px; font-weight: 750; color: var(--highlight-text); text-transform: uppercase; margin: 12px 0 4px; letter-spacing: 0.4px; }
+.caption { font-size: 11px; color: #9a3412; font-weight: 750; letter-spacing: 0.5px; text-transform: uppercase; }
+[data-theme="dark"] .caption { color: #fed7aa; }
+.value { font-size: 24px; font-weight: 800; color: #9a3412; margin: 4px 0 10px; overflow-wrap: anywhere; }
+[data-theme="dark"] .value { color: #fed7aa; }
+.res-subhead { font-size: 11.5px; font-weight: 750; color: #9a3412; text-transform: uppercase; margin: 12px 0 4px; letter-spacing: 0.4px; }
+[data-theme="dark"] .res-subhead { color: #fed7aa; }
 .equation { font-size: 12.5px; line-height: 1.6; color: var(--text-main); white-space: pre-line; }
-.copy { float: right; padding: 6px 11px; border: 1px solid var(--highlight-border); border-radius: 7px; background: #ffffff; font-weight: 600; color: var(--highlight-text); }
+.copy { float: right; padding: 6px 11px; border: 1px solid #fed7aa; border-radius: 7px; background: #ffffff; font-weight: 600; color: #9a3412; }
 
 .reference-card { margin-top: 22px; border-top: 1px solid var(--border-color); padding-top: 16px; }
 .ref-heading { font-size: 14px; font-weight: 750; color: var(--text-main); margin: 0 0 6px; display: flex; align-items: center; gap: 6px; }
@@ -648,9 +663,9 @@ table.ref-table th { background: var(--table-head); padding: 10px 12px; font-wei
 table.ref-table td { padding: 10px 12px; border-bottom: 1px solid var(--table-border); color: var(--table-row-text); vertical-align: top; }
 table.ref-table tr:last-child td { border-bottom: none; }
 table.ref-table tr.active-grade { background: var(--active-grade-bg); font-weight: 600; }
-table.ref-table tr.active-grade td { border-top: 2px solid #38a169; border-bottom: 2px solid #38a169; color: var(--active-grade-text); }
+table.ref-table tr.active-grade td { border-top: 2px solid #c2410c; border-bottom: 2px solid #c2410c; color: var(--active-grade-text); }
 
-/* ACADEMIC REFERENCES CLEAN VERTICAL LIST (FIX FOR CLUMPED LINKS) */
+/* ACADEMIC REFERENCES CLEAN VERTICAL LIST */
 .academic-refs { margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 18px; }
 .ref-card-item { background: var(--ref-card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
 .ref-card-citation { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.45; }
@@ -666,7 +681,7 @@ table.ref-table tr.active-grade td { border-top: 2px solid #38a169; border-botto
  gap: 6px;
  font-size: 12.5px;
  font-weight: 650;
- color: #2563eb;
+ color: #c2410c;
  text-decoration: none;
  padding: 6px 10px;
  background: var(--tab-bg);
@@ -721,7 +736,7 @@ table.ref-table tr.active-grade td { border-top: 2px solid #38a169; border-botto
  align-items: center;
  gap: 6px;
 }
-.theme-btn.active { border-color: #2463eb; background: rgba(36,99,235,0.08); color: #2463eb; }
+.theme-btn.active { border-color: #c2410c; background: rgba(194,65,12,0.08); color: #c2410c; }
 
 .hidden { display: none !important; }
 footer { text-align: center; font-size: 11px; color: var(--text-muted); padding: 24px 0; }
@@ -766,12 +781,12 @@ footer { text-align: center; font-size: 11px; color: var(--text-muted); padding:
  <svg viewBox="0 0 200 200">
  <defs>
  <linearGradient id="dGrad" x1="0%" y1="0%" x2="100%" y2="100%">
- <stop offset="0%" stop-color="#38bdf8" />
- <stop offset="50%" stop-color="#2563eb" />
- <stop offset="100%" stop-color="#1d4ed8" />
+ <stop offset="0%" stop-color="#fdba74" />
+ <stop offset="50%" stop-color="#f97316" />
+ <stop offset="100%" stop-color="#c2410c" />
  </linearGradient>
  <filter id="dGlow" x="-20%" y="-20%" width="140%" height="140%">
- <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#2563eb" flood-opacity="0.25" />
+ <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#f97316" flood-opacity="0.25" />
  </filter>
  </defs>
 
@@ -809,7 +824,7 @@ C 100 110, 100 128, 100 144
 
  <g class="chestpiece">
  <circle cx="158" cy="165" r="15" fill="#ffffff" stroke="#1e3a8a" stroke-width="4" />
- <circle cx="158" cy="165" r="7" fill="#2563eb" />
+ <circle cx="158" cy="165" r="7" fill="#f97316" />
  </g>
  </svg>
  </div>
@@ -835,9 +850,9 @@ C 100 110, 100 128, 100 144
 </header>
 
 <main>
- <!-- HOME VIEW (HORIZONTAL SLIDER BELOW THE FIXED HEADER) -->
+ <!-- HOME VIEW -->
  <div id="home">
-   <!-- SWIPE TRACK (LEFT <-> RIGHT SLIDER WITHOUT VISIBLE BUTTONS) -->
+   <!-- SWIPE TRACK -->
    <div class="swipe-carousel-track" id="homeSwipeTrack">
      
      <!-- SLIDE 1: SPECIALTIES & GENERAL SEARCH -->
@@ -849,7 +864,7 @@ C 100 110, 100 128, 100 144
        </div>
        <div id="homeDefaultContent">
          <h2>Browse by specialty</h2>
-         <p class="muted">Select a category to view its clinical tools.</p>
+         <p class="muted">Select a category to view its clinical tools (Hold & drag category icons to reorder).</p>
          <div class="grid" id="categories"></div>
          <div class="section">
            <h2>Quick Access (Pinned & Recent)</h2>
@@ -866,14 +881,14 @@ C 100 110, 100 128, 100 144
        </div>
      </div>
 
-     <!-- SLIDE 2: DEDICATED TNM SECTION (VERY VERY LIGHT RED TINCH) -->
+     <!-- SLIDE 2: DEDICATED TNM SECTION (LIGHT PEACH THEME) -->
      <div class="swipe-carousel-slide slide-tnm-theme" id="slideTNM">
-       <!-- REDDISH NOTICE -->
+       <!-- PEACH NOTICE BOX -->
        <div class="tnm-notice-box">
          <b>TNM Reference Notice:</b> Anatomical staging rules, TNM 8th/9th editions, and FIGO classifications for clinical and surgical decision support.
        </div>
 
-       <!-- RED HEADING -->
+       <!-- PEACH HEADING -->
        <h2 style="font-size:24px; font-weight:800; margin:2px 0 4px; color: var(--tnm-heading-color);">TNM Section</h2>
        <p class="muted" style="margin:0 0 14px; line-height: 1.45;">Staging criteria, organ staging, TNM classifications, and surgical oncology reference</p>
        
@@ -1133,7 +1148,7 @@ C 100 110, 100 128, 100 144
  
  <div style="text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 4px;">
  Didn't receive the code? 
- <button type="button" id="resendOtpBtn" style="background: transparent; border: none; color: #2463eb; font-weight: 600; cursor: pointer; padding: 0; text-decoration: underline;">Resend OTP</button>
+ <button type="button" id="resendOtpBtn" style="background: transparent; border: none; color: #c2410c; font-weight: 600; cursor: pointer; padding: 0; text-decoration: underline;">Resend OTP</button>
  </div>
  </div>
 
@@ -1195,7 +1210,7 @@ window.S = S;
 <script src="Subjects/tnm.js"></script>
 
 <!-- ============================================================== -->
-<!-- 3. APPLICATION ENGINE, OFFLINE SYNC & CONTROLLER -->
+<!-- 3. APPLICATION ENGINE, DUPLICATE DETECTOR & DRAG-AND-DROP REORDER -->
 <!-- ============================================================== -->
 <script>
 (function () {
@@ -1205,6 +1220,45 @@ window.S = S;
  const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzYMVqgUULDBBOF-Mzs2MDbn7HZkM2_mznJ8FVMbYfZ13UGN4aci92ok0s59f5C3Sba/exec";
  const OFFLINE_QUEUE_KEY = "doccalc_offline_sync_queue";
  let isSyncingQueue = false;
+
+ /* NORMALIZER / FUZZY DUPLICATE DETECTOR ACROSS JS FILES */
+ function normalizeToolName(name) {
+   if (!name) return "";
+   return name.toLowerCase()
+     .replace(/\b(score|classification|criteria|staging|scale|index|system)\b/g, "")
+     .replace(/[^a-z0-9]/g, " ")
+     .replace(/\s+/g, " ")
+     .trim();
+ }
+
+ function deduplicateToolsAcrossModules() {
+   if (!window.tools || !window.tools.length) return;
+   const map = new Map();
+   const uniqueTools = [];
+
+   window.tools.forEach(t => {
+     const norm = normalizeToolName(t.name);
+     if (!norm) {
+       uniqueTools.push(t);
+       return;
+     }
+
+     if (map.has(norm)) {
+       // Duplicate detected across different JS files / categories! Merge metadata if needed or keep the richest instance
+       const existing = map.get(norm);
+       if ((t.fields && t.fields.length > 0) && (!existing.fields || existing.fields.length === 0)) {
+         // Replace with the one having complete fields
+         const idx = uniqueTools.indexOf(existing);
+         if (idx > -1) uniqueTools[idx] = t;
+         map.set(norm, t);
+       }
+     } else {
+       map.set(norm, t);
+       uniqueTools.push(t);
+     }
+   });
+   window.tools = uniqueTools;
+ }
 
  function checkAppDisclaimer() {
    if (!localStorage.getItem("doccalc_disclaimer_accepted")) {
@@ -1535,7 +1589,7 @@ window.S = S;
    const resendBtn = $("resendOtpBtn");
 
    resendBtn.disabled = true;
-   errorMsg.style.color = "#2463eb";
+   errorMsg.style.color = "#c2410c";
    errorMsg.textContent = "Resending new OTP...";
 
    try {
@@ -1783,7 +1837,7 @@ window.S = S;
    if (c.includes("surg") || c.includes("surgery") || c.includes("surgical")) return "badge-spec-surg";
    if (c.includes("obgy") || c.includes("obstetrics") || c.includes("gynecology") || c.includes("gyn")) return "badge-spec-obgy";
    if (c.includes("cardio") || c.includes("cardiology")) return "badge-spec-cardio";
-   if (c.includes("endo") || c.includes("endocrine") || c.includes("endocrinology")) return "badge-spec-endo";
+   if (c.includes("endo") || c.includes("endocrinology") || c.includes("endocrine")) return "badge-spec-endo";
    if (c.includes("neuro") || c.includes("neurology")) return "badge-spec-neuro";
    if (c.includes("emgicu") || c.includes("icu") || c.includes("emergency") || c.includes("critical")) return "badge-spec-emgicu";
    if (c.includes("renal") || c.includes("nephro") || c.includes("nephrology")) return "badge-spec-renal";
@@ -1833,7 +1887,24 @@ window.S = S;
    return div;
  }
 
+ /* DRAG AND DROP CATEGORY REORDERING ENGINE */
+ function getSavedCategoryOrder() {
+   try {
+     return JSON.parse(localStorage.getItem("doccalc_category_order") || "[]");
+   } catch(e) {
+     return [];
+   }
+ }
+
+ function saveCategoryOrder(order) {
+   try {
+     localStorage.setItem("doccalc_category_order", JSON.stringify(order));
+   } catch(e) {}
+ }
+
  function renderHome() {
+   deduplicateToolsAcrossModules();
+
    const catContainer = $("categories");
    if (!catContainer) return;
 
@@ -1867,7 +1938,21 @@ window.S = S;
      }
    });
 
-   const fullCategories = Array.from(catMap.values());
+   let fullCategories = Array.from(catMap.values());
+   
+   // Apply saved custom order if present
+   const savedOrder = getSavedCategoryOrder();
+   if (savedOrder && savedOrder.length > 0) {
+     fullCategories.sort((a, b) => {
+       const ia = savedOrder.indexOf(a.id);
+       const ib = savedOrder.indexOf(b.id);
+       if (ia > -1 && ib > -1) return ia - ib;
+       if (ia > -1) return -1;
+       if (ib > -1) return 1;
+       return 0;
+     });
+   }
+
    catContainer.innerHTML = "";
 
    if (fullCategories.length === 0) {
@@ -1876,8 +1961,44 @@ window.S = S;
      fullCategories.forEach(cat => {
        const card = document.createElement("div");
        card.className = "card";
+       card.draggable = true;
+       card.dataset.catId = cat.id;
        card.innerHTML = `<span class="ico">${cat.icon || "📁"}</span><strong>${cat.name}</strong><small>${cat.desc || ""}</small>`;
        card.onclick = () => { location.hash = "category=" + encodeURIComponent(cat.id); };
+
+       // Drag & Drop event handlers
+       card.addEventListener("dragstart", (e) => {
+         card.classList.add("dragging");
+         e.dataTransfer.setData("text/plain", cat.id);
+       });
+
+       card.addEventListener("dragend", () => {
+         card.classList.remove("dragging");
+         document.querySelectorAll(".card").forEach(c => c.style.transform = "");
+       });
+
+       card.addEventListener("dragover", (e) => {
+         e.preventDefault();
+         const draggingCard = document.querySelector(".card.dragging");
+         if (!draggingCard || draggingCard === card) return;
+
+         const rect = card.getBoundingClientRect();
+         const midX = rect.left + rect.width / 2;
+         const midY = rect.top + rect.height / 2;
+
+         if (e.clientX < midX || e.clientY < midY) {
+           catContainer.insertBefore(draggingCard, card);
+         } else {
+           catContainer.insertBefore(draggingCard, card.nextSibling);
+         }
+       });
+
+       card.addEventListener("drop", (e) => {
+         e.preventDefault();
+         const newOrder = Array.from(catContainer.querySelectorAll(".card")).map(c => c.dataset.catId);
+         saveCategoryOrder(newOrder);
+       });
+
        catContainer.appendChild(card);
      });
    }
@@ -1906,14 +2027,13 @@ window.S = S;
  window.renderQuick = renderHome;
 
  // -------------------------------------------------------------
- // 4. DEDICATED TNM & ONCOLOGY SLIDE LOGIC (STRICT TNM.JS TOOLS ONLY)
+ // 4. DEDICATED TNM & ONCOLOGY SLIDE LOGIC
  // -------------------------------------------------------------
  let activeTnmFilter = "all";
 
  function isStrictTnmTool(t) {
    if (!t) return false;
    const cat = (t.cat || "").toLowerCase();
-   // STRICTLY TOOLS FROM tnm.js (cat: "onco" or "onco_hn_gi")
    return cat === "onco" || cat === "onco_hn_gi";
  }
 
@@ -1945,10 +2065,8 @@ window.S = S;
    let toolsToDisplay = [];
 
    if (!q) {
-     // DEFAULT VIEW: Show STRICTLY tnm.js tools (all 35+ onco/tnm tools) and NO non-onco tools
      toolsToDisplay = (window.tools || []).filter(isStrictTnmTool);
    } else {
-     // SEARCH VIEW: Search across all tools, but prioritize STRICT TNM tools on top
      const allMatching = (window.tools || []).filter(t => matchesToolSearch(t, q));
      
      const tnmMatches = [];
@@ -1965,7 +2083,6 @@ window.S = S;
      toolsToDisplay = [...tnmMatches, ...otherMatches];
    }
 
-   // Apply Sub-filter: All / Calculators / Classifications
    const filtered = toolsToDisplay.filter(t => (activeTnmFilter === "all" || t.type === activeTnmFilter));
 
    container.innerHTML = "";
@@ -2060,7 +2177,7 @@ window.S = S;
    $("searchResultsSection").classList.add("hidden");
  };
 
- /* BUILD INTERACTIVE ACCORDION-CARD SELECTOR (FIXED VERTICAL STACK FOR IMAGE 1) */
+ /* BUILD INTERACTIVE ACCORDION-CARD SELECTOR */
  function openToolView(tool, skipHistory) {
    currentTool = tool;
    trackRecentTool(tool);
@@ -2112,7 +2229,6 @@ window.S = S;
    
    (tool.fields || []).forEach((f, idx) => {
      if (f.type === "select") {
-       // Custom Accordion Select Card (Stacked Layout: Heading above, Selected Value Box below)
        const card = document.createElement("div");
        card.className = "custom-select-card";
        card.id = "csc_card_" + f.id;
@@ -2136,7 +2252,6 @@ window.S = S;
        header.appendChild(selectedBox);
        card.appendChild(header);
 
-       // Options container (initially hidden)
        const optionsList = document.createElement("div");
        optionsList.className = "csc-options-list hidden";
        optionsList.id = "csc_list_" + f.id;
@@ -2191,7 +2306,6 @@ window.S = S;
 
        fieldsContainer.appendChild(card);
      } else {
-       // Standard Number Input Field
        const wrap = document.createElement("div");
        wrap.className = "standard-field-wrap" + (f.fullWidth ? " full-width" : "");
 
@@ -2415,7 +2529,6 @@ window.S = S;
  let selectedFileBase64 = "";
  let selectedFileName = "";
  let selectedFileMime = "";
- let isUploadingNow = false;
 
  function getOrCreateBadgeElement() {
    let badge = document.getElementById("feedbackUnreadBadge");
@@ -2535,7 +2648,7 @@ window.S = S;
      if (isImg) {
        mediaHtml = `<div style="margin-top:6px;"><a href="${m.mediaUrl}" target="_blank"><img src="${m.mediaUrl}" style="max-width:100%; max-height:200px; border-radius:6px; border:1px solid #cbd5e1; display:block;"></a></div>`;
      } else {
-       mediaHtml = `<div style="margin-top:6px;"><a href="${m.mediaUrl}" target="_blank" style="color:#2563eb; text-decoration:underline; font-weight:600; display:inline-flex; align-items:center; gap:4px;">📎 View Bug Attachment / Video</a></div>`;
+       mediaHtml = `<div style="margin-top:6px;"><a href="${m.mediaUrl}" target="_blank" style="color:#c2410c; text-decoration:underline; font-weight:600; display:inline-flex; align-items:center; gap:4px;">📎 View Bug Attachment / Video</a></div>`;
      }
    } else if (m.mediaUrl === "[Local Attachment]") {
      mediaHtml = `<div style="margin-top:4px; font-size:11px; color:#64748b; font-style:italic;">📎 Media attached (Uploaded to Drive)</div>`;
