@@ -457,7 +457,7 @@ h2 { font-size: 21px; margin: 8px 0; }
 .badge-calc { background: var(--badge-calc-bg); color: var(--badge-calc-text); border: 1px solid var(--badge-calc-border); }
 .badge-class { background: var(--badge-class-bg); color: var(--badge-class-text); border: 1px solid var(--badge-class-border); }
 
-/* SPECIALTY BADGES - USER REQUESTED COLORS */
+/* SPECIALTY BADGES - EXACT USER REQUESTED COLORS */
 .badge-spec { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
 .badge-spec-surg { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }        /* Surgery: yellowish */
 .badge-spec-obgy { background: #fce7f3; color: #db2777; border: 1px solid #fbcfe8; }        /* Obgyn: Pink */
@@ -481,7 +481,7 @@ h2 { font-size: 21px; margin: 8px 0; }
 .contra-box { background: var(--contra-bg); border: 1px solid var(--contra-border); color: var(--contra-text); }
 .info-title { font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
 
-/* CUSTOM ACCORDION SELECTOR CARD (HEADING ON TOP, FULL PARAGRAPH SELECTION) */
+/* CUSTOM ACCORDION SELECTOR CARD (STRICTLY FOR TNM / ONCO TOOLS) */
 .fields { display: flex; flex-direction: column; gap: 14px; }
 .custom-select-card {
  background: var(--bg-card);
@@ -601,7 +601,7 @@ h2 { font-size: 21px; margin: 8px 0; }
  display: block;
 }
 
-/* STANDARD INPUT FIELD CONTAINER */
+/* STANDARD FIELD WRAPPER FOR NON-TNM TOOLS (NEURO, CARDIO, ETC.) */
 .fields > .standard-field-wrap {
  background: var(--bg-card);
  border: 1px solid var(--border-color);
@@ -616,7 +616,7 @@ h2 { font-size: 21px; margin: 8px 0; }
 }
 .full-width { grid-column: 1 / -1; }
 label { display: block; font-size: 13px; font-weight: 750; margin-bottom: 6px; color: var(--text-main); }
-input {
+input, select {
  width: 100%;
  padding: 10px 12px;
  border: 1px solid var(--input-border);
@@ -627,7 +627,12 @@ input {
  outline: none;
  font-weight: 500;
 }
-input:focus { border-color: var(--highlight-border); background: var(--bg-card); color: var(--highlight-text); }
+select option {
+ background: var(--bg-card);
+ color: var(--text-main);
+ padding: 8px;
+}
+input:focus, select:focus { border-color: var(--highlight-border); background: var(--bg-card); color: var(--highlight-text); }
 
 .actions { display: flex; gap: 9px; margin-top: 16px; flex-wrap: wrap; }
 button { cursor: pointer; font: inherit; }
@@ -1913,19 +1918,18 @@ window.S = S;
  window.renderQuick = renderHome;
 
  // -------------------------------------------------------------
- // 4. DEDICATED TNM & ONCOLOGY SLIDE LOGIC (EXCLUDING FIGO)
+ // 4. DEDICATED TNM & ONCOLOGY SLIDE LOGIC (STRICTLY TNM.JS TOOLS)
  // -------------------------------------------------------------
  let activeTnmFilter = "all";
 
  function isStrictTnmTool(t) {
    if (!t) return false;
    const cat = (t.cat || "").toLowerCase();
-   // Must be from tnm.js (cat: "onco" or "onco_hn_gi") AND NOT FIGO based (exclude GYN FIGO stagers)
    if (!(cat === "onco" || cat === "onco_hn_gi")) return false;
    
    const txt = (t.name + " " + (t.desc || "") + " " + (t.id || "")).toLowerCase();
    if (txt.includes("figo") || txt.includes("vulva") || txt.includes("vagina") || txt.includes("cervix") || txt.includes("endometrial") || txt.includes("ovary") || txt.includes("gtd")) {
-     return false; // Hide FIGO based cals in onco section
+     return false;
    }
    return true;
  }
@@ -2069,7 +2073,7 @@ window.S = S;
    $("searchResultsSection").classList.add("hidden");
  };
 
- /* BUILD INTERACTIVE ACCORDION-CARD SELECTOR (HEADING ON TOP, FULL PARAGRAPH SELECTION) */
+ /* BUILD TOOL VIEW: ACCORDION SELECTORS STRICTLY FOR TNM / ONCO TOOLS ONLY */
  function openToolView(tool, skipHistory) {
    currentTool = tool;
    trackRecentTool(tool);
@@ -2119,9 +2123,12 @@ window.S = S;
    const fieldsContainer = $("fields");
    fieldsContainer.innerHTML = "";
    
+   // STRICT CHECK: Accordion card ONLY for TNM / Onco tools. All other tools use standard dropdowns!
+   const isTnmTool = isStrictTnmTool(tool);
+
    (tool.fields || []).forEach((f, idx) => {
-     if (f.type === "select") {
-       // Custom Accordion Select Card (Heading on top, full text badge below)
+     if (f.type === "select" && isTnmTool) {
+       // Custom Accordion Select Card (Strictly for TNM / Onco tools)
        const card = document.createElement("div");
        card.className = "custom-select-card";
        card.id = "csc_card_" + f.id;
@@ -2155,7 +2162,6 @@ window.S = S;
        header.appendChild(bottomRow);
        card.appendChild(header);
 
-       // Options container (initially hidden)
        const optionsList = document.createElement("div");
        optionsList.className = "csc-options-list hidden";
        optionsList.id = "csc_list_" + f.id;
@@ -2210,7 +2216,7 @@ window.S = S;
 
        fieldsContainer.appendChild(card);
      } else {
-       // Standard Number Input Field
+       // Standard Dropdown Select or Number Input Field for Non-TNM tools (Neuro, Cardio, etc.)
        const wrap = document.createElement("div");
        wrap.className = "standard-field-wrap" + (f.fullWidth ? " full-width" : "");
 
@@ -2219,15 +2225,41 @@ window.S = S;
        lbl.textContent = f.label;
        wrap.appendChild(lbl);
 
-       const inp = document.createElement("input");
-       inp.type = "number";
-       inp.id = "field_" + f.id;
-       inp.name = f.id;
-       inp.value = f.value !== undefined ? f.value : "";
-       if (f.min !== undefined) inp.min = f.min;
-       if (f.max !== undefined) inp.max = f.max;
-       if (f.step !== undefined) inp.step = f.step;
-       wrap.appendChild(inp);
+       if (f.type === "select") {
+         const sel = document.createElement("select");
+         sel.id = "field_" + f.id;
+         sel.name = f.id;
+         
+         const defaultOpt = document.createElement("option");
+         defaultOpt.value = "";
+         defaultOpt.textContent = "-- Select --";
+         defaultOpt.selected = true;
+         defaultOpt.disabled = true;
+         sel.appendChild(defaultOpt);
+
+         (f.options || []).forEach(opt => {
+           const optEl = document.createElement("option");
+           if (Array.isArray(opt)) {
+             optEl.value = opt[0];
+             optEl.textContent = opt[1];
+           } else {
+             optEl.value = opt.value;
+             optEl.textContent = opt.label;
+           }
+           sel.appendChild(optEl);
+         });
+         wrap.appendChild(sel);
+       } else {
+         const inp = document.createElement("input");
+         inp.type = "number";
+         inp.id = "field_" + f.id;
+         inp.name = f.id;
+         inp.value = f.value !== undefined ? f.value : "";
+         if (f.min !== undefined) inp.min = f.min;
+         if (f.max !== undefined) inp.max = f.max;
+         if (f.step !== undefined) inp.step = f.step;
+         wrap.appendChild(inp);
+       }
 
        fieldsContainer.appendChild(wrap);
      }
@@ -2281,9 +2313,10 @@ window.S = S;
  function calculate() {
    if (!currentTool || typeof currentTool.calc !== "function") return;
    const vals = {};
+   const isTnmTool = isStrictTnmTool(currentTool);
    
    (currentTool.fields || []).forEach(f => {
-     if (f.type === "select") {
+     if (f.type === "select" && isTnmTool) {
        const card = $("csc_card_" + f.id);
        if (card) vals[f.id] = card.dataset.selectedValue || "";
      } else {
