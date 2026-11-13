@@ -321,6 +321,31 @@ main { max-width: 760px; margin: auto; padding: 12px 12px 24px; }
  display: inline-flex;
 }
 
+.unread-badge {
+ position: absolute;
+ top: -5px;
+ right: -6px;
+ min-width: 17px;
+ height: 17px;
+ padding: 0 4px;
+ background-color: #ef4444;
+ color: #ffffff;
+ font-size: 10px;
+ font-weight: 700;
+ line-height: 17px;
+ text-align: center;
+ border-radius: 9px;
+ border: 1.5px solid var(--bg-header);
+ box-sizing: border-box;
+ display: none;
+ pointer-events: none;
+ font-family: system-ui, -apple-system, sans-serif;
+}
+
+.unread-badge.active {
+ display: inline-block;
+}
+
 .notice {
  background: var(--notice-bg);
  border: 1px solid var(--notice-border);
@@ -332,7 +357,7 @@ main { max-width: 760px; margin: auto; padding: 12px 12px 24px; }
  margin-bottom: 16px;
 }
 
-/* HORIZONTAL FULL-PAGE SWIPE CAROUSEL */
+/* HORIZONTAL FULL-PAGE SWIPE CAROUSEL (JUST BELOW NAVY HEADER) */
 .swipe-carousel-track {
  display: flex;
  width: 100%;
@@ -353,7 +378,7 @@ main { max-width: 760px; margin: auto; padding: 12px 12px 24px; }
  transition: background 0.25s ease;
 }
 
-/* SLIDE 2: TNM SECTION */
+/* SLIDE 2: VERY VERY LIGHT REDDISH TINT FOR TNM SECTION */
 .slide-tnm-theme {
  background: var(--tnm-page-bg);
  padding: 14px 12px 24px;
@@ -432,7 +457,7 @@ h2 { font-size: 21px; margin: 8px 0; }
 .badge-calc { background: var(--badge-calc-bg); color: var(--badge-calc-text); border: 1px solid var(--badge-calc-border); }
 .badge-class { background: var(--badge-class-bg); color: var(--badge-class-text); border: 1px solid var(--badge-class-border); }
 
-/* SPECIALTY BADGES */
+/* SPECIALTY BADGES - EXACT USER REQUESTED COLORS */
 .badge-spec { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
 .badge-spec-surg { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
 .badge-spec-obgy { background: #fce7f3; color: #db2777; border: 1px solid #fbcfe8; }
@@ -456,6 +481,7 @@ h2 { font-size: 21px; margin: 8px 0; }
 .contra-box { background: var(--contra-bg); border: 1px solid var(--contra-border); color: var(--contra-text); }
 .info-title { font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
 
+/* CUSTOM ACCORDION SELECTOR CARD (STRICTLY FOR TNM / ONCO TOOLS) */
 .fields { display: flex; flex-direction: column; gap: 14px; }
 .custom-select-card {
  background: var(--bg-card);
@@ -575,6 +601,7 @@ h2 { font-size: 21px; margin: 8px 0; }
  display: block;
 }
 
+/* STANDARD FIELD WRAPPER FOR NON-TNM TOOLS (NEURO, CARDIO, ETC.) */
 .fields > .standard-field-wrap {
  background: var(--bg-card);
  border: 1px solid var(--border-color);
@@ -615,7 +642,7 @@ button { cursor: pointer; font: inherit; }
 .notes-btn { background: #ffffff; color: #17324e; border: 1px solid var(--border-color); width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.15s ease; }
 .notes-btn:hover { background: var(--tab-bg); }
 
-/* COMPLIANT OUTPUT CONTAINER */
+/* COMPLIANT OUTPUT CONTAINER WITH SOFT BLUE HIGHLIGHT */
 .result { display: none; margin-top: 20px; padding: 16px; border-radius: 12px; background: var(--highlight-bg); border: 1px solid var(--highlight-border); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08); }
 .result.show { display: block; }
 .caption { font-size: 11px; color: var(--highlight-text); font-weight: 750; letter-spacing: 0.5px; text-transform: uppercase; }
@@ -635,6 +662,7 @@ table.ref-table tr:last-child td { border-bottom: none; }
 table.ref-table tr.active-grade { background: var(--active-grade-bg); font-weight: 600; }
 table.ref-table tr.active-grade td { border-top: 2px solid #38a169; border-bottom: 2px solid #38a169; color: var(--active-grade-text); }
 
+/* ACADEMIC REFERENCES LIST STYLING (VERTICAL BULLET LIST WITH PROPER ATTRIBUTES) */
 .academic-refs { margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 18px; }
 .ref-card-item { background: var(--ref-card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
 .ref-card-citation { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.5; }
@@ -741,6 +769,39 @@ footer { text-align: center; font-size: 11px; color: var(--text-muted); padding:
   }
 }
 </style>
+
+<script type="module">
+  // 1. Import Firebase modular SDKs via CDN
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+  import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, GoogleAuthProvider, signInWithCredential } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+  // 2. Exact config keys from Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyC0fuiZH_KcIUEdTrVnXoPeNG1Ob2Y5M-g",
+    authDomain: "docstat-ab001.firebaseapp.com",
+    projectId: "docstat-ab001",
+    storageBucket: "docstat-ab001.firebasestorage.app",
+    messagingSenderId: "617208018389",
+    appId: "1:617208018389:web:f856b4ac5e45ed6419395c",
+    measurementId: "G-S5Q7ZTJYCW"
+  };
+
+  // 3. Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // 4. Attach to window so existing script can use them
+  window.firebaseAuth = auth;
+  window.firebaseDb = db;
+  window.sendSignInLinkToEmail = sendSignInLinkToEmail;
+  window.isSignInWithEmailLink = isSignInWithEmailLink;
+  window.signInWithEmailLink = signInWithEmailLink;
+  window.GoogleAuthProvider = GoogleAuthProvider;
+  window.signInWithCredential = signInWithCredential;
+</script>
+
 </head>
 <body>
 
@@ -820,8 +881,9 @@ C 100 110, 100 128, 100 144
 </header>
 
 <main>
- <!-- HOME VIEW -->
+ <!-- HOME VIEW (HORIZONTAL SLIDER BELOW THE FIXED HEADER) -->
  <div id="home">
+   <!-- SWIPE TRACK (LEFT <-> RIGHT SLIDER WITHOUT VISIBLE BUTTONS) -->
    <div class="swipe-carousel-track" id="homeSwipeTrack">
      
      <!-- SLIDE 1: SPECIALTIES & GENERAL SEARCH -->
@@ -850,12 +912,14 @@ C 100 110, 100 128, 100 144
        </div>
      </div>
 
-     <!-- SLIDE 2: DEDICATED TNM SECTION -->
+     <!-- SLIDE 2: DEDICATED TNM SECTION (VERY VERY LIGHT RED TINCH) -->
      <div class="swipe-carousel-slide slide-tnm-theme" id="slideTNM">
+       <!-- REDDISH NOTICE -->
        <div class="tnm-notice-box">
          <b>TNM Reference Notice:</b> Anatomical staging rules, TNM 8th/9th editions, and FIGO classifications for clinical and surgical decision support.
        </div>
 
+       <!-- RED HEADING -->
        <h2 style="font-size:24px; font-weight:800; margin:2px 0 4px; color: var(--tnm-heading-color);">TNM Section</h2>
        <p class="muted" style="margin:0 0 14px; line-height: 1.45;">Staging criteria, organ staging, TNM classifications, and surgical oncology reference</p>
        
@@ -1048,7 +1112,7 @@ C 100 110, 100 128, 100 144
  <label style="font-size:13px;font-weight:700">Clinician Profile</label>
  <p class="muted" style="font-size:12px;margin:4px 0 10px;">Update your professional signature details:</p>
  <button type="button" id="editProfileBtn" style="width:100%;padding:10px;background:var(--btn-back-bg);color:var(--btn-back-text);border:1px solid var(--border-color);border-radius:8px;font-weight:600;margin-bottom:10px;">Edit Profile Details</button>
- <button type="button" id="deleteAccountBtn" style="width:100%;padding:10px;background:var(--contra-bg);color:var(--contra-text);border:1px solid var(--contra-border);border-radius:8px;font-weight:600;">Reset Profile</button>
+ <button type="button" id="deleteAccountBtn" style="width:100%;padding:10px;background:var(--contra-bg);color:var(--contra-text);border:1px solid var(--contra-border);border-radius:8px;font-weight:600;">Delete Account & Reset</button>
  </div>
 
  <div style="border-top:1px solid var(--border-color);margin-top:16px;padding-top:16px;">
@@ -1062,13 +1126,13 @@ C 100 110, 100 128, 100 144
  </div>
 </div>
 
-<!-- CLINICIAN PROFILE MODAL (NAME, DEGREE, PICTURE, HOSPITAL/COLLEGE, EMAIL FOR IN-APP CHAT) -->
+<!-- EMAIL & GOOGLE LOGIN MODAL -->
 <div id="loginModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
  <div class="modal" style="max-width: 400px; text-align: left;">
  <div style="font-size: 32px; margin-bottom: 8px;">🧑🏻‍⚕️</div>
- <h3 id="loginModalTitle" style="margin: 0 0 6px; font-size: 20px;">Clinician Profile</h3>
+ <h3 id="loginModalTitle" style="margin: 0 0 6px; font-size: 20px;">DocStat Secure Login</h3>
  <p class="muted" style="font-size: 12.5px; line-height: 1.5; margin: 0 0 16px;" id="loginModalSubtitle">
- Set up your professional signature for DocStat reference tools.
+ Set up your professional profile and sign in to continue.
  </p>
 
  <div id="loginStep1" style="display: flex; flex-direction: column; gap: 12px;">
@@ -1091,23 +1155,44 @@ C 100 110, 100 128, 100 144
  </div>
 
  <div>
- <label for="loginDrHospital" style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Hospital / Medical College *</label>
- <input type="text" id="loginDrHospital" placeholder="e.g. AIIMS New Delhi / City General Hospital" style="width: 100%;">
+ <label for="loginDrHospital" style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Hospital / Institution (Optional)</label>
+ <input type="text" id="loginDrHospital" placeholder="e.g. City General Hospital" style="width: 100%;">
  </div>
 
- <div>
- <label for="loginDrEmail" style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Email Address (For in-app feedback chat) *</label>
+ <div style="margin-top: 6px; margin-bottom: 2px; border-bottom: 1px solid var(--border-color);"></div>
+
+ <!-- Native Google Sign-In Button -->
+ <button id="googleLoginBtn" type="button" style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #ffffff; color: #3c4043; border: 1px solid #dadce0; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.73 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path></svg>
+   Continue with Google
+ </button>
+
+ <div style="text-align: center; color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; margin: 4px 0;">— OR —</div>
+
+ <div id="emailFieldWrap">
+ <label for="loginDrEmail" style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Email Address (For Magic Link)</label>
  <input type="email" id="loginDrEmail" placeholder="doctor@hospital.com" style="width: 100%;">
  </div>
 
- <button id="saveProfileBtn" class="primary" type="button" style="margin-top: 6px; padding: 12px;">Save & Enter App</button>
+ <button id="sendOtpBtn" class="primary" type="button" style="margin-top: 2px; padding: 12px; background: var(--bg-header);">Sign in with Email Link</button>
+ <button id="saveProfileOnlyBtn" class="primary hidden" type="button" style="margin-top: 6px; padding: 12px;">Save Profile Changes</button>
+ </div>
+
+ <div id="loginStep2" style="display:none; flex-direction: column; gap: 12px;">
+ <p style="font-size: 13px; color: var(--text-muted); margin: 0 0 4px;">
+ We've sent a secure login link to <span id="sentEmailDisplay" style="font-weight: 600; color: var(--text-main);"></span>.
+ </p>
+ 
+ <div style="text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 14px;">
+  <div>Please check your email and click the secure link to sign in. The app will automatically log you in.</div>
+ </div>
  </div>
 
  <div id="loginErrorMsg" style="color:#dc2626; font-size:12px; text-align:center; margin-top:10px; min-height:16px;"></div>
  </div>
 </div>
 
-<!-- DISCLAIMER MODAL -->
+<!-- FIRST LAUNCH CLINICAL REFERENCE DISCLAIMER MODAL -->
 <div id="disclaimerModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
   <div class="modal" style="max-width: 420px; text-align: center;">
     <div style="font-size: 32px; margin-bottom: 8px;">⚖️</div>
@@ -1160,1109 +1245,1663 @@ window.S = S;
 <script src="Subjects/peds.js"></script>
 <script src="Subjects/tnm.js"></script>
 <script src="Subjects/ophtha.js"></script>
+<script src="Subjects/hemat.js"></script>
 
 <!-- ============================================================== -->
-<!-- 3. FIREBASE INTEGRATION & APPLICATION ENGINE -->
+<!-- 3. APPLICATION ENGINE, OFFLINE SYNC & CONTROLLER -->
 <!-- ============================================================== -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { 
-  getAuth, 
-  signInAnonymously,
-  signOut,
-  onAuthStateChanged 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { 
-  getFirestore, 
-  collection, 
-  doc, 
-  setDoc, 
-  addDoc, 
-  getDoc, 
-  deleteDoc,
-  onSnapshot, 
-  query, 
-  orderBy, 
-  serverTimestamp 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { 
-  getStorage, 
-  ref, 
-  uploadBytesResumable, 
-  getDownloadURL 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-import { App } from 'https://cdn.jsdelivr.net/npm/@capacitor/app@latest/+esm';
-
-// -------------------------------------------------------------
-// FIREBASE CONFIGURATION (REPLACE WITH YOUR CONSOLE KEYS)
-// -------------------------------------------------------------
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-
-const fbApp = initializeApp(firebaseConfig);
-const auth = getAuth(fbApp);
-const db = getFirestore(fbApp);
-const storage = getStorage(fbApp);
-
-window.fbAuth = auth;
-window.fbDb = db;
-window.fbStorage = storage;
-
-// -------------------------------------------------------------
-// CAPACITOR NATIVE HARDWARE BACK BUTTON HANDLER
-// -------------------------------------------------------------
-App.addListener('backButton', ({ canGoBack }) => {
-  const chatPage = document.getElementById("chatPage");
-  if (chatPage && !chatPage.classList.contains("hidden")) {
-    window.closeChatView();
-    return;
-  }
-  const sourcePage = document.getElementById("sourcePage");
-  if (sourcePage && !sourcePage.classList.contains("hidden")) {
-    sourcePage.classList.add("hidden");
-    document.getElementById("calculatorPage").classList.remove("hidden");
-    return;
-  }
-  if (location.hash && location.hash !== "#" && location.hash !== "") {
-    window.history.back();
-  } else if (canGoBack) {
-    window.history.back();
-  } else {
-    App.exitApp();
-  }
-});
-
-const $ = id => document.getElementById(id);
-
-// -------------------------------------------------------------
-// DISCLAIMER & THEME
-// -------------------------------------------------------------
-function checkAppDisclaimer() {
-  if (!localStorage.getItem("doccalc_disclaimer_accepted")) {
-    const modal = $("disclaimerModal");
-    if (modal) modal.classList.remove("hidden");
-  }
-}
-window.acceptAppDisclaimer = function() {
-  localStorage.setItem("doccalc_disclaimer_accepted", "true");
-  const modal = $("disclaimerModal");
-  if (modal) modal.classList.add("hidden");
-};
-window.addEventListener("load", checkAppDisclaimer);
-
-let activeThemeMode = localStorage.getItem("doccalc_theme") || "system";
-function applyTheme(mode) {
-  activeThemeMode = mode;
-  localStorage.setItem("doccalc_theme", mode);
-  let effective = mode === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : mode;
-  document.documentElement.setAttribute("data-theme", effective);
-  document.querySelectorAll(".theme-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.themeVal === mode));
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute("content", effective === "dark" ? "#0b1523" : "#0f2744");
-}
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-  if (activeThemeMode === "system") applyTheme("system");
-});
-applyTheme(activeThemeMode);
-
-$("openSettingsBtn").onclick = () => $("settingsModal").classList.remove("hidden");
-$("closeSettingsBtn").onclick = () => $("settingsModal").classList.add("hidden");
-$("settingsModal").onclick = e => { if (e.target === $("settingsModal")) $("settingsModal").classList.add("hidden"); };
-document.querySelectorAll(".theme-btn").forEach(btn => btn.onclick = () => applyTheme(btn.dataset.themeVal));
-
-// -------------------------------------------------------------
-// CLINICIAN PROFILE MANAGEMENT (ANONYMOUS FIREBASE AUTH)
-// -------------------------------------------------------------
-function applyDoctorProfile(name, degree, hospital, avatarBase64) {
-  const subHeader = $("clinicianHeaderSub");
-  if (subHeader) subHeader.textContent = `${name} (${degree}) · Clinical tools`;
-  const hospDisplay = $("headerHospitalDisplay");
-  if (hospDisplay) hospDisplay.textContent = hospital ? hospital : "";
-  const avatarEl = $("headerAvatar");
-  const chatAvatarEl = $("chatHeaderAvatar");
-  
-  if (avatarBase64) {
-    if (avatarEl) avatarEl.innerHTML = `<img src="${avatarBase64}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-    if (chatAvatarEl) chatAvatarEl.innerHTML = `<img src="${avatarBase64}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-  } else {
-    if (avatarEl) avatarEl.innerHTML = "🧑🏻‍⚕️";
-    if (chatAvatarEl) chatAvatarEl.innerHTML = "🧑🏻‍⚕️";
-  }
-}
-
-let tempAvatarBase64 = "";
-const avatarInput = $("modalAvatarInput");
-if (avatarInput) {
-  avatarInput.onchange = function(e) {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        tempAvatarBase64 = event.target.result;
-        $("avatarPreviewContainer").innerHTML = `<img src="${tempAvatarBase64}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-}
-
-// Check or establish Anonymous Session
-async function checkProfileSession() {
-  const savedName = localStorage.getItem("doccalc_dr_name");
-  const savedDegree = localStorage.getItem("doccalc_dr_degree");
-  const savedEmail = localStorage.getItem("doccalc_dr_email");
-  const savedHospital = localStorage.getItem("doccalc_dr_hospital");
-  const savedAvatar = localStorage.getItem("doccalc_dr_avatar");
-
-  // Ensure Firebase anonymous user exists silently in background
-  if (!auth.currentUser) {
-    try {
-      await signInAnonymously(auth);
-    } catch (e) {
-      console.warn("Anonymous auth silently started:", e);
-    }
-  }
-
-  if (savedName && savedDegree && savedEmail && savedHospital) {
-    applyDoctorProfile(savedName, savedDegree, savedHospital, savedAvatar);
-    $("loginModal").classList.add("hidden");
-    initFeedbackChatListener(savedEmail);
-  } else {
-    $("loginModal").classList.remove("hidden");
-  }
-}
-
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    const savedName = localStorage.getItem("doccalc_dr_name");
-    const savedEmail = localStorage.getItem("doccalc_dr_email");
-    if (savedName && savedEmail) {
-      initFeedbackChatListener(savedEmail);
-    }
-  }
-});
-
-$("saveProfileBtn").onclick = async function() {
-  const name = $("loginDrName").value.trim();
-  const degree = $("loginDrDegree").value.trim();
-  const hospital = $("loginDrHospital").value.trim();
-  const email = $("loginDrEmail").value.trim();
-  const errorMsg = $("loginErrorMsg");
-
-  if (!name || !degree || !hospital || !email) {
-    errorMsg.textContent = "Please fill in all details (including email for feedback).";
-    return;
-  }
-
-  const btn = $("saveProfileBtn");
-  btn.disabled = true;
-  btn.textContent = "Saving profile...";
-  errorMsg.textContent = "";
-
-  try {
-    if (!auth.currentUser) {
-      await signInAnonymously(auth);
-    }
-    const uid = auth.currentUser ? auth.currentUser.uid : "user_" + Date.now();
-
-    const profileData = {
-      name: name,
-      degree: degree,
-      hospital: hospital,
-      email: email,
-      avatar: tempAvatarBase64 || localStorage.getItem("doccalc_dr_avatar") || "",
-      updatedAt: serverTimestamp()
-    };
-
-    // Save to Firestore users collection
-    await setDoc(doc(db, "users", uid), profileData, { merge: true });
-
-    localStorage.setItem("doccalc_dr_name", name);
-    localStorage.setItem("doccalc_dr_degree", degree);
-    localStorage.setItem("doccalc_dr_hospital", hospital);
-    localStorage.setItem("doccalc_dr_email", email);
-    if (profileData.avatar) localStorage.setItem("doccalc_dr_avatar", profileData.avatar);
-
-    applyDoctorProfile(name, degree, hospital, profileData.avatar);
-    $("loginModal").classList.add("hidden");
-    initFeedbackChatListener(email);
-  } catch (err) {
-    errorMsg.textContent = err.message || "Error saving profile.";
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Save & Enter App";
-  }
-};
-
-$("editProfileBtn").onclick = function () {
-  $("settingsModal").classList.add("hidden");
-  $("loginModalTitle").textContent = "Edit Clinician Profile";
-  $("loginModalSubtitle").textContent = "Update your credentials displayed across the platform.";
-  
-  $("loginDrName").value = localStorage.getItem("doccalc_dr_name") || "";
-  $("loginDrDegree").value = localStorage.getItem("doccalc_dr_degree") || "";
-  $("loginDrHospital").value = localStorage.getItem("doccalc_dr_hospital") || "";
-  $("loginDrEmail").value = localStorage.getItem("doccalc_dr_email") || "";
-  
-  const savedAvatar = localStorage.getItem("doccalc_dr_avatar");
-  if (savedAvatar) {
-    tempAvatarBase64 = savedAvatar;
-    $("avatarPreviewContainer").innerHTML = `<img src="${savedAvatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-  } else {
-    $("avatarPreviewContainer").innerHTML = "🧑🏻‍⚕️";
-  }
-
-  $("loginErrorMsg").textContent = "";
-  $("loginModal").classList.remove("hidden");
-};
-
-$("deleteAccountBtn").onclick = async function() {
-  if (confirm("Reset clinician profile on this device?")) {
-    const user = auth.currentUser;
-    if (user) {
-      try {
-        await deleteDoc(doc(db, "users", user.uid));
-        await signOut(auth);
-      } catch (e) {}
-    }
-    localStorage.clear();
-    location.reload();
-  }
-};
-
-checkProfileSession();
-
-// -------------------------------------------------------------
-// FIRESTORE CALCULATION TELEMETRY
-// -------------------------------------------------------------
-async function logToolCalculation(toolName, resultVal, formulaText) {
-  const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
-  const name = localStorage.getItem("doccalc_dr_name") || "Anonymous";
-  const degree = localStorage.getItem("doccalc_dr_degree") || "N/A";
-  const hospital = localStorage.getItem("doccalc_dr_hospital") || "N/A";
-  const specialty = (currentTool && currentTool.cat) ? currentTool.cat.toUpperCase() : "GENERAL";
-
-  try {
-    await addDoc(collection(db, "calculations"), {
-      email,
-      name,
-      degree,
-      hospital,
-      specialty,
-      tool: toolName,
-      result: resultVal,
-      equation: formulaText,
-      createdAt: serverTimestamp()
-    });
-  } catch (err) {
-    console.warn("Firestore calculation log error:", err);
-  }
-}
-
-// -------------------------------------------------------------
-// NAVIGATION, TOOLS & CALCULATOR INTERFACE
-// -------------------------------------------------------------
-let currentCatId = null;
-let currentTool = null;
-let activeFilter = "all";
-
-function triggerSplashSequence() {
-  const logoWrap = $("splashLogoWrap");
-  const splash = $("splash");
-
-  setTimeout(() => { if (logoWrap) logoWrap.classList.add("pulse-lockup"); }, 1900);
-  setTimeout(() => {
-    if (splash) {
-      splash.classList.add("fade-out");
-      setTimeout(() => { if (splash.parentNode) splash.parentNode.removeChild(splash); }, 400);
-    }
-  }, 2200);
-}
-window.addEventListener("load", triggerSplashSequence);
-
-function showView(view) {
-  $("home").classList.toggle("hidden", view !== "home");
-  $("categoryPage").classList.toggle("hidden", view !== "category");
-  $("calculatorPage").classList.toggle("hidden", view !== "calculator");
-  $("sourcePage").classList.toggle("hidden", view !== "source");
-  $("chatPage").classList.toggle("hidden", view !== "chat");
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-window.showView = showView;
-
-let isHandlingHash = false;
-window.addEventListener("hashchange", async function () {
-  if (isHandlingHash) {
-    setTimeout(() => { isHandlingHash = false; }, 100);
-    return;
-  }
-  isHandlingHash = true;
-
-  try {
-    const rawHash = location.hash.replace(/^#/, "");
-    const modal = $("settingsModal");
-    if (modal && !modal.classList.contains("hidden")) modal.classList.add("hidden");
-
-    const searchInput = $("search");
-    if (searchInput && searchInput.value) {
-      searchInput.value = "";
-      $("homeDefaultContent").classList.remove("hidden");
-      $("searchResultsSection").classList.add("hidden");
-    }
-
-    if (!rawHash) {
-      showView("home");
-      return;
-    }
-    if (rawHash.startsWith("category=")) {
-      currentCatId = decodeURIComponent(rawHash.replace("category=", ""));
-      renderCategoryTools();
-      showView("category");
-      return;
-    }
-    if (rawHash.startsWith("tool=")) {
-      const toolId = decodeURIComponent(rawHash.replace("tool=", ""));
-      const foundTool = (window.tools || []).find(t => t.id === toolId);
-      if (foundTool && (!currentTool || currentTool.id !== toolId)) {
-        openToolView(foundTool, true);
-      } else {
-        showView("calculator");
-      }
-      return;
-    }
-    if (rawHash === "chat") {
-      showView("chat");
-      return;
-    }
-    if (rawHash.startsWith("source=")) {
-      const calcId = decodeURIComponent(rawHash.replace("source=", ""));
-      const sourcePath = `InfoHTMLs/${calcId}.html`;
-      const container = $("sourceContentContainer");
-      container.innerHTML = `<p class="muted" style="text-align: center; margin-top: 40px;">Loading reference details...</p>`;
-      showView("source");
-
-      try {
-        const response = await fetch(sourcePath);
-        if (response.ok) {
-          const htmlText = await response.text();
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(htmlText, "text/html");
-          container.innerHTML = doc.body ? doc.body.innerHTML : htmlText;
-        } else {
-          container.innerHTML = `<p class="muted" style="text-align: center; margin-top: 40px; color: var(--contra-text);">Could not load reference file.</p>`;
-        }
-      } catch (err) {
-        container.innerHTML = `<p class="muted" style="text-align: center; margin-top: 40px; color: var(--contra-text);">Error loading reference file offline.</p>`;
-      }
-      return;
-    }
-  } finally {
-    isHandlingHash = false;
-  }
-});
-
-function getSpecialtyBadgeClass(catName) {
-  const c = (catName || "").toLowerCase().trim();
-  if (c.includes("surg") || c.includes("surgery") || c.includes("surgical")) return "badge-spec-surg";
-  if (c.includes("obgy") || c.includes("obstetrics") || c.includes("gynecology") || c.includes("gyn")) return "badge-spec-obgy";
-  if (c.includes("cardio") || c.includes("cardiology")) return "badge-spec-cardio";
-  if (c.includes("endo") || c.includes("endocrine") || c.includes("endocrinology")) return "badge-spec-endo";
-  if (c.includes("neuro") || c.includes("neurology")) return "badge-spec-neuro";
-  if (c.includes("emgicu") || c.includes("icu") || c.includes("emergency") || c.includes("critical")) return "badge-spec-emgicu";
-  if (c.includes("renal") || c.includes("nephro") || c.includes("nephrology")) return "badge-spec-renal";
-  if (c.includes("ortho") || c.includes("orthopaedics")) return "badge-spec-ortho";
-  if (c.includes("resp") || c.includes("pulm") || c.includes("pulmonology")) return "badge-spec-resp";
-  if (c.includes("rheum") || c.includes("rheumatology") || c.includes("immuno")) return "badge-spec-rheum";
-  if (c.includes("onco") || c.includes("tnm") || c.includes("staging")) return "badge-spec-onco";
-  if (c.includes("ped") || c.includes("pediatric") || c.includes("paediatric")) return "badge-spec-peds";
-  return "badge-spec";
-}
-
-function getPinnedTools() {
-  try { return JSON.parse(localStorage.getItem("doccalc_pinned") || "[]"); } catch(e) { return []; }
-}
-function getRecentTools() {
-  try { return JSON.parse(localStorage.getItem("doccalc_recent") || "[]"); } catch(e) { return []; }
-}
-function togglePinTool(toolId) {
-  let pinned = getPinnedTools();
-  const idx = pinned.indexOf(toolId);
-  if (idx > -1) pinned.splice(idx, 1);
-  else pinned.push(toolId);
-  localStorage.setItem("doccalc_pinned", JSON.stringify(pinned));
-  updatePinButtonState(toolId);
-  renderHome();
-}
-function trackRecentTool(tool) {
-  if (!tool || !tool.id) return;
-  let recent = getRecentTools().filter(id => id !== tool.id);
-  recent.unshift(tool.id);
-  if (recent.length > 10) recent = recent.slice(0, 10);
-  localStorage.setItem("doccalc_recent", JSON.stringify(recent));
-  renderHome();
-}
-function updatePinButtonState(toolId) {
-  const btn = $("pinToolBtn");
-  if (!btn) return;
-  const pinned = getPinnedTools();
-  if (pinned.includes(toolId)) {
-    btn.textContent = "📌 Unpin Tool";
-    btn.style.background = "var(--badge-class-bg)";
-    btn.style.color = "var(--badge-class-text)";
-  } else {
-    btn.textContent = "📌 Pin Tool";
-    btn.style.background = "var(--tab-bg)";
-    btn.style.color = "var(--text-main)";
-  }
-}
-
-function createToolItem(t) {
-  const div = document.createElement("div");
-  div.className = "tool";
-  const badgeLabel = t.type === "class" ? "Classification" : "Calculator";
-  const badgeClass = t.type === "class" ? "badge-class" : "badge-calc";
-  
-  let specName = t.cat ? t.cat.toUpperCase() : "GENERAL";
-  if (t.cat === "onco" || t.cat === "onco_hn_gi" || t.cat === "tnm") specName = "ONCO";
-  else if (t.cat === "surg") specName = "SURGERY";
-  else if (t.cat === "obgy") specName = "OBGYN";
-  else if (t.cat === "peds") specName = "PEDS";
-  else if (t.cat === "cardio") specName = "CARDIO";
-  else if (t.cat === "neuro") specName = "NEURO";
-  else if (t.cat === "respi") specName = "RESP";
-  else if (t.cat === "emgicu") specName = "EMERGENCY";
-  else if (t.cat === "renal") specName = "RENAL";
-  else if (t.cat === "ortho") specName = "ORTHO";
-  else if (t.cat === "endo") specName = "ENDO";
-  else if (t.cat === "rheum") specName = "RHEUM";
-
-  const specClass = getSpecialtyBadgeClass(t.cat);
-  const isPinned = getPinnedTools().includes(t.id);
-
-  div.innerHTML = `
-    <div class="tool-header">
-      <strong>${isPinned ? "📌 " : ""}${t.name}</strong>
-      <div class="badge-group">
-        <span class="badge ${specClass}">${specName}</span>
-        <span class="badge ${badgeClass}">${badgeLabel}</span>
-      </div>
-    </div>
-    <small>${t.desc || ""}</small>
-  `;
-  div.onclick = () => { location.hash = "tool=" + encodeURIComponent(t.id); };
-  return div;
-}
-
-function renderHome() {
-  const catContainer = $("categories");
-  if (!catContainer) return;
-
-  const catMap = new Map();
-  (window.categories || []).forEach(c => {
-    if (c && c.id) {
-      const cid = c.id.toLowerCase();
-      if (cid !== "onco" && cid !== "onco_hn_gi" && !cid.includes("tnm")) {
-        catMap.set(c.id, c);
-      }
-    }
-  });
-
-  (window.tools || []).forEach(t => {
-    if (t.cat && !catMap.has(t.cat)) {
-      const cid = t.cat.toLowerCase();
-      if (cid !== "onco" && cid !== "onco_hn_gi" && !cid.includes("tnm")) {
-        const prettyName = t.cat.charAt(0).toUpperCase() + t.cat.slice(1);
-        catMap.set(t.cat, {
-          id: t.cat,
-          name: prettyName,
-          icon: "📁",
-          desc: `${prettyName} clinical tools & calculators`
-        });
-      }
-    }
-
-    if (!t.type) {
-      const isClass = /score|criteria|staging|classification|meows|apgar|bishop|iadpsg|mec|popq|figo|weber|gustilo|tscherne|salter|garden|neer|pauwels|pipkin|rockwood|mason|tile|sins|tlics|meyerding|kellgren/i.test(t.name + " " + (t.desc || ""));
-      t.type = isClass ? "class" : "calc";
-    }
-  });
-
-  const fullCategories = Array.from(catMap.values());
-  catContainer.innerHTML = "";
-
-  if (fullCategories.length === 0) {
-    catContainer.innerHTML = `<p class="muted" style="grid-column: 1/-1;">Loading specialty tools...</p>`;
-  } else {
-    fullCategories.forEach(cat => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `<span class="ico">${cat.icon || "📁"}</span><strong>${cat.name}</strong><small>${cat.desc || ""}</small>`;
-      card.onclick = () => { location.hash = "category=" + encodeURIComponent(cat.id); };
-      catContainer.appendChild(card);
-    });
-  }
-
-  const quickContainer = $("quick");
-  if (quickContainer) {
-    quickContainer.innerHTML = "";
-    const pinnedIds = getPinnedTools();
-    const recentIds = getRecentTools();
-    const quickToolIds = Array.from(new Set([...pinnedIds, ...recentIds])).slice(0, 8);
-    const quickTools = quickToolIds.map(id => (window.tools || []).find(t => t.id === id)).filter(Boolean);
-
-    if (quickTools.length === 0) {
-      quickContainer.innerHTML = `<p class="muted" style="font-size:12.5px;">Pinned or recently used tools will appear here for quick access.</p>`;
-    } else {
-      quickTools.forEach(t => quickContainer.appendChild(createToolItem(t)));
-    }
-  }
-
-  renderTNMPage();
-}
-
-window.renderHome = renderHome;
-
-let activeTnmFilter = "all";
-function isStrictTnmTool(t) {
-  if (!t) return false;
-  const cat = (t.cat || "").toLowerCase();
-  if (!(cat === "onco" || cat === "onco_hn_gi")) return false;
-  const txt = (t.name + " " + (t.desc || "") + " " + (t.id || "")).toLowerCase();
-  return !(txt.includes("figo") || txt.includes("vulva") || txt.includes("vagina") || txt.includes("cervix") || txt.includes("endometrial") || txt.includes("ovary") || txt.includes("gtd"));
-}
-
-function matchesToolSearch(t, q) {
-  if (!q) return true;
-  q = q.toLowerCase();
-  if (q.includes("neck") || q.includes("head") || q.includes("oral") || q.includes("larynx")) {
-    const txt = (t.name + " " + (t.desc || "") + " " + (t.subject || "") + " " + (t.organ || "")).toLowerCase();
-    if (/oral|lip|tongue|oropharynx|hypopharynx|nasopharynx|larynx|salivary|cervical|neck|head/i.test(txt)) return true;
-  }
-  return (t.name && t.name.toLowerCase().includes(q)) ||
-         (t.desc && t.desc.toLowerCase().includes(q)) ||
-         (t.organ && t.organ.toLowerCase().includes(q)) ||
-         (t.subject && t.subject.toLowerCase().includes(q)) ||
-         (t.keywords && t.keywords.some(k => k.toLowerCase().includes(q)));
-}
-
-function renderTNMPage() {
-  const container = $("tnmToolsListContainer");
-  if (!container) return;
-
-  const q = ($("tnmSearchInput") ? $("tnmSearchInput").value : "").trim().toLowerCase();
-  let toolsToDisplay = [];
-
-  if (!q) {
-    toolsToDisplay = (window.tools || []).filter(isStrictTnmTool);
-  } else {
-    const allMatching = (window.tools || []).filter(t => matchesToolSearch(t, q));
-    toolsToDisplay = allMatching;
-  }
-
-  const filtered = toolsToDisplay.filter(t => (activeTnmFilter === "all" || t.type === activeTnmFilter));
-  container.innerHTML = "";
-  if (filtered.length === 0) {
-    container.innerHTML = `<p class="muted" style="text-align:center; padding:30px 0;">No tools matched your criteria.</p>`;
-    return;
-  }
-  filtered.forEach(t => container.appendChild(createToolItem(t)));
-}
-
-const tnmSearchInp = $("tnmSearchInput");
-if (tnmSearchInp) tnmSearchInp.oninput = () => renderTNMPage();
-
-document.querySelectorAll("[data-tnm-filter]").forEach(btn => {
-  btn.onclick = () => {
-    document.querySelectorAll("[data-tnm-filter]").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    activeTnmFilter = btn.dataset.tnmFilter;
-    renderTNMPage();
-  };
-});
-
-function renderCategoryTools() {
-  let cat = (window.categories || []).find(c => c.id === currentCatId) || { name: (currentCatId || "").toUpperCase(), desc: "Clinical Calculators & Staging" };
-  $("categoryTitle").textContent = cat.name;
-  $("categoryDesc").textContent = cat.desc || "";
-
-  const list = $("toolList");
-  list.innerHTML = "";
-  const filtered = (window.tools || []).filter(t => (t.cat === currentCatId || currentCatId === "all") && (activeFilter === "all" || t.type === activeFilter));
-  if (filtered.length === 0) {
-    list.innerHTML = `<div class="muted" style="padding:20px 0;text-align:center;">No tools found in this category.</div>`;
-    return;
-  }
-  filtered.forEach(t => list.appendChild(createToolItem(t)));
-}
-
-document.querySelectorAll(".tab-btn:not([data-tnm-filter])").forEach(btn => {
-  btn.onclick = () => {
-    document.querySelectorAll(".tab-btn:not([data-tnm-filter])").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    activeFilter = btn.dataset.filter;
-    renderCategoryTools();
-  };
-});
-
-const searchInput = $("search");
-if (searchInput) {
-  searchInput.oninput = () => {
-    const q = searchInput.value.trim().toLowerCase();
-    if (!q) {
-      $("homeDefaultContent").classList.remove("hidden");
-      $("searchResultsSection").classList.add("hidden");
-      return;
-    }
-    $("homeDefaultContent").classList.add("hidden");
-    $("searchResultsSection").classList.remove("hidden");
-    const matches = (window.tools || []).filter(t => matchesToolSearch(t, q));
-    $("searchResultSubheading").textContent = `Found ${matches.length} tool(s) matching "${searchInput.value}"`;
-    const searchList = $("searchToolList");
-    searchList.innerHTML = "";
-    matches.forEach(t => searchList.appendChild(createToolItem(t)));
-  };
-}
-
-$("clearSearchBtn").onclick = () => {
-  searchInput.value = "";
-  $("homeDefaultContent").classList.remove("hidden");
-  $("searchResultsSection").classList.add("hidden");
-};
-
-function openToolView(tool, skipHistory) {
-  currentTool = tool;
-  trackRecentTool(tool);
-
-  if (!skipHistory) location.hash = "tool=" + encodeURIComponent(tool.id);
-
-  $("title").textContent = tool.name;
-  $("desc").textContent = tool.desc || "";
-
-  const typeBadge = $("toolTypeBadge");
-  typeBadge.textContent = tool.type === "class" ? "Classification" : "Calculator";
-  typeBadge.className = `badge ${tool.type === "class" ? "badge-class" : "badge-calc"}`;
-
-  const specBadge = $("toolSpecBadge");
-  let specName = tool.cat ? tool.cat.toUpperCase() : "GENERAL";
-  if (tool.cat === "onco" || tool.cat === "onco_hn_gi" || tool.cat === "tnm") specName = "ONCO";
-  else if (tool.cat === "surg") specName = "SURGERY";
-  else if (tool.cat === "obgy") specName = "OBGYN";
-  else if (tool.cat === "peds") specName = "PEDS";
-  else if (tool.cat === "cardio") specName = "CARDIO";
-  else if (tool.cat === "neuro") specName = "NEURO";
-  else if (tool.cat === "respi") specName = "RESP";
-  else if (tool.cat === "emgicu") specName = "EMERGENCY";
-
-  specBadge.textContent = specName;
-  specBadge.className = `badge ${getSpecialtyBadgeClass(tool.cat)}`;
-
-  updatePinButtonState(tool.id);
-  $("pinToolBtn").onclick = () => togglePinTool(tool.id);
-
-  if (tool.guidance) {
-    $("guidanceBox").classList.remove("hidden");
-    $("guidanceText").innerHTML = tool.guidance.replace(/\n/g, "<br>");
-  } else {
-    $("guidanceBox").classList.add("hidden");
-  }
-
-  if (tool.contraindications) {
-    $("contraBox").classList.remove("hidden");
-    $("contraText").innerHTML = tool.contraindications.replace(/\n/g, "<br>");
-  } else {
-    $("contraBox").classList.add("hidden");
-  }
-
-  const fieldsContainer = $("fields");
-  fieldsContainer.innerHTML = "";
-  const isTnmTool = isStrictTnmTool(tool);
-
-  (tool.fields || []).forEach((f, idx) => {
-    if (f.type === "select" && isTnmTool) {
-      const card = document.createElement("div");
-      card.className = "custom-select-card";
-      card.id = "csc_card_" + f.id;
-
-      const header = document.createElement("div");
-      header.className = "csc-header";
-
-      const titleEl = document.createElement("div");
-      titleEl.className = "csc-title";
-      titleEl.textContent = `${idx + 1}. ${f.label}`;
-
-      const bottomRow = document.createElement("div");
-      bottomRow.className = "csc-bottom-row";
-
-      const selectedBadge = document.createElement("div");
-      selectedBadge.className = "csc-selected-badge";
-      selectedBadge.id = "csc_badge_" + f.id;
-      
-      const defaultOpt = (f.options || []).find(opt => Array.isArray(opt) ? opt[0] === f.value : opt.value === f.value) || (f.options || [])[0];
-      const defaultText = defaultOpt ? (Array.isArray(defaultOpt) ? defaultOpt[1] : defaultOpt.label) : "-- Select --";
-      selectedBadge.innerHTML = `<span>${defaultText}</span> <span>✓</span>`;
-
-      const arrow = document.createElement("div");
-      arrow.className = "csc-arrow";
-      arrow.textContent = "▼";
-
-      bottomRow.appendChild(selectedBadge);
-      bottomRow.appendChild(arrow);
-      header.appendChild(titleEl);
-      header.appendChild(bottomRow);
-      card.appendChild(header);
-
-      const optionsList = document.createElement("div");
-      optionsList.className = "csc-options-list hidden";
-      optionsList.id = "csc_list_" + f.id;
-
-      let currentSelectedVal = f.value || (Array.isArray(defaultOpt) ? defaultOpt[0] : defaultOpt?.value);
-
-      (f.options || []).forEach(opt => {
-        const val = Array.isArray(opt) ? opt[0] : opt.value;
-        const lbl = Array.isArray(opt) ? opt[1] : opt.label;
-
-        const item = document.createElement("div");
-        item.className = "csc-option-item" + (val === currentSelectedVal ? " selected" : "");
-        item.innerHTML = `<span>${lbl}</span><div class="csc-radio-circle"></div>`;
-
-        item.onclick = (e) => {
-          e.stopPropagation();
-          currentSelectedVal = val;
-          selectedBadge.innerHTML = `<span>${lbl}</span> <span>✓</span>`;
-          optionsList.classList.add("hidden");
-          card.classList.remove("active");
-
-          optionsList.querySelectorAll(".csc-option-item").forEach(el => el.classList.remove("selected"));
-          item.classList.add("selected");
-          card.dataset.selectedValue = val;
-        };
-        optionsList.appendChild(item);
-      });
-
-      card.dataset.selectedValue = currentSelectedVal;
-      card.appendChild(optionsList);
-
-      header.onclick = () => {
-        const isOpen = !optionsList.classList.contains("hidden");
-        document.querySelectorAll(".csc-options-list").forEach(l => l.classList.add("hidden"));
-        document.querySelectorAll(".custom-select-card").forEach(c => c.classList.remove("active"));
-        if (!isOpen) {
-          optionsList.classList.remove("hidden");
-          card.classList.add("active");
-        }
-      };
-      fieldsContainer.appendChild(card);
-    } else {
-      const wrap = document.createElement("div");
-      wrap.className = "standard-field-wrap" + (f.fullWidth ? " full-width" : "");
-
-      const lbl = document.createElement("label");
-      lbl.setAttribute("for", "field_" + f.id);
-      lbl.textContent = f.label;
-      wrap.appendChild(lbl);
-
-      if (f.type === "select") {
-        const sel = document.createElement("select");
-        sel.id = "field_" + f.id;
-        sel.name = f.id;
-        
-        const defaultOpt = document.createElement("option");
-        defaultOpt.value = "";
-        defaultOpt.textContent = "-- Select --";
-        defaultOpt.selected = true;
-        defaultOpt.disabled = true;
-        sel.appendChild(defaultOpt);
-
-        (f.options || []).forEach(opt => {
-          const optEl = document.createElement("option");
-          optEl.value = Array.isArray(opt) ? opt[0] : opt.value;
-          optEl.textContent = Array.isArray(opt) ? opt[1] : opt.label;
-          sel.appendChild(optEl);
-        });
-        wrap.appendChild(sel);
-      } else {
-        const inp = document.createElement("input");
-        inp.type = "number";
-        inp.id = "field_" + f.id;
-        inp.name = f.id;
-        inp.value = f.value !== undefined ? f.value : "";
-        if (f.min !== undefined) inp.min = f.min;
-        if (f.max !== undefined) inp.max = f.max;
-        if (f.step !== undefined) inp.step = f.step;
-        wrap.appendChild(inp);
-      }
-      fieldsContainer.appendChild(wrap);
-    }
-  });
-
-  const refCard = $("referenceCard");
-  const head = $("refTableHead");
-  const body = $("refTableBody");
-  if (tool.table && tool.table.headers && tool.table.rows) {
-    refCard.classList.remove("hidden");
-    head.innerHTML = `<tr>${tool.table.headers.map(h => `<th>${h}</th>`).join("")}</tr>`;
-    body.innerHTML = tool.table.rows.map(row => {
-      const rowId = row.id ? ` id="ref-row-${row.id}"` : "";
-      const cols = row.cols || (Array.isArray(row) ? row : []);
-      return `<tr${rowId}>${cols.map(c => `<td>${c}</td>`).join("")}</tr>`;
-    }).join("");
-  } else {
-    refCard.classList.add("hidden");
-  }
-
-  const refsSec = $("academicRefsSection");
-  const refsList = $("academicRefsList");
-  refsList.innerHTML = "";
-  if (tool.literature && Array.isArray(tool.literature)) {
-    refsSec.classList.remove("hidden");
-    tool.literature.forEach(lit => {
-      const refItem = document.createElement("div");
-      refItem.className = "ref-card-item";
-      let linksHtml = "";
-      if (lit.links && lit.links.length) {
-        linksHtml = `<ul class="ref-card-links-list">${lit.links.map(l => `<li><a href="${l.url}" target="_blank" rel="noopener noreferrer" class="ref-btn-link"><span>🔗</span> ${l.text}</a></li>`).join("")}</ul>`;
-      }
-      refItem.innerHTML = `<div style="font-weight:700;margin-bottom:4px;color:var(--text-main);">${lit.icon || "📄"} ${lit.title || ""}</div><div class="ref-card-citation">${lit.citation || ""}</div>${linksHtml}`;
-      refsList.appendChild(refItem);
-    });
-  } else {
-    refsSec.classList.add("hidden");
-  }
-
-  $("result").classList.remove("show");
-  showView("calculator");
-}
-
-function calculate() {
-  if (!currentTool || typeof currentTool.calc !== "function") return;
-  const vals = {};
-  const isTnmTool = isStrictTnmTool(currentTool);
-  
-  (currentTool.fields || []).forEach(f => {
-    if (f.type === "select" && isTnmTool) {
-      const card = $("csc_card_" + f.id);
-      if (card) vals[f.id] = card.dataset.selectedValue || "";
-    } else {
-      const el = $("field_" + f.id);
-      if (el) vals[f.id] = el.value;
-    }
-  });
-
-  try {
-    const res = currentTool.calc(vals);
-    const resBox = $("result");
-
-    $("value").textContent = res.value || "";
-    $("equation").innerHTML = (res.eq || "").replace(/\n/g, "<br>");
-
-    if (res.matchId) {
-      document.querySelectorAll("#refTable tr").forEach(r => r.classList.remove("active-grade"));
-      const activeRow = $(`ref-row-${res.matchId}`);
-      if (activeRow) activeRow.classList.add("active-grade");
-    }
-    resBox.classList.add("show");
-  } catch (err) {
-    console.error("Calculation error:", err);
-  }
-}
-
-$("form").onsubmit = e => {
-  e.preventDefault();
-  calculate();
-  if (currentTool) logToolCalculation(currentTool.name, $("value").textContent, $("equation").textContent);
-};
-$("reset").onclick = () => { if (currentTool) openToolView(currentTool); };
-
-$("copy").onclick = () => {
-  const valText = $("value").textContent;
-  const eqText = $("equation").textContent;
-  navigator.clipboard.writeText(`${currentTool.name}\n${valText}\n${eqText}`).then(() => {
-    const btn = $("copy");
-    btn.textContent = "Copied!";
-    setTimeout(() => btn.textContent = "Copy", 1500);
-  });
-  logToolCalculation(currentTool.name, valText, eqText);
-};
-
-$("notesBtn").onclick = () => {
-  if (currentTool && currentTool.id) location.hash = "source=" + encodeURIComponent(currentTool.id);
-};
-$("closeSourcePageBtn").onclick = () => {
-  if (currentTool) location.replace("#tool=" + encodeURIComponent(currentTool.id));
-  else location.replace("#");
-};
-
-renderHome();
-
-// -------------------------------------------------------------
-// REAL-TIME FIRESTORE CHAT & STORAGE ENGINE
-// -------------------------------------------------------------
-let selectedFile = null;
-let chatUnsubscribe = null;
-
-function renderChatBubble(box, m) {
-  const div = document.createElement("div");
-  const isMe = m.sender === "clinician";
-  div.style.cssText = `max-width:85%; padding:8px 12px; border-radius:7.5px; font-size:13.5px; line-height:1.4; align-self:${isMe ? "flex-end" : "flex-start"}; background:${isMe ? "var(--wa-bubble-out-light)" : "var(--wa-bubble-in-light)"}; color: #111b21; border: 1px solid var(--border-color); box-shadow: 0 1px 0.5px rgba(0,0,0,0.05); position:relative; word-break: break-word;`;
-  
-  let mediaHtml = "";
-  if (m.mediaUrl) {
-    const isImg = /\.(jpeg|jpg|gif|png|webp)($|\?)/i.test(m.mediaUrl);
-    if (isImg) {
-      mediaHtml = `<div style="margin-top:6px;"><a href="${m.mediaUrl}" target="_blank"><img src="${m.mediaUrl}" style="max-width:100%; max-height:200px; border-radius:6px; border:1px solid #cbd5e1; display:block;"></a></div>`;
-    } else {
-      mediaHtml = `<div style="margin-top:6px;"><a href="${m.mediaUrl}" target="_blank" style="color:#2563eb; text-decoration:underline; font-weight:600; display:inline-flex; align-items:center; gap:4px;">📎 View Bug Attachment / Video</a></div>`;
-    }
-  }
-
-  div.innerHTML = `<div>${m.message || ""}</div>${mediaHtml}<div style="font-size:10px; opacity:0.6; margin-top:3px; text-align:right;">${isMe ? "You" : "DocStat team"} · ${m.timestamp || ""}</div>`;
-  box.appendChild(div);
-}
-
-const ADMIN_WELCOME_HTML = `
-  <div style="max-width: 85%; padding: 10px 14px; border-radius: 7.5px; font-size: 13.5px; line-height: 1.5; align-self: flex-start; background: var(--wa-bubble-in-light); color: var(--text-main); border: 1px solid var(--border-color); box-shadow: 0 1px 0.5px rgba(0,0,0,0.05); position: relative;">
-      <div>We value your feedback. Tell us anything you would like us to add or send screenshots/videos of any bugs directly.<br><br>Regards,<br><b>DocStat team</b></div>
-      <div style="font-size: 10px; opacity: 0.6; margin-top: 4px; text-align: right;">DocStat team · Just now</div>
-  </div>
-`;
-
-function initFeedbackChatListener(email) {
-  if (!email) return;
-  if (chatUnsubscribe) chatUnsubscribe();
-
-  const box = document.getElementById("chatMessagesContainer");
-  const cleanEmail = email.replace(/[^a-zA-Z0-9]/g, "_");
-  const q = query(collection(db, "feedback", cleanEmail, "messages"), orderBy("createdAt", "asc"));
-
-  chatUnsubscribe = onSnapshot(q, (snapshot) => {
-    box.innerHTML = ADMIN_WELCOME_HTML;
-    snapshot.forEach(docSnap => {
-      renderChatBubble(box, docSnap.data());
-    });
-    box.scrollTop = box.scrollHeight;
-  }, (err) => {
-    console.warn("Feedback chat real-time error:", err);
-  });
-}
-
-const attachBtn = document.getElementById("attachMediaBtn");
-const mediaInput = document.getElementById("chatMediaInput");
-const previewBar = document.getElementById("chatAttachmentPreviewBar");
-const attachmentNameEl = document.getElementById("chatAttachmentName");
-const removeAttachBtn = document.getElementById("removeAttachmentBtn");
-
-if (attachBtn && mediaInput) {
-  attachBtn.onclick = () => mediaInput.click();
-  mediaInput.onchange = function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    selectedFile = file;
-    attachmentNameEl.textContent = `📎 Ready: ${file.name} (${(file.size / (1024 * 1024)).toFixed(1)} MB)`;
-    previewBar.classList.remove("hidden");
-  };
-  removeAttachBtn.onclick = function() {
-    selectedFile = null;
-    mediaInput.value = "";
-    previewBar.classList.add("hidden");
-  };
-}
-
-window.closeChatView = function() {
-  const chatPage = document.getElementById("chatPage");
-  if (chatPage && !chatPage.classList.contains("hidden")) {
-    chatPage.classList.add("hidden");
-    document.getElementById("home").classList.remove("hidden");
-    if (window.history.replaceState) {
-      window.history.replaceState(null, null, window.location.pathname);
-    } else {
-      location.hash = "";
-    }
-  }
-};
-
-const settingsBtn = document.getElementById("openSettingsBtn");
-if (settingsBtn && settingsBtn.parentNode) {
-  const wrap = document.createElement("div");
-  wrap.style.display = "flex";
-  wrap.style.gap = "8px";
-  settingsBtn.parentNode.insertBefore(wrap, settingsBtn);
-
-  const actualChatBtn = document.createElement("button");
-  actualChatBtn.type = "button";
-  actualChatBtn.className = "icon-btn";
-  actualChatBtn.innerHTML = "💬 Feedback";
-  actualChatBtn.onclick = () => { location.hash = "chat"; };
-
-  wrap.appendChild(actualChatBtn);
-  wrap.appendChild(settingsBtn);
-}
-
-document.getElementById("standaloneChatForm").onsubmit = async function(e) {
-  e.preventDefault();
-  const inp = document.getElementById("standaloneChatInput");
-  const msg = inp.value.trim();
-  if (!msg && !selectedFile) return;
-
-  const sendBtn = document.getElementById("chatSendBtn");
-  sendBtn.disabled = true;
-
-  const email = (localStorage.getItem("doccalc_dr_email") || "anonymous").trim().toLowerCase();
-  const cleanEmail = email.replace(/[^a-zA-Z0-9]/g, "_");
-  const progressWrap = document.getElementById("chatUploadProgressWrap");
-  const progressBarFill = document.getElementById("chatProgressBarFill");
-  let uploadedMediaUrl = "";
-
-  try {
-    if (selectedFile) {
-      if (progressWrap) progressWrap.classList.remove("hidden");
-      const storageRef = ref(storage, `feedback/${cleanEmail}/${Date.now()}_${selectedFile.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, selectedFile);
-
-      await new Promise((resolve, reject) => {
-        uploadTask.on('state_changed', 
-          (snapshot) => {
-            const percent = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-            if (progressBarFill) progressBarFill.style.width = `${percent}%`;
-          },
-          (err) => reject(err),
-          async () => {
-            uploadedMediaUrl = await getDownloadURL(uploadTask.snapshot.ref);
-            resolve();
-          }
-        );
-      });
-      if (progressWrap) progressWrap.classList.add("hidden");
-    }
-
-    await addDoc(collection(db, "feedback", cleanEmail, "messages"), {
-      sender: "clinician",
-      message: msg,
-      mediaUrl: uploadedMediaUrl,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      createdAt: serverTimestamp()
-    });
-
-    inp.value = "";
-    selectedFile = null;
-    mediaInput.value = "";
-    previewBar.classList.add("hidden");
-  } catch (err) {
-    console.error("Chat error:", err);
-    const banner = document.getElementById("chatInterruptedBanner");
-    if (banner) {
-      banner.classList.remove("hidden");
-      setTimeout(() => banner.classList.add("hidden"), 5000);
-    }
-  } finally {
-    sendBtn.disabled = false;
-  }
-};
+<script>
+(function () {
+ "use strict";
+ const $ = id => document.getElementById(id);
+
+ // Keeping the Webhook placeholder if you want to also push usage stats somewhere else
+ const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzs0_H56Ts77ACcQzLryC9hZbt5HRk-G83DiXh_D2UR0yR3j9CKeYHVF1EtfJeDQtDt/exec";
+
+ function checkAppDisclaimer() {
+   if (!localStorage.getItem("doccalc_disclaimer_accepted")) {
+     const modal = $("disclaimerModal");
+     if (modal) modal.classList.remove("hidden");
+   }
+ }
+
+ window.acceptAppDisclaimer = function() {
+   localStorage.setItem("doccalc_disclaimer_accepted", "true");
+   const modal = $("disclaimerModal");
+   if (modal) modal.classList.add("hidden");
+ };
+
+ window.addEventListener("load", checkAppDisclaimer);
+
+ function sendDataToWebhook(payload) {
+   if (!GOOGLE_SHEET_WEBHOOK_URL || GOOGLE_SHEET_WEBHOOK_URL.includes("PASTE_YOUR_GOOGLE_APPS_SCRIPT")) return;
+   fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+     method: "POST",
+     mode: "no-cors",
+     headers: { "Content-Type": "text/plain;charset=utf-8" },
+     body: JSON.stringify(payload)
+   }).catch(() => {});
+ }
+ window.sendDataToWebhook = sendDataToWebhook;
+ window.GOOGLE_SHEET_WEBHOOK_URL = GOOGLE_SHEET_WEBHOOK_URL;
+
+ function logToolCalculation(toolName, resultVal, formulaText) {
+   const now = Date.now();
+   const throttleKey = `doccalc_last_logged_${(currentTool ? currentTool.id : toolName).replace(/\s+/g, '_')}`;
+   const lastLoggedTime = parseInt(localStorage.getItem(throttleKey) || "0", 10);
+
+   if (now - lastLoggedTime < 15000) return;
+   else localStorage.setItem(throttleKey, now.toString());
+
+   const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
+   const name = localStorage.getItem("doccalc_dr_name") || "Anonymous";
+   const degree = localStorage.getItem("doccalc_dr_degree") || "N/A";
+   const specialty = (currentTool && currentTool.cat) ? currentTool.cat.toUpperCase() : "GENERAL";
+   const avatar = localStorage.getItem("doccalc_dr_avatar") || "";
+
+   trackRecentTool(currentTool);
+
+   sendDataToWebhook({
+     type: "calculation",
+     timestamp: new Date().toLocaleString(),
+     email: email,
+     name: name,
+     degree: degree,
+     specialty: specialty,
+     tool: toolName,
+     result: resultVal,
+     equation: formulaText,
+     avatar: avatar
+   });
+ }
+
+ function getPinnedTools() {
+   try { return JSON.parse(localStorage.getItem("doccalc_pinned") || "[]"); } catch(e) { return []; }
+ }
+
+ function getRecentTools() {
+   try { return JSON.parse(localStorage.getItem("doccalc_recent") || "[]"); } catch(e) { return []; }
+ }
+
+ function togglePinTool(toolId) {
+   let pinned = getPinnedTools();
+   const idx = pinned.indexOf(toolId);
+   if (idx > -1) pinned.splice(idx, 1);
+   else pinned.push(toolId);
+   localStorage.setItem("doccalc_pinned", JSON.stringify(pinned));
+   updatePinButtonState(toolId);
+   renderHome();
+ }
+
+ function trackRecentTool(tool) {
+   if (!tool || !tool.id) return;
+   let recent = getRecentTools().filter(id => id !== tool.id);
+   recent.unshift(tool.id);
+   if (recent.length > 10) recent = recent.slice(0, 10);
+   localStorage.setItem("doccalc_recent", JSON.stringify(recent));
+   renderHome();
+ }
+
+ function updatePinButtonState(toolId) {
+   const btn = $("pinToolBtn");
+   if (!btn) return;
+   const pinned = getPinnedTools();
+   if (pinned.includes(toolId)) {
+     btn.textContent = "📌 Unpin Tool";
+     btn.style.background = "var(--badge-class-bg)";
+     btn.style.color = "var(--badge-class-text)";
+   } else {
+     btn.textContent = "📌 Pin Tool";
+     btn.style.background = "var(--tab-bg)";
+     btn.style.color = "var(--text-main)";
+   }
+ }
+
+ function applyDoctorProfile(name, degree, hospital, avatarBase64) {
+   const subHeader = $("clinicianHeaderSub");
+   if (subHeader) subHeader.textContent = `${name} (${degree}) · Clinical tools`;
+   const hospDisplay = $("headerHospitalDisplay");
+   if (hospDisplay) hospDisplay.textContent = hospital ? hospital : "";
+   const avatarEl = $("headerAvatar");
+   const chatAvatarEl = $("chatHeaderAvatar");
+   
+   if (avatarBase64) {
+     if (avatarEl) avatarEl.innerHTML = `<img src="${avatarBase64}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+     if (chatAvatarEl) chatAvatarEl.innerHTML = `<img src="${avatarBase64}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+   } else {
+     if (avatarEl) avatarEl.innerHTML = "🧑🏻‍⚕️";
+     if (chatAvatarEl) chatAvatarEl.innerHTML = "🧑🏻‍⚕️";
+   }
+ }
+
+ async function checkUserSession() {
+   const savedName = localStorage.getItem("doccalc_dr_name");
+   const savedDegree = localStorage.getItem("doccalc_dr_degree");
+   const savedEmailKey = localStorage.getItem("doccalc_dr_email");
+
+   if (!savedName || !savedDegree || !savedEmailKey) {
+     setupLoginModalForNewUser();
+     $("loginModal").classList.remove("hidden");
+   } else {
+     applyDoctorProfile(
+       savedName, 
+       savedDegree, 
+       localStorage.getItem("doccalc_dr_hospital"), 
+       localStorage.getItem("doccalc_dr_avatar")
+     );
+   }
+ }
+
+ function setupLoginModalForNewUser() {
+   $("loginModalTitle").textContent = "DocStat Secure Login";
+   $("loginModalSubtitle").textContent = "Set up your professional profile and sign in to continue.";
+   $("emailFieldWrap").style.display = "block";
+   $("sendOtpBtn").classList.remove("hidden");
+   $("saveProfileOnlyBtn").classList.add("hidden");
+   $("loginStep1").style.display = "flex";
+   $("loginStep2").style.display = "none";
+ }
+
+ let activeEmail = "";
+ let tempAvatarBase64 = "";
+
+ const avatarInput = $("modalAvatarInput");
+ if (avatarInput) {
+   avatarInput.onchange = function(e) {
+     const file = e.target.files[0];
+     if (file) {
+       const reader = new FileReader();
+       reader.onload = function(event) {
+         tempAvatarBase64 = event.target.result;
+         $("avatarPreviewContainer").innerHTML = `<img src="${tempAvatarBase64}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+       };
+       reader.readAsDataURL(file);
+     }
+   };
+ }
+
+ // 1. SEND FIREBASE MAGIC LINK
+ $("sendOtpBtn").onclick = async function() {
+   const name = $("loginDrName").value.trim();
+   const degree = $("loginDrDegree").value.trim();
+   const hospital = $("loginDrHospital").value.trim();
+   const email = $("loginDrEmail").value.trim();
+   const errorMsg = $("loginErrorMsg");
+
+   if (!name || !degree || !email) {
+     errorMsg.textContent = "Please fill in all required fields.";
+     return;
+   }
+
+   const btn = $("sendOtpBtn");
+   btn.disabled = true;
+   btn.textContent = "Sending Secure Link...";
+   errorMsg.textContent = "";
+
+   const actionCodeSettings = {
+     url: "https://medclac.github.io/DocStat/app.html", 
+     handleCodeInApp: true
+   };
+
+   try {
+     await window.sendSignInLinkToEmail(window.firebaseAuth, email, actionCodeSettings);
+     
+     window.localStorage.setItem('emailForSignIn', email);
+     localStorage.setItem("doccalc_temp_name", name);
+     localStorage.setItem("doccalc_temp_degree", degree);
+     localStorage.setItem("doccalc_temp_hospital", hospital);
+     if(tempAvatarBase64) localStorage.setItem("doccalc_temp_avatar", tempAvatarBase64);
+
+     $("sentEmailDisplay").textContent = email;
+     $("loginStep1").style.display = "none";
+     $("loginStep2").style.display = "flex";
+
+     errorMsg.style.color = "var(--result-val)";
+     errorMsg.textContent = "Secure link sent to your email!";
+   } catch (e) {
+     errorMsg.style.color = "#dc2626";
+     errorMsg.textContent = "Error: " + e.message;
+     btn.disabled = false;
+     btn.textContent = "Sign in with Email Link";
+   }
+ };
+
+ // 2. NATIVE GOOGLE SIGN IN
+ $("googleLoginBtn").onclick = async function() {
+   const name = $("loginDrName").value.trim();
+   const degree = $("loginDrDegree").value.trim();
+   const hospital = $("loginDrHospital").value.trim();
+   const errorMsg = $("loginErrorMsg");
+
+   if (!name || !degree) {
+     errorMsg.textContent = "Please fill in your Name and Degree before logging in.";
+     return;
+   }
+
+   const btn = $("googleLoginBtn");
+   btn.disabled = true;
+   errorMsg.style.color = "var(--text-muted)";
+   errorMsg.textContent = "Connecting to Google...";
+
+   try {
+     // Check if Capacitor is available
+     if (!window.Capacitor || !window.Capacitor.Plugins.GoogleSignIn) {
+       throw new Error("Google login is only available in the Android app. Please use the Email Link below.");
+     }
+
+     await window.Capacitor.Plugins.GoogleSignIn.initialize({
+       clientId: 'PASTE_YOUR_WEB_CLIENT_ID_HERE.apps.googleusercontent.com',
+     });
+
+     const result = await window.Capacitor.Plugins.GoogleSignIn.signIn();
+     const credential = window.GoogleAuthProvider.credential(result.idToken);
+     const userCredential = await window.signInWithCredential(window.firebaseAuth, credential);
+     
+     const email = userCredential.user.email;
+
+     localStorage.setItem("doccalc_dr_name", name);
+     localStorage.setItem("doccalc_dr_degree", degree);
+     localStorage.setItem("doccalc_dr_hospital", hospital);
+     localStorage.setItem("doccalc_dr_email", email);
+     if (tempAvatarBase64) localStorage.setItem("doccalc_dr_avatar", tempAvatarBase64);
+
+     $("loginModal").classList.add("hidden");
+     applyDoctorProfile(name, degree, hospital, tempAvatarBase64);
+
+     if (window.sendDataToWebhook) {
+       window.sendDataToWebhook({
+         type: "registration",
+         timestamp: new Date().toLocaleString(),
+         email: email,
+         name: name,
+         degree: degree,
+         hospital: hospital,
+         avatar: tempAvatarBase64 || "",
+         authMethod: "GoogleSignIn"
+       });
+     }
+
+   } catch (error) {
+     console.error("Google auth error:", error);
+     errorMsg.style.color = "#dc2626";
+     errorMsg.textContent = error.message.includes("available in the Android app") 
+         ? error.message 
+         : "Google Sign-In failed or was cancelled.";
+   } finally {
+     btn.disabled = false;
+   }
+ };
+
+ // 3. VERIFY MAGIC LINK WHEN USER RETURNS TO APP
+ window.addEventListener('load', async () => {
+   if (window.isSignInWithEmailLink && window.firebaseAuth && window.isSignInWithEmailLink(window.firebaseAuth, window.location.href)) {
+     let email = window.localStorage.getItem('emailForSignIn');
+     if (!email) {
+       email = window.prompt('Please confirm your email address to complete sign-in.');
+     }
+
+     try {
+       await window.signInWithEmailLink(window.firebaseAuth, email, window.location.href);
+       window.localStorage.removeItem('emailForSignIn');
+
+       const name = localStorage.getItem("doccalc_temp_name") || "Doctor";
+       const degree = localStorage.getItem("doccalc_temp_degree") || "";
+       const hospital = localStorage.getItem("doccalc_temp_hospital") || "";
+       const avatar = localStorage.getItem("doccalc_temp_avatar") || "";
+
+       localStorage.setItem("doccalc_dr_name", name);
+       localStorage.setItem("doccalc_dr_degree", degree);
+       localStorage.setItem("doccalc_dr_hospital", hospital);
+       localStorage.setItem("doccalc_dr_avatar", avatar);
+       localStorage.setItem("doccalc_dr_email", email);
+
+       localStorage.removeItem("doccalc_temp_name");
+       localStorage.removeItem("doccalc_temp_degree");
+       localStorage.removeItem("doccalc_temp_hospital");
+       localStorage.removeItem("doccalc_temp_avatar");
+
+       $("loginModal").classList.add("hidden");
+       applyDoctorProfile(name, degree, hospital, avatar);
+       
+       window.history.replaceState(null, null, window.location.pathname);
+
+     } catch (e) {
+       const errorMsg = $("loginErrorMsg");
+       if(errorMsg) {
+         errorMsg.style.color = "#dc2626";
+         errorMsg.textContent = "Sign-in link is invalid or expired. Please try again.";
+       }
+     }
+   }
+ });
+
+ $("editProfileBtn").onclick = function () {
+   $("settingsModal").classList.add("hidden");
+   $("loginModalTitle").textContent = "Edit Clinician Profile";
+   $("loginModalSubtitle").textContent = "Update your professional details (Email is verified and locked).";
+   
+   $("loginDrName").value = localStorage.getItem("doccalc_dr_name") || "";
+   $("loginDrDegree").value = localStorage.getItem("doccalc_dr_degree") || "";
+   $("loginDrHospital").value = localStorage.getItem("doccalc_dr_hospital") || "";
+   
+   const savedAvatar = localStorage.getItem("doccalc_dr_avatar");
+   if (savedAvatar) {
+     tempAvatarBase64 = savedAvatar;
+     $("avatarPreviewContainer").innerHTML = `<img src="${savedAvatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+   } else {
+     $("avatarPreviewContainer").innerHTML = "🧑🏻‍⚕️";
+   }
+
+   $("emailFieldWrap").style.display = "none";
+   $("sendOtpBtn").classList.add("hidden");
+   $("googleLoginBtn").classList.add("hidden");
+   document.querySelectorAll("#loginStep1 > div[style*='text-align: center;']").forEach(e => e.classList.add("hidden"));
+   $("saveProfileOnlyBtn").classList.remove("hidden");
+   $("loginStep1").style.display = "flex";
+   $("loginStep2").style.display = "none";
+   $("loginErrorMsg").textContent = "";
+   $("loginModal").classList.remove("hidden");
+ };
+
+ $("saveProfileOnlyBtn").onclick = function() {
+   const name = $("loginDrName").value.trim();
+   const degree = $("loginDrDegree").value.trim();
+   const hospital = $("loginDrHospital").value.trim();
+   const errorMsg = $("loginErrorMsg");
+
+   if (!name || !degree) {
+     errorMsg.textContent = "Please provide Name and Degree.";
+     return;
+   }
+
+   localStorage.setItem("doccalc_dr_name", name);
+   localStorage.setItem("doccalc_dr_degree", degree);
+   localStorage.setItem("doccalc_dr_hospital", hospital);
+   if (tempAvatarBase64) localStorage.setItem("doccalc_dr_avatar", tempAvatarBase64);
+
+   $("loginModal").classList.add("hidden");
+   applyDoctorProfile(name, degree, hospital, localStorage.getItem("doccalc_dr_avatar"));
+
+   sendDataToWebhook({
+     type: "registration",
+     timestamp: new Date().toLocaleString(),
+     email: localStorage.getItem("doccalc_dr_email"),
+     name: name,
+     degree: degree,
+     hospital: hospital,
+     avatar: localStorage.getItem("doccalc_dr_avatar") || ""
+   });
+ };
+
+ $("deleteAccountBtn").onclick = function() {
+   if (confirm("Are you sure you want to delete your account data and reset login?")) {
+     const email = localStorage.getItem("doccalc_dr_email");
+     if (email && window.sendDataToWebhook) {
+       window.sendDataToWebhook({
+         type: "account_deletion",
+         timestamp: new Date().toLocaleString(),
+         email: email
+       });
+     }
+     localStorage.clear();
+     location.reload();
+   }
+ };
+
+ checkUserSession();
+
+ let currentCatId = null;
+ let currentTool = null;
+ let activeFilter = "all";
+
+ let activeThemeMode = localStorage.getItem("doccalc_theme") || "system";
+ function applyTheme(mode) {
+   activeThemeMode = mode;
+   localStorage.setItem("doccalc_theme", mode);
+   let effective = mode === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : mode;
+   document.documentElement.setAttribute("data-theme", effective);
+   document.querySelectorAll(".theme-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.themeVal === mode));
+   const meta = document.querySelector('meta[name="theme-color"]');
+   if (meta) meta.setAttribute("content", effective === "dark" ? "#0b1523" : "#0f2744");
+ }
+ window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+   if (activeThemeMode === "system") applyTheme("system");
+ });
+ applyTheme(activeThemeMode);
+
+ $("openSettingsBtn").onclick = () => $("settingsModal").classList.remove("hidden");
+ $("closeSettingsBtn").onclick = () => $("settingsModal").classList.add("hidden");
+ $("settingsModal").onclick = e => { if (e.target === $("settingsModal")) $("settingsModal").classList.add("hidden"); };
+ document.querySelectorAll(".theme-btn").forEach(btn => btn.onclick = () => applyTheme(btn.dataset.themeVal));
+
+ function triggerSplashSequence() {
+   const logoWrap = $("splashLogoWrap");
+   const splash = $("splash");
+
+   setTimeout(() => {
+     if (logoWrap) logoWrap.classList.add("pulse-lockup");
+   }, 1900);
+
+   setTimeout(() => {
+     if (splash) {
+       splash.classList.add("fade-out");
+       setTimeout(() => {
+         if (splash.parentNode) splash.parentNode.removeChild(splash);
+       }, 400);
+     }
+
+     if (window.AndroidBridge && typeof window.AndroidBridge.onSplashComplete === "function") {
+       window.AndroidBridge.onSplashComplete();
+     }
+   }, 2200);
+ }
+
+ window.addEventListener("load", triggerSplashSequence);
+
+ function showView(view) {
+   $("home").classList.toggle("hidden", view !== "home");
+   $("categoryPage").classList.toggle("hidden", view !== "category");
+   $("calculatorPage").classList.toggle("hidden", view !== "calculator");
+   $("sourcePage").classList.toggle("hidden", view !== "source");
+   $("chatPage").classList.toggle("hidden", view !== "chat");
+   window.scrollTo({ top: 0, behavior: "smooth" });
+ }
+ window.showView = showView;
+
+ // --- ROUTER ---
+ let isHandlingHash = false;
+ window.addEventListener("hashchange", async function () {
+   if (isHandlingHash) {
+     setTimeout(() => { isHandlingHash = false; }, 100);
+     return;
+   }
+   isHandlingHash = true;
+
+   try {
+     const rawHash = location.hash.replace(/^#/, "");
+
+     const modal = $("settingsModal");
+     if (modal && !modal.classList.contains("hidden")) modal.classList.add("hidden");
+
+     const searchInput = $("search");
+     if (searchInput && searchInput.value) {
+       searchInput.value = "";
+       $("homeDefaultContent").classList.remove("hidden");
+       $("searchResultsSection").classList.add("hidden");
+     }
+
+     if (!rawHash) {
+       showView("home");
+       return;
+     }
+
+     if (rawHash.startsWith("category=")) {
+       const catId = decodeURIComponent(rawHash.replace("category=", ""));
+       currentCatId = catId;
+       renderCategoryTools();
+       showView("category");
+       return;
+     }
+
+     if (rawHash.startsWith("tool=")) {
+       const toolId = decodeURIComponent(rawHash.replace("tool=", ""));
+       const foundTool = (window.tools || []).find(t => t.id === toolId);
+       if (foundTool && (!currentTool || currentTool.id !== toolId)) {
+         openToolView(foundTool, true);
+       } else {
+         showView("calculator");
+       }
+       return;
+     }
+
+     if (rawHash === "chat") {
+       showView("chat");
+       if (window.loadClinicianMessages) {
+         await window.loadClinicianMessages();
+       }
+       return;
+     }
+
+     if (rawHash.startsWith("source=")) {
+       const calcId = decodeURIComponent(rawHash.replace("source=", ""));
+       const sourcePath = `InfoHTMLs/${calcId}.html`;
+       const container = $("sourceContentContainer");
+       container.innerHTML = `<p class="muted" style="text-align: center; margin-top: 40px;">Loading reference details...</p>`;
+
+       showView("source");
+
+       try {
+         const response = await fetch(sourcePath);
+         if (response.ok) {
+           const htmlText = await response.text();
+           const parser = new DOMParser();
+           const doc = parser.parseFromString(htmlText, "text/html");
+           const content = doc.body ? doc.body.innerHTML : htmlText;
+           container.innerHTML = content;
+         } else {
+           container.innerHTML = `<p class="muted" style="text-align: center; margin-top: 40px; color: var(--contra-text);">Could not load reference file.</p>`;
+         }
+       } catch (err) {
+         container.innerHTML = `<p class="muted" style="text-align: center; margin-top: 40px; color: var(--contra-text);">Error loading reference file offline.</p>`;
+       }
+       return;
+     }
+   } finally {
+     isHandlingHash = false;
+   }
+ });
+
+ window.addEventListener("popstate", function (event) {
+   const chatPage = document.getElementById("chatPage");
+   if (chatPage && !chatPage.classList.contains("hidden")) {
+     window.closeChatView();
+   }
+ });
+
+ if (location.hash) location.hash = "";
+
+ function getSpecialtyBadgeClass(catName) {
+   const c = (catName || "").toLowerCase().trim();
+   if (c.includes("surg") || c.includes("surgery") || c.includes("surgical")) return "badge-spec-surg";
+   if (c.includes("obgy") || c.includes("obstetrics") || c.includes("gynecology") || c.includes("gyn")) return "badge-spec-obgy";
+   if (c.includes("cardio") || c.includes("cardiology")) return "badge-spec-cardio";
+   if (c.includes("endo") || c.includes("endocrine") || c.includes("endocrinology")) return "badge-spec-endo";
+   if (c.includes("neuro") || c.includes("neurology")) return "badge-spec-neuro";
+   if (c.includes("emgicu") || c.includes("icu") || c.includes("emergency") || c.includes("critical")) return "badge-spec-emgicu";
+   if (c.includes("renal") || c.includes("nephro") || c.includes("nephrology")) return "badge-spec-renal";
+   if (c.includes("ortho") || c.includes("orthopaedics")) return "badge-spec-ortho";
+   if (c.includes("resp") || c.includes("pulm") || c.includes("pulmonology")) return "badge-spec-resp";
+   if (c.includes("rheum") || c.includes("rheumatology") || c.includes("immuno")) return "badge-spec-rheum";
+   if (c.includes("onco") || c.includes("tnm") || c.includes("staging")) return "badge-spec-onco";
+   if (c.includes("ped") || c.includes("pediatric") || c.includes("paediatric")) return "badge-spec-peds";
+   return "badge-spec";
+ }
+
+ function createToolItem(t) {
+   const div = document.createElement("div");
+   div.className = "tool";
+   const badgeLabel = t.type === "class" ? "Classification" : "Calculator";
+   const badgeClass = t.type === "class" ? "badge-class" : "badge-calc";
+   
+   let specName = t.cat ? t.cat.toUpperCase() : "GENERAL";
+   if (t.cat === "onco" || t.cat === "onco_hn_gi" || t.cat === "tnm") specName = "ONCO";
+   else if (t.cat === "surg") specName = "SURGERY";
+   else if (t.cat === "obgy") specName = "OBGYN";
+   else if (t.cat === "peds") specName = "PEDS";
+   else if (t.cat === "cardio") specName = "CARDIO";
+   else if (t.cat === "neuro") specName = "NEURO";
+   else if (t.cat === "respi") specName = "RESP";
+   else if (t.cat === "emgicu") specName = "EMERGENCY";
+   else if (t.cat === "renal") specName = "RENAL";
+   else if (t.cat === "ortho") specName = "ORTHO";
+   else if (t.cat === "endo") specName = "ENDO";
+   else if (t.cat === "rheum") specName = "RHEUM";
+
+   const specClass = getSpecialtyBadgeClass(t.cat);
+   const isPinned = getPinnedTools().includes(t.id);
+
+   div.innerHTML = `
+     <div class="tool-header">
+       <strong>${isPinned ? "📌 " : ""}${t.name}</strong>
+       <div class="badge-group">
+         <span class="badge ${specClass}">${specName}</span>
+         <span class="badge ${badgeClass}">${badgeLabel}</span>
+       </div>
+     </div>
+     <small>${t.desc || ""}</small>
+   `;
+   div.onclick = () => { location.hash = "tool=" + encodeURIComponent(t.id); };
+   return div;
+ }
+
+ function renderHome() {
+   const catContainer = $("categories");
+   if (!catContainer) return;
+
+   const catMap = new Map();
+   (window.categories || []).forEach(c => {
+     if (c && c.id) {
+       const cid = c.id.toLowerCase();
+       if (cid !== "onco" && cid !== "onco_hn_gi" && !cid.includes("tnm")) {
+         catMap.set(c.id, c);
+       }
+     }
+   });
+
+   (window.tools || []).forEach(t => {
+     if (t.cat && !catMap.has(t.cat)) {
+       const cid = t.cat.toLowerCase();
+       if (cid !== "onco" && cid !== "onco_hn_gi" && !cid.includes("tnm")) {
+         const prettyName = t.cat.charAt(0).toUpperCase() + t.cat.slice(1);
+         catMap.set(t.cat, {
+           id: t.cat,
+           name: prettyName,
+           icon: "📁",
+           desc: `${prettyName} clinical tools & calculators`
+         });
+       }
+     }
+
+     if (!t.type) {
+       const isClass = /score|criteria|staging|classification|meows|apgar|bishop|iadpsg|mec|popq|figo|weber|gustilo|tscherne|salter|garden|neer|pauwels|pipkin|rockwood|mason|tile|sins|tlics|meyerding|kellgren/i.test(t.name + " " + (t.desc || ""));
+       t.type = isClass ? "class" : "calc";
+     }
+   });
+
+   const fullCategories = Array.from(catMap.values());
+   catContainer.innerHTML = "";
+
+   if (fullCategories.length === 0) {
+     catContainer.innerHTML = `<p class="muted" style="grid-column: 1/-1;">Loading specialty tools...</p>`;
+   } else {
+     fullCategories.forEach(cat => {
+       const card = document.createElement("div");
+       card.className = "card";
+       card.innerHTML = `<span class="ico">${cat.icon || "📁"}</span><strong>${cat.name}</strong><small>${cat.desc || ""}</small>`;
+       card.onclick = () => { location.hash = "category=" + encodeURIComponent(cat.id); };
+       catContainer.appendChild(card);
+     });
+   }
+
+   const quickContainer = $("quick");
+   if (quickContainer) {
+     quickContainer.innerHTML = "";
+     const pinnedIds = getPinnedTools();
+     const recentIds = getRecentTools();
+     
+     const quickToolIds = Array.from(new Set([...pinnedIds, ...recentIds])).slice(0, 8);
+     const quickTools = quickToolIds.map(id => (window.tools || []).find(t => t.id === id)).filter(Boolean);
+
+     if (quickTools.length === 0) {
+       quickContainer.innerHTML = `<p class="muted" style="font-size:12.5px;">Pinned or recently used tools will appear here for quick access.</p>`;
+     } else {
+       quickTools.forEach(t => quickContainer.appendChild(createToolItem(t)));
+     }
+   }
+
+   renderTNMPage();
+ }
+
+ window.renderHome = renderHome;
+ window.renderCategories = renderHome;
+ window.renderQuick = renderHome;
+
+ // -------------------------------------------------------------
+ // 4. DEDICATED TNM & ONCOLOGY SLIDE LOGIC (STRICTLY TNM.JS TOOLS)
+ // -------------------------------------------------------------
+ let activeTnmFilter = "all";
+
+ function isStrictTnmTool(t) {
+   if (!t) return false;
+   const cat = (t.cat || "").toLowerCase();
+   if (!(cat === "onco" || cat === "onco_hn_gi")) return false;
+   
+   const txt = (t.name + " " + (t.desc || "") + " " + (t.id || "")).toLowerCase();
+   if (txt.includes("figo") || txt.includes("vulva") || txt.includes("vagina") || txt.includes("cervix") || txt.includes("endometrial") || txt.includes("ovary") || txt.includes("gtd")) {
+     return false;
+   }
+   return true;
+ }
+
+ function matchesToolSearch(t, q) {
+   if (!q) return true;
+   q = q.toLowerCase();
+   
+   if (q.includes("neck") || q.includes("head") || q.includes("oral") || q.includes("larynx")) {
+     const txt = (t.name + " " + (t.desc || "") + " " + (t.subject || "") + " " + (t.organ || "")).toLowerCase();
+     if (/oral|lip|tongue|oropharynx|hypopharynx|nasopharynx|larynx|salivary|cervical|neck|head/i.test(txt)) return true;
+   }
+   if (q.includes("breast") || q.includes("lung") || q.includes("stomach") || q.includes("colon") || q.includes("skin") || q.includes("thyroid")) {
+     const txt = (t.name + " " + (t.desc || "") + " " + (t.subject || "") + " " + (t.organ || "")).toLowerCase();
+     if (txt.includes(q)) return true;
+   }
+
+   return (t.name && t.name.toLowerCase().includes(q)) ||
+          (t.desc && t.desc.toLowerCase().includes(q)) ||
+          (t.organ && t.organ.toLowerCase().includes(q)) ||
+          (t.subject && t.subject.toLowerCase().includes(q)) ||
+          (t.keywords && t.keywords.some(k => k.toLowerCase().includes(q)));
+ }
+
+ function renderTNMPage() {
+   const container = $("tnmToolsListContainer");
+   if (!container) return;
+
+   const q = ($("tnmSearchInput") ? $("tnmSearchInput").value : "").trim().toLowerCase();
+   let toolsToDisplay = [];
+
+   if (!q) {
+     toolsToDisplay = (window.tools || []).filter(isStrictTnmTool);
+   } else {
+     const allMatching = (window.tools || []).filter(t => matchesToolSearch(t, q));
+     const tnmMatches = [];
+     const otherMatches = [];
+
+     allMatching.forEach(t => {
+       if (isStrictTnmTool(t)) {
+         tnmMatches.push(t);
+       } else {
+         otherMatches.push(t);
+       }
+     });
+
+     toolsToDisplay = [...tnmMatches, ...otherMatches];
+   }
+
+   const filtered = toolsToDisplay.filter(t => (activeTnmFilter === "all" || t.type === activeTnmFilter));
+
+   container.innerHTML = "";
+   if (filtered.length === 0) {
+     container.innerHTML = `<p class="muted" style="text-align:center; padding:30px 0;">No tools matched your criteria.</p>`;
+     return;
+   }
+   filtered.forEach(t => container.appendChild(createToolItem(t)));
+ }
+
+ window.renderTNMPage = renderTNMPage;
+
+ const tnmSearchInp = $("tnmSearchInput");
+ if (tnmSearchInp) {
+   tnmSearchInp.oninput = () => renderTNMPage();
+   tnmSearchInp.addEventListener("keydown", (e) => {
+     if (e.key === "Enter") {
+       tnmSearchInp.blur();
+     }
+   });
+ }
+
+ const mainSearchInp = $("search");
+ if (mainSearchInp) {
+   mainSearchInp.addEventListener("keydown", (e) => {
+     if (e.key === "Enter") {
+       mainSearchInp.blur();
+     }
+   });
+ }
+
+ document.querySelectorAll("[data-tnm-filter]").forEach(btn => {
+   btn.onclick = () => {
+     document.querySelectorAll("[data-tnm-filter]").forEach(b => b.classList.remove("active"));
+     btn.classList.add("active");
+     activeTnmFilter = btn.dataset.tnmFilter;
+     renderTNMPage();
+   };
+ });
+
+ function renderCategoryTools() {
+   let cat = (window.categories || []).find(c => c.id === currentCatId);
+   if (!cat) {
+     cat = { name: (currentCatId || "").toUpperCase(), desc: "Clinical Calculators & Staging" };
+   }
+   $("categoryTitle").textContent = cat.name;
+   $("categoryDesc").textContent = cat.desc || "";
+
+   const list = $("toolList");
+   list.innerHTML = "";
+   const filtered = (window.tools || []).filter(t => (t.cat === currentCatId || currentCatId === "all") && (activeFilter === "all" || t.type === activeFilter));
+   if (filtered.length === 0) {
+     list.innerHTML = `<div class="muted" style="padding:20px 0;text-align:center;">No tools found in this category.</div>`;
+     return;
+   }
+   filtered.forEach(t => list.appendChild(createToolItem(t)));
+ }
+
+ document.querySelectorAll(".tab-btn:not([data-tnm-filter])").forEach(btn => {
+   btn.onclick = () => {
+     document.querySelectorAll(".tab-btn:not([data-tnm-filter])").forEach(b => b.classList.remove("active"));
+     btn.classList.add("active");
+     activeFilter = btn.dataset.filter;
+     renderCategoryTools();
+   };
+ });
+
+ const searchInput = $("search");
+ searchInput.oninput = () => {
+   const q = searchInput.value.trim().toLowerCase();
+   if (!q) {
+     $("homeDefaultContent").classList.remove("hidden");
+     $("searchResultsSection").classList.add("hidden");
+     return;
+   }
+   $("homeDefaultContent").classList.add("hidden");
+   $("searchResultsSection").classList.remove("hidden");
+   const matches = (window.tools || []).filter(t => matchesToolSearch(t, q));
+   $("searchResultSubheading").textContent = `Found ${matches.length} tool(s) matching "${searchInput.value}"`;
+   const searchList = $("searchToolList");
+   searchList.innerHTML = "";
+   if (matches.length === 0) {
+     searchList.innerHTML = `<p class="muted">No clinical tools matched your search query.</p>`;
+   } else {
+     matches.forEach(t => searchList.appendChild(createToolItem(t)));
+   }
+ };
+
+ $("clearSearchBtn").onclick = () => {
+   searchInput.value = "";
+   $("homeDefaultContent").classList.remove("hidden");
+   $("searchResultsSection").classList.add("hidden");
+ };
+
+ /* BUILD TOOL VIEW: ACCORDION SELECTORS STRICTLY FOR TNM / ONCO TOOLS ONLY */
+ function openToolView(tool, skipHistory) {
+   currentTool = tool;
+   trackRecentTool(tool);
+
+   if (!skipHistory) {
+     location.hash = "tool=" + encodeURIComponent(tool.id);
+   }
+
+   $("title").textContent = tool.name;
+   $("desc").textContent = tool.desc || "";
+
+   const typeBadge = $("toolTypeBadge");
+   typeBadge.textContent = tool.type === "class" ? "Classification" : "Calculator";
+   typeBadge.className = `badge ${tool.type === "class" ? "badge-class" : "badge-calc"}`;
+
+   const specBadge = $("toolSpecBadge");
+   let specName = tool.cat ? tool.cat.toUpperCase() : "GENERAL";
+   if (tool.cat === "onco" || tool.cat === "onco_hn_gi" || tool.cat === "tnm") specName = "ONCO";
+   else if (tool.cat === "surg") specName = "SURGERY";
+   else if (tool.cat === "obgy") specName = "OBGYN";
+   else if (tool.cat === "peds") specName = "PEDS";
+   else if (tool.cat === "cardio") specName = "CARDIO";
+   else if (tool.cat === "neuro") specName = "NEURO";
+   else if (tool.cat === "respi") specName = "RESP";
+   else if (tool.cat === "emgicu") specName = "EMERGENCY";
+
+   specBadge.textContent = specName;
+   specBadge.className = `badge ${getSpecialtyBadgeClass(tool.cat)}`;
+
+   updatePinButtonState(tool.id);
+   $("pinToolBtn").onclick = () => togglePinTool(tool.id);
+
+   if (tool.guidance) {
+     $("guidanceBox").classList.remove("hidden");
+     $("guidanceText").innerHTML = tool.guidance.replace(/\n/g, "<br>");
+   } else {
+     $("guidanceBox").classList.add("hidden");
+   }
+
+   if (tool.contraindications) {
+     $("contraBox").classList.remove("hidden");
+     $("contraText").innerHTML = tool.contraindications.replace(/\n/g, "<br>");
+   } else {
+     $("contraBox").classList.add("hidden");
+   }
+
+   const fieldsContainer = $("fields");
+   fieldsContainer.innerHTML = "";
+   
+   // STRICT CHECK: Accordion card ONLY for TNM / Onco tools. All other tools use standard dropdowns!
+   const isTnmTool = isStrictTnmTool(tool);
+
+   (tool.fields || []).forEach((f, idx) => {
+     if (f.type === "select" && isTnmTool) {
+       // Custom Accordion Select Card (Strictly for TNM / Onco tools)
+       const card = document.createElement("div");
+       card.className = "custom-select-card";
+       card.id = "csc_card_" + f.id;
+
+       const header = document.createElement("div");
+       header.className = "csc-header";
+
+       const titleEl = document.createElement("div");
+       titleEl.className = "csc-title";
+       titleEl.textContent = `${idx + 1}. ${f.label}`;
+
+       const bottomRow = document.createElement("div");
+       bottomRow.className = "csc-bottom-row";
+
+       const selectedBadge = document.createElement("div");
+       selectedBadge.className = "csc-selected-badge";
+       selectedBadge.id = "csc_badge_" + f.id;
+       
+       const defaultOpt = (f.options || []).find(opt => Array.isArray(opt) ? opt[0] === f.value : opt.value === f.value) || (f.options || [])[0];
+       const defaultText = defaultOpt ? (Array.isArray(defaultOpt) ? defaultOpt[1] : defaultOpt.label) : "-- Select --";
+       selectedBadge.innerHTML = `<span>${defaultText}</span> <span>✓</span>`;
+
+       const arrow = document.createElement("div");
+       arrow.className = "csc-arrow";
+       arrow.textContent = "▼";
+
+       bottomRow.appendChild(selectedBadge);
+       bottomRow.appendChild(arrow);
+       
+       header.appendChild(titleEl);
+       header.appendChild(bottomRow);
+       card.appendChild(header);
+
+       const optionsList = document.createElement("div");
+       optionsList.className = "csc-options-list hidden";
+       optionsList.id = "csc_list_" + f.id;
+
+       let currentSelectedVal = f.value || (Array.isArray(defaultOpt) ? defaultOpt[0] : defaultOpt?.value);
+
+       (f.options || []).forEach(opt => {
+         const val = Array.isArray(opt) ? opt[0] : opt.value;
+         const lbl = Array.isArray(opt) ? opt[1] : opt.label;
+
+         const item = document.createElement("div");
+         item.className = "csc-option-item" + (val === currentSelectedVal ? " selected" : "");
+         
+         const textSpan = document.createElement("span");
+         textSpan.textContent = lbl;
+
+         const radioCircle = document.createElement("div");
+         radioCircle.className = "csc-radio-circle";
+
+         item.appendChild(textSpan);
+         item.appendChild(radioCircle);
+
+         item.onclick = (e) => {
+           e.stopPropagation();
+           currentSelectedVal = val;
+           selectedBadge.innerHTML = `<span>${lbl}</span> <span>✓</span>`;
+           optionsList.classList.add("hidden");
+           card.classList.remove("active");
+
+           optionsList.querySelectorAll(".csc-option-item").forEach(el => el.classList.remove("selected"));
+           item.classList.add("selected");
+
+           card.dataset.selectedValue = val;
+         };
+
+         optionsList.appendChild(item);
+       });
+
+       card.dataset.selectedValue = currentSelectedVal;
+       card.appendChild(optionsList);
+
+       header.onclick = () => {
+         const isOpen = !optionsList.classList.contains("hidden");
+         document.querySelectorAll(".csc-options-list").forEach(l => l.classList.add("hidden"));
+         document.querySelectorAll(".custom-select-card").forEach(c => c.classList.remove("active"));
+
+         if (!isOpen) {
+           optionsList.classList.remove("hidden");
+           card.classList.add("active");
+         }
+       };
+
+       fieldsContainer.appendChild(card);
+     } else {
+       // Standard Dropdown Select or Number Input Field for Non-TNM tools (Neuro, Cardio, etc.)
+       const wrap = document.createElement("div");
+       wrap.className = "standard-field-wrap" + (f.fullWidth ? " full-width" : "");
+
+       const lbl = document.createElement("label");
+       lbl.setAttribute("for", "field_" + f.id);
+       lbl.textContent = f.label;
+       wrap.appendChild(lbl);
+
+       if (f.type === "select") {
+         const sel = document.createElement("select");
+         sel.id = "field_" + f.id;
+         sel.name = f.id;
+         
+         const defaultOpt = document.createElement("option");
+         defaultOpt.value = "";
+         defaultOpt.textContent = "-- Select --";
+         defaultOpt.selected = true;
+         defaultOpt.disabled = true;
+         sel.appendChild(defaultOpt);
+
+         (f.options || []).forEach(opt => {
+           const optEl = document.createElement("option");
+           if (Array.isArray(opt)) {
+             optEl.value = opt[0];
+             optEl.textContent = opt[1];
+           } else {
+             optEl.value = opt.value;
+             optEl.textContent = opt.label;
+           }
+           sel.appendChild(optEl);
+         });
+         wrap.appendChild(sel);
+       } else {
+         const inp = document.createElement("input");
+         inp.type = "number";
+         inp.id = "field_" + f.id;
+         inp.name = f.id;
+         inp.value = f.value !== undefined ? f.value : "";
+         if (f.min !== undefined) inp.min = f.min;
+         if (f.max !== undefined) inp.max = f.max;
+         if (f.step !== undefined) inp.step = f.step;
+         wrap.appendChild(inp);
+       }
+
+       fieldsContainer.appendChild(wrap);
+     }
+   });
+
+   const refCard = $("referenceCard");
+   const head = $("refTableHead");
+   const body = $("refTableBody");
+   if (tool.table && tool.table.headers && tool.table.rows) {
+     refCard.classList.remove("hidden");
+     head.innerHTML = `<tr>${tool.table.headers.map(h => `<th>${h}</th>`).join("")}</tr>`;
+     body.innerHTML = tool.table.rows.map(row => {
+       const rowId = row.id ? ` id="ref-row-${row.id}"` : "";
+       const cols = row.cols || (Array.isArray(row) ? row : []);
+       return `<tr${rowId}>${cols.map(c => `<td>${c}</td>`).join("")}</tr>`;
+     }).join("");
+   } else {
+     refCard.classList.add("hidden");
+   }
+
+   /* RENDER ACADEMIC REFERENCES IN PROPER VERTICAL LIST FORM WITH ATTRIBUTES */
+   const refsSec = $("academicRefsSection");
+   const refsList = $("academicRefsList");
+   refsList.innerHTML = "";
+   if (tool.literature && Array.isArray(tool.literature)) {
+     refsSec.classList.remove("hidden");
+     tool.literature.forEach(lit => {
+       const refItem = document.createElement("div");
+       refItem.className = "ref-card-item";
+       let linksHtml = "";
+       if (lit.links && lit.links.length) {
+         linksHtml = `<ul class="ref-card-links-list">${lit.links.map(l => `<li><a href="${l.url}" target="_blank" rel="noopener noreferrer" class="ref-btn-link"><span>🔗</span> ${l.text}</a></li>`).join("")}</ul>`;
+       }
+       refItem.innerHTML = `<div style="font-weight:700;margin-bottom:4px;color:var(--text-main);">${lit.icon || "📄"} ${lit.title || ""}</div><div class="ref-card-citation">${lit.citation || ""}</div>${linksHtml}`;
+       refsList.appendChild(refItem);
+     });
+   } else if (tool.references) {
+     refsSec.classList.remove("hidden");
+     const refItem = document.createElement("div");
+     refItem.className = "ref-card-item";
+     refItem.innerHTML = `<div class="ref-card-citation">${tool.references}</div>`;
+     refsList.appendChild(refItem);
+   } else {
+     refsSec.classList.add("hidden");
+   }
+
+   $("result").classList.remove("show");
+   showView("calculator");
+ }
+
+ function calculate() {
+   if (!currentTool || typeof currentTool.calc !== "function") return;
+   const vals = {};
+   const isTnmTool = isStrictTnmTool(currentTool);
+   
+   (currentTool.fields || []).forEach(f => {
+     if (f.type === "select" && isTnmTool) {
+       const card = $("csc_card_" + f.id);
+       if (card) vals[f.id] = card.dataset.selectedValue || "";
+     } else {
+       const el = $("field_" + f.id);
+       if (el) vals[f.id] = el.value;
+     }
+   });
+
+   try {
+     const res = currentTool.calc(vals);
+     const resBox = $("result");
+
+     $("value").textContent = res.value || "";
+     $("equation").innerHTML = (res.eq || "").replace(/\n/g, "<br>");
+
+     resBox.classList.remove("severity-mild", "severity-moderate", "severity-critical");
+
+     const combinedText = `${res.value || ""} ${res.eq || ""}`.toLowerCase();
+     const numMatch = String(res.value || "").match(/-?\d+(\.\d+)?/);
+     const scoreNum = numMatch ? parseFloat(numMatch[0]) : null;
+
+     let severity = "mild";
+     if (res.severity) severity = res.severity;
+     else if (/\b(mild|low risk|normal|good prognosis|unlikely|negative|grade 1|grade i|stage 1|stage i|class 1|class i)\b/i.test(combinedText)) severity = "mild";
+     else if (/\b(critical|severe|significant|high risk|poor|emergency|immediate|grade 3|grade 4|grade iii|grade iv|stage 3|stage 4|stage iii|stage iv|class 3|class 4|class iii|class iv)\b/i.test(combinedText)) severity = "critical";
+     else if (/\b(moderate|intermediate|medium risk|grade 2|grade ii|stage 2|stage ii|class 2|class ii)\b/i.test(combinedText)) severity = "moderate";
+     else if (scoreNum !== null) {
+       if (scoreNum >= 75) severity = "critical";
+       else if (scoreNum >= 40) severity = "moderate";
+       else severity = "mild";
+     }
+
+     resBox.classList.add(`severity-${severity}`);
+
+     if (res.matchId) {
+       document.querySelectorAll("#refTable tr").forEach(r => r.classList.remove("active-grade"));
+       const activeRow = $(`ref-row-${res.matchId}`);
+       if (activeRow) activeRow.classList.add("active-grade");
+     }
+
+     resBox.classList.add("show");
+   } catch (err) {
+     console.error("Calculation error:", err);
+   }
+ }
+
+ $("form").onsubmit = e => {
+   e.preventDefault();
+   calculate();
+   if (currentTool) {
+     logToolCalculation(currentTool.name, $("value").textContent, $("equation").textContent);
+   }
+ };
+
+ $("reset").onclick = () => {
+   if (currentTool) openToolView(currentTool);
+ };
+
+ $("copy").onclick = () => {
+   const valText = $("value").textContent;
+   const eqText = $("equation").textContent;
+   const txt = `${currentTool.name}\n${valText}\n${eqText}`;
+
+   navigator.clipboard.writeText(txt).then(() => {
+     const btn = $("copy");
+     btn.textContent = "Copied!";
+     setTimeout(() => btn.textContent = "Copy", 1500);
+   });
+
+   logToolCalculation(currentTool.name, valText, eqText);
+ };
+
+ $("notesBtn").onclick = () => {
+   if (!currentTool || !currentTool.id) return;
+   location.hash = "source=" + encodeURIComponent(currentTool.id);
+ };
+
+ $("closeSourcePageBtn").onclick = () => {
+   if (currentTool) {
+     location.replace("#tool=" + encodeURIComponent(currentTool.id));
+   } else {
+     location.replace("#");
+   }
+ };
+
+ renderHome();
+ window.addEventListener("load", renderHome);
+
+ let checkCount = 0;
+ const pollTimer = setInterval(() => {
+   renderHome();
+   checkCount++;
+   if (checkCount >= 8) clearInterval(pollTimer);
+ }, 250);
+})();
+</script>
+
+<!-- STANDALONE CHAT ENGINE & WIRING SCRIPT -->
+<script>
+(function() {
+ function playClientChime() {
+   try {
+     const AudioContext = window.AudioContext || window.webkitAudioContext;
+     if (!AudioContext) return;
+     const ctx = new AudioContext();
+     if (ctx.state === "suspended") ctx.resume();
+
+     const now = ctx.currentTime;
+     const osc = ctx.createOscillator();
+     const gain = ctx.createGain();
+
+     osc.type = "sine";
+     osc.frequency.setValueAtTime(750, now);
+     osc.frequency.exponentialRampToValueAtTime(1050, now + 0.12);
+
+     gain.gain.setValueAtTime(0.18, now);
+     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+
+     osc.connect(gain);
+     gain.connect(ctx.destination);
+
+     osc.start(now);
+     osc.stop(now + 0.38);
+   } catch (e) {
+     console.warn("Audio chime playback blocked or unsupported:", e);
+   }
+ }
+
+ function triggerClientVibration() {
+   if ("vibrate" in navigator) {
+     try {
+       navigator.vibrate([200, 100, 200]);
+     } catch (err) {}
+   }
+ }
+
+ window.addEventListener("pointerdown", function unlockAudio() {
+   try {
+     const AudioContext = window.AudioContext || window.webkitAudioContext;
+     if (AudioContext) {
+       const dummyCtx = new AudioContext();
+       dummyCtx.resume().then(() => dummyCtx.close());
+     }
+   } catch (e) {}
+   window.removeEventListener("pointerdown", unlockAudio);
+ }, { once: true });
+
+ let selectedFile = null;
+ let selectedFileBase64 = "";
+ let selectedFileName = "";
+ let selectedFileMime = "";
+
+ function getOrCreateBadgeElement() {
+   let badge = document.getElementById("feedbackUnreadBadge");
+   if (badge) return badge;
+
+   const actualChatBtn = document.getElementById("actualFeedbackBtn");
+   if (actualChatBtn && actualChatBtn.parentNode) {
+     badge = document.createElement("span");
+     badge.className = "unread-badge";
+     badge.id = "feedbackUnreadBadge";
+     actualChatBtn.parentNode.appendChild(badge);
+     return badge;
+   }
+   return null;
+ }
+
+ function showUnreadBadge(count) {
+   const badge = getOrCreateBadgeElement();
+   if (badge) {
+     badge.textContent = count > 9 ? "9+" : count.toString();
+     badge.classList.add("active");
+     badge.style.display = "inline-block";
+   }
+ }
+
+ function clearUnreadBadge() {
+   const badge = getOrCreateBadgeElement();
+   if (badge) {
+     badge.textContent = "";
+     badge.classList.remove("active");
+     badge.style.display = "none";
+   }
+   localStorage.setItem("doccalc_last_read_feedback_time", Date.now().toString());
+ }
+
+ const settingsBtn = document.getElementById("openSettingsBtn");
+ if (settingsBtn && settingsBtn.parentNode) {
+   const wrap = document.createElement("div");
+   wrap.style.display = "flex";
+   wrap.style.gap = "8px";
+   settingsBtn.parentNode.insertBefore(wrap, settingsBtn);
+
+   const btnContainer = document.createElement("div");
+   btnContainer.className = "feedback-btn-wrap";
+   btnContainer.style.position = "relative";
+   btnContainer.style.display = "inline-flex";
+
+   const actualChatBtn = document.createElement("button");
+   actualChatBtn.type = "button";
+   actualChatBtn.className = "icon-btn";
+   actualChatBtn.id = "actualFeedbackBtn";
+   actualChatBtn.innerHTML = "💬 Feedback";
+   actualChatBtn.onclick = () => {
+     clearUnreadBadge();
+     location.hash = "chat";
+   };
+
+   const unreadDot = document.createElement("span");
+   unreadDot.className = "unread-badge";
+   unreadDot.id = "feedbackUnreadBadge";
+
+   btnContainer.appendChild(actualChatBtn);
+   btnContainer.appendChild(unreadDot);
+
+   wrap.appendChild(btnContainer);
+   wrap.appendChild(settingsBtn);
+ }
+
+ window.closeChatView = function() {
+   const chatPage = document.getElementById("chatPage");
+   if (chatPage && !chatPage.classList.contains("hidden")) {
+     chatPage.classList.add("hidden");
+     document.getElementById("home").classList.remove("hidden");
+     if (window.history.replaceState) {
+       window.history.replaceState(null, null, window.location.pathname);
+     } else {
+       location.hash = "";
+     }
+   }
+ };
+
+ function showInterruptedAlert() {
+   const banner = document.getElementById("chatInterruptedBanner");
+   if (banner) {
+     banner.classList.remove("hidden");
+     setTimeout(() => { banner.classList.add("hidden"); }, 5000);
+   }
+ }
+
+ function getSavedLocalChats() {
+   try {
+     return JSON.parse(localStorage.getItem("doccalc_saved_chat_history") || "[]");
+   } catch(e) {
+     return [];
+   }
+ }
+
+ function saveLocalChat(msg, timestamp, mediaUrl) {
+   try {
+     const chats = getSavedLocalChats();
+     const safeMedia = (mediaUrl && mediaUrl.startsWith("data:")) ? "[Local Attachment]" : (mediaUrl || "");
+     chats.push({ sender: "clinician", message: msg, timestamp: timestamp, mediaUrl: safeMedia });
+     localStorage.setItem("doccalc_saved_chat_history", JSON.stringify(chats.slice(-40)));
+   } catch(e) {
+     localStorage.removeItem("doccalc_saved_chat_history");
+   }
+ }
+
+ function renderChatBubble(box, m) {
+   const div = document.createElement("div");
+   const isMe = m.sender === "clinician";
+   div.style.cssText = `max-width:85%; padding:8px 12px; border-radius:7.5px; font-size:13.5px; line-height:1.4; align-self:${isMe ? "flex-end" : "flex-start"}; background:${isMe ? "var(--wa-bubble-out-light)" : "var(--wa-bubble-in-light)"}; color: #111b21; border: 1px solid var(--border-color); box-shadow: 0 1px 0.5px rgba(0,0,0,0.05); position:relative; word-break: break-word;`;
+   
+   let mediaHtml = "";
+   if (m.mediaUrl && m.mediaUrl !== "[Local Attachment]") {
+     const isImg = /\.(jpeg|jpg|gif|png|webp)($|\?)/i.test(m.mediaUrl) || (m.mediaUrl.startsWith("data:image"));
+     if (isImg) {
+       mediaHtml = `<div style="margin-top:6px;"><a href="${m.mediaUrl}" target="_blank"><img src="${m.mediaUrl}" style="max-width:100%; max-height:200px; border-radius:6px; border:1px solid #cbd5e1; display:block;"></a></div>`;
+     } else {
+       mediaHtml = `<div style="margin-top:6px;"><a href="${m.mediaUrl}" target="_blank" style="color:#2563eb; text-decoration:underline; font-weight:600; display:inline-flex; align-items:center; gap:4px;">📎 View Bug Attachment / Video</a></div>`;
+     }
+   } else if (m.mediaUrl === "[Local Attachment]") {
+     mediaHtml = `<div style="margin-top:4px; font-size:11px; color:#64748b; font-style:italic;">📎 Media attached (Uploaded)</div>`;
+   }
+
+   div.innerHTML = `<div>${m.message || ""}</div>${mediaHtml}<div style="font-size:10px; opacity:0.6; margin-top:3px; text-align:right;">${isMe ? "You" : "DocStat team"} · ${m.timestamp}</div>`;
+   box.appendChild(div);
+ }
+
+ const ADMIN_WELCOME_HTML = `
+   <div style="max-width: 85%; padding: 10px 14px; border-radius: 7.5px; font-size: 13.5px; line-height: 1.5; align-self: flex-start; background: var(--wa-bubble-in-light); color: var(--text-main); border: 1px solid var(--border-color); box-shadow: 0 1px 0.5px rgba(0,0,0,0.05); position: relative;">
+       <div>We value your feedback. Tell us anything you would like us to add or send screenshots/videos of any bugs directly.<br><br>Regards,<br><b>DocStat team</b></div>
+       <div style="font-size: 10px; opacity: 0.6; margin-top: 4px; text-align: right;">DocStat team · Just now</div>
+   </div>
+ `;
+
+ async function loadClinicianMessages() {
+   const box = document.getElementById("chatMessagesContainer");
+   clearUnreadBadge();
+
+   box.innerHTML = ADMIN_WELCOME_HTML;
+
+   let localChats = getSavedLocalChats();
+   localChats.forEach(m => renderChatBubble(box, m));
+   box.scrollTop = box.scrollHeight;
+
+   if (!navigator.onLine || !window.GOOGLE_SHEET_WEBHOOK_URL) return;
+   const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
+   if (!email) return;
+
+   try {
+     const res = await fetch(`${window.GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(email)}&t=${Date.now()}`);
+     const data = await res.json();
+     
+     if (data.status === "success" && data.messages) {
+       box.innerHTML = ADMIN_WELCOME_HTML;
+       data.messages.forEach(m => renderChatBubble(box, m));
+       localStorage.setItem("doccalc_saved_chat_history", JSON.stringify(data.messages.slice(-40)));
+       box.scrollTop = box.scrollHeight;
+     }
+   } catch (e) {
+     console.warn("Could not sync remote chat history:", e);
+   }
+ }
+
+ window.loadClinicianMessages = loadClinicianMessages;
+
+ async function compressVideoFile(videoFile, onProgress) {
+   return new Promise((resolve) => {
+     if (!window.MediaRecorder) return resolve(videoFile);
+
+     const video = document.createElement("video");
+     video.preload = "auto";
+     video.muted = true;
+     video.playsInline = true;
+
+     const url = URL.createObjectURL(videoFile);
+     video.src = url;
+
+     video.onerror = () => {
+       URL.revokeObjectURL(url);
+       resolve(videoFile);
+     };
+
+     video.onloadedmetadata = () => {
+       let width = video.videoWidth || 720;
+       let height = video.videoHeight || 540;
+       const maxDimension = 540;
+
+       if (height > maxDimension || width > maxDimension) {
+         if (height > width) {
+           width = Math.round((width * maxDimension) / height);
+           height = maxDimension;
+         } else {
+           height = Math.round((height * maxDimension) / width);
+           width = maxDimension;
+         }
+       }
+       width = width % 2 === 0 ? width : width - 1;
+       height = height % 2 === 0 ? height : height - 1;
+
+       const canvas = document.createElement("canvas");
+       canvas.width = width;
+       canvas.height = height;
+       const ctx = canvas.getContext("2d");
+       const stream = canvas.captureStream(24);
+       
+       let mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp8') ? 'video/webm;codecs=vp8' : 'video/webm';
+
+       let recorder;
+       try {
+         recorder = new MediaRecorder(stream, { mimeType: mimeType, videoBitsPerSecond: 900000 });
+       } catch (e) {
+         URL.revokeObjectURL(url);
+         return resolve(videoFile);
+       }
+
+       const chunks = [];
+       recorder.ondataavailable = e => { if (e.data && e.data.size > 0) chunks.push(e.data); };
+       recorder.onstop = () => {
+         URL.revokeObjectURL(url);
+         const compressedBlob = new Blob(chunks, { type: 'video/webm' });
+         resolve(new File([compressedBlob], videoFile.name.replace(/\.[^/.]+$/, "") + ".webm", { type: 'video/webm' }));
+       };
+
+       recorder.start(100);
+       video.play();
+
+       function drawFrame() {
+         if (video.paused || video.ended) return;
+         ctx.drawImage(video, 0, 0, width, height);
+         if (video.duration && onProgress) {
+           onProgress(Math.min(99, Math.round((video.currentTime / video.duration) * 100)));
+         }
+         requestAnimationFrame(drawFrame);
+       }
+       drawFrame();
+       video.onended = () => recorder.stop();
+     };
+   });
+ }
+
+ const progressWrap = document.getElementById("chatUploadProgressWrap");
+ const progressStatusLabel = document.getElementById("chatProgressStatusLabel");
+ const progressPercentLabel = document.getElementById("chatProgressPercentLabel");
+ const progressBarFill = document.getElementById("chatProgressBarFill");
+
+ function updateUploadProgressUI(status, percent) {
+   if (progressWrap) progressWrap.classList.remove("hidden");
+   if (progressStatusLabel) progressStatusLabel.textContent = status;
+   if (progressPercentLabel) progressPercentLabel.textContent = `${percent}%`;
+   if (progressBarFill) progressBarFill.style.width = `${percent}%`;
+ }
+
+ function resetUploadProgressUI() {
+   if (progressWrap) progressWrap.classList.add("hidden");
+   if (progressBarFill) progressBarFill.style.width = "0%";
+ }
+
+ const attachBtn = document.getElementById("attachMediaBtn");
+ const mediaInput = document.getElementById("chatMediaInput");
+ const previewBar = document.getElementById("chatAttachmentPreviewBar");
+ const attachmentNameEl = document.getElementById("chatAttachmentName");
+ const removeAttachBtn = document.getElementById("removeAttachmentBtn");
+
+ if (attachBtn && mediaInput) {
+   attachBtn.onclick = () => mediaInput.click();
+
+   mediaInput.onchange = function(e) {
+     const file = e.target.files[0];
+     if (!file) return;
+
+     selectedFile = file;
+     selectedFileName = file.name;
+     selectedFileMime = file.type;
+
+     attachmentNameEl.textContent = `📎 Ready: ${file.name} (${(file.size / (1024 * 1024)).toFixed(1)} MB)`;
+     previewBar.classList.remove("hidden");
+   };
+
+   removeAttachBtn.onclick = function() {
+     selectedFile = null;
+     selectedFileBase64 = "";
+     selectedFileName = "";
+     selectedFileMime = "";
+     mediaInput.value = "";
+     previewBar.classList.add("hidden");
+     resetUploadProgressUI();
+   };
+ }
+
+ let lastObservedUnreadCount = 0;
+
+ async function checkUnreadAdminReplies() {
+   if (!navigator.onLine || !window.GOOGLE_SHEET_WEBHOOK_URL) return;
+   
+   const chatPage = document.getElementById("chatPage");
+   if (chatPage && !chatPage.classList.contains("hidden")) {
+     clearUnreadBadge();
+     return;
+   }
+
+   const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
+   if (!email) return;
+
+   try {
+     const res = await fetch(`${window.GOOGLE_SHEET_WEBHOOK_URL}?action=user_messages&email=${encodeURIComponent(email)}&t=${Date.now()}`);
+     const data = await res.json();
+
+     if (data.status === "success" && data.messages && data.messages.length) {
+       const lastReadTime = parseInt(localStorage.getItem("doccalc_last_read_feedback_time") || "0", 10);
+       
+       const unreadCount = data.messages.filter(m => {
+         const isTeam = m.sender !== "clinician";
+         const msgTime = new Date(m.timestamp).getTime();
+         return isTeam && (isNaN(msgTime) || msgTime > lastReadTime);
+       }).length;
+
+       if (unreadCount > 0) {
+         showUnreadBadge(unreadCount);
+
+         if (unreadCount > lastObservedUnreadCount) {
+           playClientChime();
+           triggerClientVibration();
+         }
+         lastObservedUnreadCount = unreadCount;
+       } else {
+         clearUnreadBadge();
+         lastObservedUnreadCount = 0;
+       }
+     }
+   } catch (e) {}
+ }
+
+ window.addEventListener("load", () => {
+   setTimeout(checkUnreadAdminReplies, 1500);
+ });
+ setInterval(checkUnreadAdminReplies, 15000);
+
+ document.getElementById("standaloneChatForm").onsubmit = async function(e) {
+   e.preventDefault();
+   const inp = document.getElementById("standaloneChatInput");
+   const msg = inp.value.trim();
+   
+   if (!msg && !selectedFile) return;
+
+   const sendBtn = document.getElementById("chatSendBtn");
+   sendBtn.disabled = true;
+
+   const email = (localStorage.getItem("doccalc_dr_email") || "").trim().toLowerCase();
+   const name = (localStorage.getItem("doccalc_dr_name") || "Anonymous").trim();
+   const degree = (localStorage.getItem("doccalc_dr_degree") || "N/A").trim();
+   const avatar = (localStorage.getItem("doccalc_dr_avatar") || "").trim();
+   const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+   let fileToUpload = selectedFile;
+
+   if (selectedFile && selectedFile.type.startsWith("video/")) {
+     updateUploadProgressUI("Compressing video...", 15);
+     try {
+       fileToUpload = await compressVideoFile(selectedFile, percent => {
+         updateUploadProgressUI("Compressing video...", Math.round(15 + (percent * 0.35)));
+       });
+       selectedFileName = fileToUpload.name;
+       selectedFileMime = fileToUpload.type;
+     } catch (err) {
+       console.warn("Video compression skipped, uploading original:", err);
+     }
+   }
+
+   if (fileToUpload) {
+     updateUploadProgressUI("Preparing file...", 55);
+     selectedFileBase64 = await new Promise(res => {
+       const r = new FileReader();
+       r.onload = () => res(r.result);
+       r.readAsDataURL(fileToUpload);
+     });
+   }
+
+   const box = document.getElementById("chatMessagesContainer");
+   renderChatBubble(box, { sender: "clinician", message: msg, timestamp: timestamp, mediaUrl: selectedFileBase64 });
+   box.scrollTop = box.scrollHeight;
+   saveLocalChat(msg, timestamp, selectedFileBase64);
+
+   const payload = {
+     type: "feedback",
+     timestamp: new Date().toLocaleString(),
+     email: email,
+     name: name,
+     degree: degree,
+     message: msg,
+     avatar: avatar,
+     fileBase64: selectedFileBase64,
+     fileName: selectedFileName,
+     fileMime: selectedFileMime
+   };
+
+   inp.value = "";
+   selectedFile = null;
+   selectedFileBase64 = "";
+   selectedFileName = "";
+   selectedFileMime = "";
+   mediaInput.value = "";
+   previewBar.classList.add("hidden");
+
+   updateUploadProgressUI("Sending to DocStat...", 80);
+
+   try {
+     await fetch(window.GOOGLE_SHEET_WEBHOOK_URL, {
+       method: "POST",
+       headers: { "Content-Type": "text/plain;charset=utf-8" },
+       body: JSON.stringify(payload)
+     });
+
+     updateUploadProgressUI("Sent!", 100);
+     setTimeout(resetUploadProgressUI, 1000);
+   } catch (err) {
+     console.error("Upload error:", err);
+     resetUploadProgressUI();
+     showInterruptedAlert();
+   } finally {
+     sendBtn.disabled = false;
+   }
+ };
+})();
 </script>
 </body>
 </html>
